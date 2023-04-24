@@ -42,7 +42,7 @@
 
     <link href="{{asset('css/nucleo-svg.css')}}" rel="stylesheet" />
     <!-- CSS Files -->
-    <link id="pagestyle" href="{{asset('css/soft-ui-dashboard.css?v=0.02')}}" rel="stylesheet" />
+    <link id="pagestyle" href="{{asset('css/soft-ui-dashboard.css?v=0.03')}}" rel="stylesheet" />
     <!-- Alpine -->
     <script src="https://cdn.jsdelivr.net/gh/alpinejs/alpine@v2.x.x/dist/alpine.min.js" defer></script>
     @livewireStyles
