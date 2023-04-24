@@ -9,7 +9,7 @@
                 <div class="card-header pb-0">
                     <div class=" flex-row justify-content-between">
                         <div class="float-start">
-                            <h6>Samples Lists</h6>                            
+                            <h6>Samples List</h6>                            
                         </div>
                     </div>
                 </div>
