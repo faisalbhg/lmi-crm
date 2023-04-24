@@ -44,7 +44,7 @@ class Samples extends Component
         $files = null;
         $mailData = [
             'name' => $sampleOrderDtls->userInfo['name'],
-            'body' => 'Your sample request is '.config('common.sample_status')[$status].' please find the Sample request details '.URL::to("/sample-details/".$sampleId),
+            'body' => 'Your sample request is '.config('common.sample_status')[$status].', please find the Sample request details '.URL::to("/sample-details/".$sampleId),
             'title' => 'Sample Status: '.config('common.sample_status')[$status],
             'email' => $sampleOrderDtls->userInfo['email'],
         ];
