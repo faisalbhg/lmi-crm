@@ -18,7 +18,7 @@
                         <table class="table align-items-center mb-0" id="example">
                             <thead>
                                 <tr>
-                                    <th class=" text-center text-uppercase text-dark text-xxs font-weight-bolder opacity-7">No.</th>
+                                    <th class=" text-center text-uppercase text-dark text-xxs font-weight-bolder opacity-7">No</th>
                                     <th class="text-uppercase text-dark text-xxs font-weight-bolder opacity-7">Cutomer</th>
                                     <th class="text-uppercase text-dark text-xxs font-weight-bolder opacity-7">Item</th>
                                     <th class="text-uppercase text-dark text-xxs font-weight-bolder opacity-7">Sales Person</th>
