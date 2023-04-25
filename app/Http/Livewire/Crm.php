@@ -641,7 +641,7 @@ class Crm extends Component
 
         $this->sendEailSubject = '#'.$crmDetails->id.' CRM Updates EMail';
 
-        $this->dtl_crmLogs = CrmLogs::where(['crm_id'=>$crmDetails->id,'crm_reminder'=>0])->orderBy('id','DESC')->get();
+        $this->dtl_crmLogs = CrmLogs::where(['crm_id'=>$crmDetails->id])->orderBy('id','DESC')->get();
         $this->dtl_crmReminderLogs = CrmLogs::where(['crm_id'=>$crmDetails->id])->where('crm_reminder','!=',Null)->orderBy('id','DESC')->get();
         $this->dtl_emailLogs = EmailLog::where(['crm_id'=>$crmDetails->id])->orderBy('id','DESC')->get();
         $this->dispatchBrowserEvent('showCrmDetailsModal');
