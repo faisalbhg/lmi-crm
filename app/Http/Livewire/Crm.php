@@ -219,6 +219,14 @@ class Crm extends Component
                 $this->deligatedToValue = User::where('id', '!=' , Session::get('user')->id)->where(['active'=>1])->get();
                 break;
 
+            case '12':
+                $this->showQuoteEstimatedValue=false;
+                $this->showSampleItemName=false;
+                $this->showCrmFollowupDateTime=false;
+                $this->showDeligatedTo=true;
+                $this->deligatedToValue = User::where('id', '!=' , Session::get('user')->id)->where(['active'=>1])->get();
+                break;
+
             default:
                 $this->showQuoteEstimatedValue=false;
                 $this->showSampleItemName=false;
@@ -433,6 +441,12 @@ class Crm extends Component
             $newCrmData['assigned_id'] =  $this->deligated_to;
             
         }
+        else if($this->related_to==12)
+        {
+            $newCrmData['deligated_to'] = $this->deligated_to;
+            $newCrmData['deligated_by'] = Session::get('user')->id;
+            $newCrmData['assigned_id'] =  $this->deligated_to;
+        }
         $newCrmData['crm_status'] = 1;
         $newCrmData['crm_action'] = 1;
         $newCrmData['user_id'] =  Session::get('user')->id;
@@ -479,6 +493,9 @@ class Crm extends Component
         else if($this->related_to==9){
             $this->assignDeligatedTo($this->deligated_to);
         }
+        if($this->related_to==12){
+            $this->assignComplaintsTo($this->deligated_to);
+        }
 
         $inquiryLogsData = [
             'status' =>1,
@@ -505,12 +522,44 @@ class Crm extends Component
     public function assignDeligatedTo($userId)
     {
         $userDetails = User::find($userId);
-
+        $files=null;
         $mailData = [
             'name' => $userDetails->name,
             'body' => 'New CRM is deligated to you, check the below link to view your CRM <br>'.URL::to("/crm-details/".$this->crmId),
+            'title' => 'CRM Inquiry Deligation',
+            'email' => $userDetails->email,
         ];
-        Mail::to($userDetails->email)->bcc('faisal@buhaleeba.ae')->send(new SendEmail($mailData));
+        Mail::send('emails.crm_email', $mailData, function($message)use($mailData, $files) {
+            $message->subject($mailData['title']);
+            $message->to($mailData["email"]);
+            $message->bcc('faisal@buhaleeba.ae');
+            if($files){
+                foreach ($files as $file){
+                    $message->attach($file);
+                }
+            }            
+        });
+    }
+
+    public function assignComplaintsTo($userId){
+        $userDetails = User::find($userId);
+        $files=null;
+        $mailData = [
+            'name' => $userDetails->name,
+            'body' => 'New CRM is complaint deligated to you, check the below link to view your CRM <br>'.URL::to("/crm-details/".$this->crmId),
+            'title' => 'CRM Complaints Deligation',
+            'email' => $userDetails->email,
+        ];
+        Mail::send('emails.crm_email', $mailData, function($message)use($mailData, $files) {
+            $message->subject($mailData['title']);
+            $message->to($mailData["email"]);
+            $message->bcc('faisal@buhaleeba.ae');
+            if($files){
+                foreach ($files as $file){
+                    $message->attach($file);
+                }
+            }            
+        });
     }
 
     public function saveSampleRequest($sampleData)

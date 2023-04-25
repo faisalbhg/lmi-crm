@@ -255,7 +255,6 @@
                                             <div class="form-group" id="form-customerTypeSelect">
                                                 <label for="example-text-input" class="form-control-label required">Type of Customer</label>
                                                 <select class="form-control" name="customer_type" wire:model="customer_type" id="customerTypeSelect">
-                                                    <option value="">-Select-</option>
                                                     @foreach(config('common.customer_type') as $key_ct => $customer_type)
                                                     <option value="{{$key_ct}}">{{$customer_type}}</option>
                                                     @endforeach
@@ -279,7 +278,6 @@
                                             <div class="form-group" id="form-businessCategorySelect">
                                                 <label for="example-text-input" class="form-control-label required">Marketing Channel</label>
                                                 <select class="form-control" name="marketing_channel" wire:model="marketing_channel" id="businessCategorySelect" >
-                                                    <option value="">-Select-</option>
                                                     @foreach(config('common.marketing_channel') as $key_mc => $marketing_channel)
                                                     <option value="{{$key_mc}}">{{$marketing_channel}}</option>
                                                     @endforeach
