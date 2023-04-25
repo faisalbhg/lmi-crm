@@ -417,6 +417,7 @@ class Crm extends Component
         $newCrmData['our_brand'] = json_encode($this->brands_list);
         $newCrmData['competitor_brand'] = json_encode($this->competitor_brands_list);
         $newCrmData['crm_description'] = $this->crm_description;
+        
         if($this->related_to==2)
         {
             $newCrmData['quote_estimated_value'] = $this->quote_estimated_value;
