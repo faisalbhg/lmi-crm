@@ -37,4 +37,18 @@ class Sample extends Model
     {
         return $this->belongsTo(User::class,'created_by','id');
     }
+
+    public function teritoryInfo()
+    {
+        return $this->belongsTo(Territories::class,'teritory','id');
+    }
+    public function countryInfo()
+    {
+        return $this->belongsTo(Countries::class,'country','id');
+    }
+
+    public function samplelogs()
+    {
+        return $this->hasMany(SampleLogs::class,'sample_order_id','id');
+    }
 }

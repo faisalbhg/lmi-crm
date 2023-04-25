@@ -19,8 +19,8 @@
                             <thead>
                                 <tr>
                                     <th class=" text-center text-uppercase text-dark text-xxs font-weight-bolder opacity-7">No.</th>
-                                    <th class="text-uppercase text-dark text-xxs font-weight-bolder opacity-7">Cutomer</th>
-                                    <th class="text-uppercase text-dark text-xxs font-weight-bolder opacity-7">Item</th>
+                                    <th class="text-uppercase text-dark text-xxs font-weight-bolder opacity-7">Customer</th>
+                                    <!-- <th class="text-uppercase text-dark text-xxs font-weight-bolder opacity-7">Item</th> -->
                                     <th class="text-uppercase text-dark text-xxs font-weight-bolder opacity-7">Sales Person</th>
                                     <th class="text-uppercase text-dark text-xxs font-weight-bolder opacity-7">Status</th>
                                     <th class="text-uppercase text-dark text-xxs font-weight-bolder opacity-7">Action</th>
@@ -42,11 +42,11 @@
                                             </div>
                                         </div>
                                     </td>
-                                    <td>
+                                    <!-- <td>
                                         <p class="text-xs font-weight-bold mb-0">{{$samples->partDescription}}</p>
                                         <p class="text-xs text-secondary mb-0">{{$samples->partNum}}</p>
                                         <p class="text-xs text-secondary mb-0">{{$samples->prodCode}}</p>
-                                    </td>
+                                    </td> -->
                                     <td>
                                         <p class="text-xxs text-secondary mb-0">
                                             <span class="badge badge-dot me-4">
@@ -69,22 +69,7 @@
                                         <p class="text-xs text-secondary mb-0">Now in: {{config('common.sample_department')[$samples->department]}}</p>
                                     </td>
                                     <td class="align-middle">
-                                        @if($samples->status==0)
-                                            @if(Session::get('user')->usertype == config('common.sample_status_action_userType')[$samples->status])
-                                                <a wire:click="updateSample('{{$samples->id}}','{{$samples->status+1}}')">
-                                                    <button type="button" class="btn btn-{{config('common.sample_status_class')[$samples->status+1]}} btn-sm">{{config('common.sample_status_action')[$samples->status+1]}}</button>
-                                                </a>
-                                                <a wire:click="updateSample('{{$samples->id}}','5')">
-                                                    <button type="button" class="btn btn-{{config('common.sample_status_class')[5]}} btn-sm">{{config('common.sample_status_action')[5]}}</button>
-                                                </a>
-                                            @endif
-                                        @elseif($samples->status!=5)
-                                            @if(session()->get('usertype') == config('common.sample_status_action_userType')[$samples->status])
-                                                <a wire:click="updateSample('{{$samples->id}}','{{$samples->status+1}}')" >
-                                                    <button type="button" class="btn btn-{{config('common.sample_status_class')[$samples->status+1]}} btn-sm">{{config('common.sample_status_action')[$samples->status+1]}}</button>
-                                                </a>
-                                            @endif
-                                        @endif
+                                        <button wire:click="openSample('{{$samples->crm_id}}')" class="btn bg-gradient-primary btn-sm">Open Action</button>
                                     </td>
                                 @empty
                                 <tr>
@@ -96,10 +81,29 @@
                         <div class="float-end">{{$samplesList->onEachSide(1)->links()}}</div>
                     </div>
                 </div>
+                @if($showsampleDetails)
+                @include('components.modals.sampleDetails')
+                @endif
             </div>
         </div>
     </div>
 </div>
 </main>
 @push('custom_script')
+<script type="text/javascript">
+    window.addEventListener('showSampleDetailModal',event=>{
+        $('#sampleDetailModal').modal('show');
+    });
+    window.addEventListener('hideSampleDetailModal',event=>{
+        $('#sampleDetailModal').modal('hide');
+    });
+</script>
+<script type="text/javascript">
+    $(document).ready(function(){
+      @if($showsampleDetails)
+        $('#sampleDetailModal').modal('show');
+      @endif
+      
+    });
+</script>
 @endpush

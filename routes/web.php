@@ -51,6 +51,7 @@ Route::middleware('auth')->group(function () {
 
     //Samples
     Route::get('/samples', Samples::class)->name('samples');
+    Route::get('/sample-details/{id}',Samples::class)->name('sample_details');
 
 
     Route::get('/dashboard', Dashboard::class)->name('dashboard');

@@ -21,30 +21,61 @@ class Samples extends Component
 {
     use WithPagination;
     protected $paginationTheme = 'bootstrap';
+    public $showsampleDetails=false;
+    public $sampleInfo=[],$sampleItems=[], $sampleCrmId,$sample_comment=[], $sampleLogs=[];
+
+    function mount( Request $request) {
+        $id = $request->id;
+        if($id)
+        {
+            $this->showsampleDetails=true;
+            $this->openSample($id);
+
+        }
+
+    }
 
     public function render()
     {
-        $data['samplesList'] = Sample::with('userInfo')->orderBy('id','DESC')->paginate(20);
+        $data['samplesList'] = Sample::with('userInfo')->orderBy('id','DESC')->groupBy('crm_id')->paginate(20);
         //dd($data);
         return view('livewire.samples',$data);
     }
 
+    public function openSample($crms_id)
+    {
+        $this->showsampleDetails = true;
+        $this->sampleItems = Sample::with('samplelogs')->where('crm_id','=',$crms_id)->get();
+        $this->sampleInfo = Sample::with('userInfo')->with('teritoryInfo')->with('countryInfo')->where('crm_id','=',$crms_id)->first();
+        $this->dispatchBrowserEvent('showSampleDetailModal');
+    }
+
     public function updateSample($sampleId,$status)
     {
+        if($status==5)
+        {
+            $validatedData = $this->validate([
+                'sample_comment.'.$sampleId => 'required',
+            ]);
+        }
+        
         $uppdatData = Sample::find($sampleId)->update(['status'=>$status,'department'=>$status]);
         $sampleInsertLog = [
             'sample_order_id'=>$sampleId,
             'status'=>$status,
             'department'=>$status,
-            'updates'=>json_encode($uppdatData),
+            'command'=>isset($this->sample_comment[$sampleId])?$this->sample_comment[$sampleId]:'',
+            'updates'=>json_encode(['status'=>$status,'department'=>$status]),
+            'created_by'=>Session::get('user')->id
         ];
         SampleLogs::create($sampleInsertLog);
+
         $sampleOrderDtls = Sample::with('userInfo')->find($sampleId);
 
         $files = null;
         $mailData = [
             'name' => $sampleOrderDtls->userInfo['name'],
-            'body' => 'Your sample request is '.config('common.sample_status')[$status].', please find the Sample request details '.URL::to("/sample-details/".$sampleId),
+            'body' => 'Your sample request is '.config('common.sample_status')[$status].', please find the Sample request details '.URL::to("/sample-details/".$sampleOrderDtls->crm_id),
             'title' => 'Sample Status: '.config('common.sample_status')[$status],
             'email' => $sampleOrderDtls->userInfo['email'],
         ];
@@ -58,5 +89,8 @@ class Samples extends Component
                 }
             }            
         });
+
+        $this->sampleItems = Sample::where('crm_id','=',$sampleOrderDtls->crm_id)->get();
+        $this->sampleInfo = Sample::with('userInfo')->with('teritoryInfo')->with('countryInfo')->where('crm_id','=',$sampleOrderDtls->crm_id)->first();
     }
 }

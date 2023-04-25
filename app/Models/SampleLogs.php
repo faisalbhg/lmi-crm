@@ -14,6 +14,14 @@ class SampleLogs extends Model
         'updates',
         'status',
         'department',
+        'command',
         'created_by'
     ];
+
+    public function userInfo()
+    {
+        return $this->belongsTo(User::class,'created_by','id');
+    }
+
+    
 }

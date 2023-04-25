@@ -312,8 +312,11 @@
                                                 
                                                 <select class="form-control brandSelect" name="search_brand" id="search_brand" wire:model="search_brand" wire:change="ourBrandChangeEvent($event.target.value,'0')">
                                                     <option value="">-Select-</option>
-                                                    <?php $brandUniqArray=array(); ?>
+                                                    <option value="ROASTERY STN">ROASTERY STN</option>
+                                                    <?php $brandUniqArray=array(); 
+                                                    ?>
                                                     @foreach($brandsList as $brandsDetail)
+
                                                         <?php $brandnNew = explode("-",$brandsDetail['Description']); ?>
                                                         @if(!empty($brandnNew[1]))
                                                             @if(($brandnNew[1]!='') && !in_array($brandnNew[1], $brandUniqArray))
