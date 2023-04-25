@@ -525,7 +525,7 @@ class Crm extends Component
         $files=null;
         $mailData = [
             'name' => $userDetails->name,
-            'body' => 'New CRM is deligated to you, check the below link to view your CRM <br>'.URL::to("/crm-details/".$this->crmId),
+            'body' => 'New CRM is deligated to you, check the below link to view your CRM '.URL::to("/crm-details/".$this->crmId),
             'title' => 'CRM Inquiry Deligation',
             'email' => $userDetails->email,
         ];
@@ -546,7 +546,7 @@ class Crm extends Component
         $files=null;
         $mailData = [
             'name' => $userDetails->name,
-            'body' => 'New CRM is complaint deligated to you, check the below link to view your CRM <br>'.URL::to("/crm-details/".$this->crmId),
+            'body' => 'New CRM is complaint deligated to you, check the below link to view your CRM '.URL::to("/crm-details/".$this->crmId),
             'title' => 'CRM Complaints Deligation',
             'email' => $userDetails->email,
         ];
