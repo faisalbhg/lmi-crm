@@ -16,6 +16,7 @@
                 
             </div>
             <div class="modal-body">
+                @if($sampleInfo)
                 <div class="row">
                     <div class="col-md-7 mt-4">
                         <div class="card">
@@ -119,6 +120,9 @@
                         </div>
                     </div>
                 </div>
+                @else
+                <p class="text-center text-danger">No available</p>
+                @endif
             </div>
         </div>
     </div>

@@ -37,7 +37,13 @@ class Samples extends Component
 
     public function render()
     {
-        $data['samplesList'] = Sample::with('userInfo')->orderBy('id','DESC')->groupBy('crm_id')->paginate(20);
+        $sampleQuery = Sample::with('userInfo');
+        if(!in_array(Session::get('user')->usertype,config('common.sampleshowAll')))
+        {
+            $sampleQuery->where(['created_by'=>Session::get('user')->id]);
+        }
+        
+        $data['samplesList'] = $sampleQuery->orderBy('id','DESC')->groupBy('crm_id')->paginate(20);
         //dd($data);
         return view('livewire.samples',$data);
     }
@@ -45,8 +51,19 @@ class Samples extends Component
     public function openSample($crms_id)
     {
         $this->showsampleDetails = true;
-        $this->sampleItems = Sample::with('samplelogs')->where('crm_id','=',$crms_id)->get();
-        $this->sampleInfo = Sample::with('userInfo')->with('teritoryInfo')->with('countryInfo')->where('crm_id','=',$crms_id)->first();
+        $sampleQuery = Sample::with('userInfo')->with('teritoryInfo')->with('countryInfo')->with('samplelogs');
+        if(!in_array(Session::get('user')->usertype,config('common.sampleshowAll')))
+        {
+            $sampleQuery = $sampleQuery->where(['created_by'=>Session::get('user')->id]);
+        }
+        $sampleQuery = $sampleQuery->where('crm_id','=',$crms_id);
+
+        $this->sampleItems = $sampleQuery->get();
+        if(count($this->sampleItems))
+        {
+            $this->sampleInfo = $this->sampleItems[0];
+        }
+
         $this->dispatchBrowserEvent('showSampleDetailModal');
     }
 

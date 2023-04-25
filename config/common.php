@@ -53,7 +53,7 @@ return [
 	    "1","2","4","5","6","7"
 	],
 	'sampleshowAll' => [
-	    "1","2"
+	    "1","2","6","7"
 	],
 	'sample_status_action_userType' => [
 	    "0"=>"0",
