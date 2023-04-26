@@ -657,7 +657,7 @@ class Crm extends Component
 
         $crmUpdateData['crm_status'] = $this->upd_crm_status;
         $crmUpdateData['crm_action'] = $this->upd_crm_status;
-        $crmUpdateData['crm_updation_date_time'] = $this->crm_updation_date_time;
+        //$crmUpdateData['crm_updation_date_time'] = $this->crm_updation_date_time;
 
         $crmUpdateData['quote_estimated_value'] = $this->log_quote_estimated_value;
         $crmUpdateData['order_number'] = $this->order_number;
