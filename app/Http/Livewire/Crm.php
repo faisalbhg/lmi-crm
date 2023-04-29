@@ -524,12 +524,12 @@ class Crm extends Component
         }
         CrmLogs::create($inquiryLogsData);//Inserting inquiry Detaisl
         
-        
+        $this->showNewCrmModal=true;
         $this->dispatchBrowserEvent('hideNewCrmModal', [
             'type' => 'success',
             'message' => 'CRM Created Successfully..!',
         ]);
-        $this->showNewCrmModal=true;
+        
         
         
     }
