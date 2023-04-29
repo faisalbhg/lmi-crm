@@ -1001,7 +1001,7 @@ class Crm extends Component
         $crmUpdateData['crm_status'] = $this->crm_complaints_update_status;
         $crmUpdateData['crm_action'] = $this->crm_complaints_update_status;
         $crmUpdateData['crm_updation_date_time'] = $this->crm_complaints_updation_date_time;
-        Crms::find($crm_id)->update($crmUpdateData);
+        Crms::find($crmId)->update($crmUpdateData);
         
         $crmUpdateLogData['crm_id']=$crmId;
         $crmUpdateLogData['description'] = json_encode($crmUpdateData);
