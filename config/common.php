@@ -282,6 +282,8 @@ return [
 		"3"=>"Digital Screen",
 		"4"=>"Web Site",
 		"5"=>"Exhibition",
+		"6"=>"Phone",
+		"7"=>"Email",
 	],
 
 	'complaints_status_updation' => [
