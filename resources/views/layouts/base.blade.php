@@ -80,6 +80,7 @@
     @livewireScripts
 
     @stack('custom_script') 
+    
 </body>
 
 </html>

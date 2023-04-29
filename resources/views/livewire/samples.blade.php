@@ -69,7 +69,7 @@
                                         <p class="text-xs text-secondary mb-0">Now in: {{config('common.sample_department')[$samples->department]}}</p>
                                     </td>
                                     <td class="align-middle">
-                                        <button wire:click="openSample('{{$samples->crm_id}}')" class="btn bg-gradient-primary btn-sm">Open Action</button>
+                                        <button wire:click="openSample('{{$samples->crm_id}}')" class="btn bg-gradient-primary btn-sm">Open</button>
                                     </td>
                                 @empty
                                 <tr>

@@ -6,6 +6,8 @@ use Livewire\Component;
 
 use App\Models\Sample;
 use App\Models\SampleLogs;
+use App\Models\Crms;
+use App\Models\User;
 
 use Livewire\WithPagination;
 use Carbon\Carbon;
@@ -86,13 +88,38 @@ class Samples extends Component
             'created_by'=>Session::get('user')->id
         ];
         SampleLogs::create($sampleInsertLog);
+        
 
         $sampleOrderDtls = Sample::with('userInfo')->find($sampleId);
+        Crms::where(['id'=>$sampleOrderDtls->crm_id])->update(['sample_status'=>$status, 'sample_department'=>$status]);
+        $this->sampleItems = Sample::where('crm_id','=',$sampleOrderDtls->crm_id)->get();
+        $this->sampleInfo = Sample::with('userInfo')->with('teritoryInfo')->with('countryInfo')->where('crm_id','=',$sampleOrderDtls->crm_id)->first();
+
+        if($status==1){
+            $userDetails = User::where(['usertype'=>7])->first();
+            $files=null;
+            $mailData = [
+                'name' => $userDetails->name,
+                'body' => 'New Sample Preparation Request are created, check the below link to view the sample requests '.URL::to("/sample-details/".$sampleOrderDtls->crm_id),
+                'title' => 'CRM Samples Preparation Requests Approvals',
+                'email' => $userDetails->email,
+            ];
+            Mail::send('emails.crm_email', $mailData, function($message)use($mailData, $files) {
+                $message->subject($mailData['title']);
+                $message->to($mailData["email"]);
+                $message->bcc('faisal@buhaleeba.ae');
+                if($files){
+                    foreach ($files as $file){
+                        $message->attach($file);
+                    }
+                }            
+            });
+        }
 
         $files = null;
         $mailData = [
             'name' => $sampleOrderDtls->userInfo['name'],
-            'body' => 'Your sample request is '.config('common.sample_status')[$status].', please find the Sample request details '.URL::to("/sample-details/".$sampleOrderDtls->crm_id),
+            'body' => 'Your sample request is '.config('common.sample_status')[$status].', please find the Sample request details '.URL::to("/crm-details/".$sampleOrderDtls->crm_id),
             'title' => 'Sample Status: '.config('common.sample_status')[$status],
             'email' => $sampleOrderDtls->userInfo['email'],
         ];
@@ -107,7 +134,6 @@ class Samples extends Component
             }            
         });
 
-        $this->sampleItems = Sample::where('crm_id','=',$sampleOrderDtls->crm_id)->get();
-        $this->sampleInfo = Sample::with('userInfo')->with('teritoryInfo')->with('countryInfo')->where('crm_id','=',$sampleOrderDtls->crm_id)->first();
+        
     }
 }

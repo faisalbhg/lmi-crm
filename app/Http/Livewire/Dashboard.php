@@ -22,6 +22,7 @@ class Dashboard extends Component
 {
     public function render()
     {
+        
         $data['status'] = Crms::select(
             array(
                 \DB::raw('count(DISTINCT(customer_name)) customers'),

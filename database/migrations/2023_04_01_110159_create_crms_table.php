@@ -43,6 +43,9 @@ return new class extends Migration
             $table->timestamp('crm_remind_on')->nullable();
             $table->integer('crm_action')->nullable();
             $table->timestamp('crm_updation_date_time')->nullable();
+            $table->integer('sample_status')->nullable();
+            $table->integer('sample_department')->nullable();
+            $table->text('sample_feedback')->nullable();
             $table->integer('crm_quatation')->nullable();
             $table->integer('crm_followup')->nullable();
             $table->integer('crm_negosiation')->nullable();

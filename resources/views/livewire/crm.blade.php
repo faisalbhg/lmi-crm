@@ -287,7 +287,7 @@
     });
     
     window.addEventListener('hideNewCrmModal',event=>{
-        $('#newCrmModal.in').modal('hide');
+        $('#newCrmModal').modal('hide');
         
         Swal.fire({
             position: 'top-end',
@@ -298,7 +298,7 @@
         });
          
         setTimeout( function(){ 
-            //location.reload();
+            location.reload();
         }  , 2000 );
 
     });

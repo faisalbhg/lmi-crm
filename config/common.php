@@ -56,7 +56,7 @@ return [
 	    "1","2","6","7"
 	],
 	'sample_status_action_userType' => [
-	    "0"=>"0",
+	    "0"=>"4",
 	    "1"=>"7",
 	    "2"=>"4",
 	    "3"=>"4",
@@ -64,17 +64,17 @@ return [
 	    "5"=>"6",
    	],
    	'sample_status' => [
-	    '0'=>'Requested',
-	    '1'=>'Aproved',
-	    '2'=>'Dispatched',
+	    '0'=>'CRM Requested',
+	    '1'=>'Brand Aproved',
+	    '2'=>'Showroom Forwarded to Sales',
 	    '3'=>'Dispatched',
 	    '4'=>'Delivered',
 	    '5'=>'Rejected',
 	],
 	'sample_status_action' => [
-	    '0'=>'Requested',
-	    '1'=>'Aproved',
-	    '2'=>'Dispatched to Sales',
+	    '0'=>'CRM Requested',
+	    '1'=>'Sample ready & Forward',
+	    '2'=>'Forwarded to Sales',
 	    '3'=>'Dispatched to Customer',
 	    '4'=>'Delivered to Customer',
 	    '5'=>'Rejected',
@@ -97,6 +97,10 @@ return [
 	    '3'=>'Delivery',
 	    '4'=>'Customer',
 	    '5'=>'Sales',
+	],
+	'sampleUpdation'=>[
+		'6'=>'Customer okay to Proceed Deal',
+		'7'=>'Customer Not happy with sample',
 	],
 	'new_customer' => [
 		"0"=>"Existing",
@@ -167,7 +171,11 @@ return [
 		"2"=>"Quotation",
 		"3"=>"Follow Up",
 		"4"=>"Won",
-		"5"=>"Loss"
+		"5"=>"Loss",
+		"6"=>"Customer okay to Proceed Deal",
+		"7"=>"Customer Not happy with sample",
+		"8"=>"Complaints Solved",
+		"9"=>"Complaints Pending",
 	],
 
 	'crm_action' => [
@@ -176,7 +184,11 @@ return [
 		"2"=>"Updated to Quotation",
 		"3"=>"Created Followup",
 		"4"=>"Marked as CRM Won",
-		"5"=>"Marked as CRM Loss"
+		"5"=>"Marked as CRM Loss",
+		"6"=>"Customer okay to Proceed Deal",
+		"7"=>"Customer Not happy with sample",
+		"8"=>"Complaints Solved",
+		"9"=>"Complaints Pending",
 	],
 
 	'crm_process' => [
@@ -194,7 +206,11 @@ return [
 		"2"=>"bg-gradient-info",
 		"3"=>"bg-gradient-primary",
 		"4"=>"bg-gradient-success",
-		"5"=>"bg-gradient-danger"
+		"5"=>"bg-gradient-danger",
+		"6"=>"bg-gradient-dark",
+		"7"=>"bg-gradient-dark",
+		"8"=>"bg-gradient-secondary",
+		"9"=>"bg-gradient-secondary",
 	],
 
 
@@ -205,7 +221,11 @@ return [
 		"2"=>"text-info",
 		"3"=>"text-info",
 		"4"=>"text-success",
-		"5"=>"text-danger"
+		"5"=>"text-danger",
+		"6"=>"text-primary",
+		"7"=>"text-primary",
+		"8"=>"text-secondary",
+		"9"=>"text-secondary",
 	],
 
 
@@ -264,7 +284,10 @@ return [
 		"5"=>"Exhibition",
 	],
 
-
+	'complaints_status_updation' => [
+		"8"=>"Complaints Solved",
+		"9"=>"Complaints Pending",
+	]
 
 ];
 

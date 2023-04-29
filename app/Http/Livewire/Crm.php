@@ -64,6 +64,13 @@ class Crm extends Component
     public $upd_crm_remind_on,$reminderEmailSubject,$reminderEmailMessage;
     public $dontSendToCustomer, $other_email_address, $sendEailCC, $sendEailBCC, $sendEailSubject, $customerEmailMessage, $customerEmailInputFile;
 
+    public $crmSamplesDisplay = false;
+    public $crmsampleItems=[];
+    public $crm_sample_update_status=[], $crm_sample_updation_date_time=[], $crm_sample_action_message=[];
+
+    public $crmComplaintsDisplay=false;
+    public $crm_complaints_update_status, $crm_complaints_updation_date_time,$crm_complaints_action_message;
+
     function mount( Request $request) {
         $id = $request->id;
         if($id)
@@ -253,13 +260,13 @@ class Crm extends Component
     public function selectedSample($sample)
     {
         $sample = json_decode($sample);
-        $this->selectedSamples[] = $sample;
+        $this->selectedSamples[$sample->PartNum] = $sample;
         //$this->search_sample_item = $sample->PartDescription;
-        $this->selectedSampleItemCompany[] = isset($sample->Company)?$sample->Company:' ';
-        $this->selectedSampleItemPartNum[] = $sample->PartNum;
-        $this->selectedSampleItemSearchWord[] = $sample->SearchWord;
-        $this->selectedSampleItemPartDescription[] = $sample->PartDescription;
-        $this->selectedSampleItemProdCode[] = $sample->ProdCode;
+        $this->selectedSampleItemCompany[$sample->PartNum] = isset($sample->Company)?$sample->Company:' ';
+        $this->selectedSampleItemPartNum[$sample->PartNum] = $sample->PartNum;
+        $this->selectedSampleItemSearchWord[$sample->PartNum] = $sample->SearchWord;
+        $this->selectedSampleItemPartDescription[$sample->PartNum] = $sample->PartDescription;
+        $this->selectedSampleItemProdCode[$sample->PartNum] = $sample->ProdCode;
         $this->showSampleItemSelected = true;
 
     }
@@ -279,7 +286,8 @@ class Crm extends Component
 
     public function closeSampleSearchResult(){
         $this->showSampleItemResult = false; 
-        $this->search_sample_item = '';       
+        $this->search_sample_item = '';
+
     }
 
     public function searchCustomerName()
@@ -288,8 +296,9 @@ class Crm extends Component
             \DB::raw("(SELECT ' ') as Address2"),
             \DB::raw("(SELECT ' ') as Address3"),
             \DB::raw("(SELECT 'existing') as customer_in"),
+            'customer_type','business_category','marketing_channel',
         )
-        ->where('customer_name', 'like', "%{$this->customer_name}%" )->get();
+        ->where('customer_name', 'like', "%{$this->customer_name}%" )->groupBy('customer_name')->orderBy('id','DESC')->get();
         if(count($crmDbCustomers)>0)
         {
             foreach($crmDbCustomers as $keyDbc => $dbcust)
@@ -305,6 +314,9 @@ class Crm extends Component
                 $this->customersList[$keyDbc]['Address2'] = $dbcust->Address2;
                 $this->customersList[$keyDbc]['Address3'] = $dbcust->Address3;
                 $this->customersList[$keyDbc]['customer_in'] = $dbcust->customer_in;
+                $this->customersList[$keyDbc]['customer_type'] = $dbcust->customer_type;
+                $this->customersList[$keyDbc]['business_category'] = $dbcust->business_category;
+                $this->customersList[$keyDbc]['marketing_channel'] = $dbcust->marketing_channel;
             }
         }
         else
@@ -325,7 +337,6 @@ class Crm extends Component
     public function selectCustomer($customer)
     {
         $existingCstmr = json_decode($customer);
-
         $this->selectedCustomer = $customer;
         if(isset($existingCstmr->customer_in))
         {
@@ -333,7 +344,11 @@ class Crm extends Component
             $this->country_code = $existingCstmr->country_code_no;
             $this->territory = $existingCstmr->State;
             $this->phone_no = $existingCstmr->phone_no;
-        }else
+            $this->customer_type = $existingCstmr->customer_type;
+            $this->business_category = $existingCstmr->business_category;
+            $this->marketing_channel = $existingCstmr->marketing_channel;
+        }
+        else
         {
             $country = Countries::where('country_name', 'like', "%{$existingCstmr->Country}%")->first();
             $this->country = $country->id;
@@ -486,8 +501,7 @@ class Crm extends Component
                 $sampleData['created_by'] = Session::get('user')->id;
                 $this->saveSampleRequest($sampleData);
             }
-
-
+            $this->emailSampleRequest($this->crmId);
             
         }
         else if($this->related_to==9){
@@ -510,12 +524,17 @@ class Crm extends Component
         }
         CrmLogs::create($inquiryLogsData);//Inserting inquiry Detaisl
         
-        $this->showNewCrmModal=false;
+        
         $this->dispatchBrowserEvent('hideNewCrmModal', [
             'type' => 'success',
             'message' => 'CRM Created Successfully..!',
         ]);
+        $this->showNewCrmModal=true;
         
+        
+    }
+    public function closeCrmModel()
+    {
         
     }
 
@@ -575,6 +594,28 @@ class Crm extends Component
         SampleLogs::create($sampleInsertLog);
     }
 
+    public function emailSampleRequest($crmId)
+    {
+        $userDetails = User::where(['usertype'=>6])->first();
+        $files=null;
+        $mailData = [
+            'name' => $userDetails->name,
+            'body' => 'New Sample Request are created, check the below link to view the sample requests '.URL::to("/sample-details/".$crmId),
+            'title' => 'CRM Samples Requests Approvals',
+            'email' => $userDetails->email,
+        ];
+        Mail::send('emails.crm_email', $mailData, function($message)use($mailData, $files) {
+            $message->subject($mailData['title']);
+            $message->to($mailData["email"]);
+            $message->bcc('faisal@buhaleeba.ae');
+            if($files){
+                foreach ($files as $file){
+                    $message->attach($file);
+                }
+            }            
+        });
+    }
+
     public function crmView($id){
 
         $crmDetails = Crms::select('crms.*','users.name as userName','users.email as userEmail')
@@ -591,10 +632,31 @@ class Crm extends Component
         $this->showEmailUpdateMessage = false;
         $this->crmUpdateMessage = null;
         $this->upd_crm_status = null;
-
+        $this->crmSamplesDisplay = false;
+        $this->crmComplaintsDisplay = false;
+        
         $this->showCrmDetailsModal=true;
         $crmDetails = (object)$crmDetails;
         $this->crmTitle =  'CRM #'.$crmDetails->id;
+
+        if($crmDetails->related_to==4)
+        {
+            $this->crmSamplesDisplay = true;
+            $sampleQuery = Sample::with('userInfo')->with('teritoryInfo')->with('countryInfo')->with('samplelogs');
+            if(!in_array(Session::get('user')->usertype,config('common.sampleshowAll')))
+            {
+                $sampleQuery = $sampleQuery->where(['created_by'=>Session::get('user')->id]);
+            }
+            $sampleQuery = $sampleQuery->where('crm_id','=',$id);
+            $this->crmsampleItems = $sampleQuery->get();
+            //dd($this->sampleItems);
+        }
+
+        if($crmDetails->related_to==12)
+        {
+            $this->crmSamplesDisplay = false;
+            $this->crmComplaintsDisplay = true;
+        }
 
         $this->dtl_crm_id = $crmDetails->id;
         $this->dtl_related_to = $crmDetails->related_to;
@@ -657,7 +719,7 @@ class Crm extends Component
 
         $crmUpdateData['crm_status'] = $this->upd_crm_status;
         $crmUpdateData['crm_action'] = $this->upd_crm_status;
-        //$crmUpdateData['crm_updation_date_time'] = $this->crm_updation_date_time;
+        $crmUpdateData['crm_updation_date_time'] = $this->crm_updation_date_time;
 
         $crmUpdateData['quote_estimated_value'] = $this->log_quote_estimated_value;
         $crmUpdateData['order_number'] = $this->order_number;
@@ -801,20 +863,20 @@ class Crm extends Component
 
     public function exportExcelCRM()
     {
-        $crmQuery = Crms::select(
+        $crmQuery = CrmLogs::select(
             \DB::raw('(CASE 
-                WHEN crms.crm_status = 1 THEN "new" 
-                WHEN crms.crm_status = 2 THEN "quotation" 
-                WHEN crms.crm_status = 3 THEN "followup" 
-                WHEN crms.crm_status = 4 THEN "won" 
-                WHEN crms.crm_status = 5 THEN "loss" 
+                WHEN crm_logs.crm_status = 1 THEN "new" 
+                WHEN crm_logs.crm_status = 2 THEN "quotation" 
+                WHEN crm_logs.crm_status = 3 THEN "followup" 
+                WHEN crm_logs.crm_status = 4 THEN "won" 
+                WHEN crm_logs.crm_status = 5 THEN "loss" 
                 END) AS crm_status'),
             \DB::raw('(CASE 
-                WHEN crms.crm_action = 1 THEN "New CRM Created" 
-                WHEN crms.crm_action = 2 THEN "Updated to Quotation" 
-                WHEN crms.crm_action = 3 THEN "Created Followup" 
-                WHEN crms.crm_action = 4 THEN "Marked as CRM Won" 
-                WHEN crms.crm_action = 5 THEN "Marked as CRM Loss" 
+                WHEN crm_logs.crm_action = 1 THEN "New CRM Created" 
+                WHEN crm_logs.crm_action = 2 THEN "Updated to Quotation" 
+                WHEN crm_logs.crm_action = 3 THEN "Created Followup" 
+                WHEN crm_logs.crm_action = 4 THEN "Marked as CRM Won" 
+                WHEN crm_logs.crm_action = 5 THEN "Marked as CRM Loss" 
                 END) AS crm_action'),
             \DB::raw('(CASE 
                 WHEN crms.newCustomer = 0 THEN "Existing Customer" 
@@ -867,7 +929,8 @@ class Crm extends Component
                 WHEN crms.related_to = 12 THEN "Complaint"
                 WHEN crms.related_to = 13 THEN "Cold Calling"
                 END) AS related_to'),
-            'crms.crm_start_date_time','crms.crm_end_date_time','crms.crm_followup_date_time','crms.our_brand','crms.competitor_brand','crms.crm_description','users.name as created_by','crms.created_at','crms.updated_at')
+            'crms.crm_start_date_time','crms.crm_end_date_time','crms.crm_followup_date_time','crms.our_brand','crms.competitor_brand','crms.crm_description','crm_logs.crm_status','crm_logs.crm_action','crm_logs.action_message','crm_logs.crm_updation_date_time','users.name as created_by','crms.created_at','crms.updated_at')
+        ->leftjoin('crms','crms.id','=','crm_logs.crm_id')
         ->leftjoin('users','users.id','=','crms.created_by')
         ->leftjoin('territories','territories.id','=','crms.teritory')
         ->join('countries','countries.id','=','crms.country');
@@ -887,10 +950,75 @@ class Crm extends Component
         }
 
         if(!empty($this->filter_from_date) && !empty($this->filter_to_date)){
-            $crmQuery = $crmQuery->where('crms.updated_at','>=', $this->filter_from_date)->where('crms.updated_at','<=',$this->filter_to_date);
+            $crmQuery = $crmQuery->where('crm_logs.crm_updation_date_time','>=', $this->filter_from_date)->where('crm_logs.crm_updation_date_time','<=',$this->filter_to_date);
         }
-        $crmQuery = $crmQuery->get();
+        $crmQuery = $crmQuery->groupBy('crm_logs.id')->get();
         //dd($crmQuery);
         return Excel::download(new CrmExport($crmQuery), 'crms.xlsx');
+    }
+
+    public function crmUpdateSample($sample)
+    {
+        $sampleId = $sample['id'];
+        $crm_id = $sample['crm_id'];
+        $validatedData = $this->validate([
+            'crm_sample_update_status.'.$sampleId => 'required',
+            'crm_sample_updation_date_time.'.$sampleId => 'required',
+            'crm_sample_action_message.'.$sampleId => 'required',
+        ]);
+
+        $crmUpdateData['crm_status'] = $this->crm_sample_update_status[$sampleId];
+        $crmUpdateData['crm_action'] = $this->crm_sample_update_status[$sampleId];
+        $crmUpdateData['crm_updation_date_time'] = $this->crm_sample_updation_date_time[$sampleId];
+        Crms::find($crm_id)->update($crmUpdateData);
+        
+        $crmUpdateLogData['crm_id']=$crm_id;
+        $crmUpdateLogData['description'] = json_encode($crmUpdateData);
+        $crmUpdateLogData['action_message'] = $this->crm_sample_action_message[$sampleId];
+        $crmUpdateLogData['crm_status'] = $this->crm_sample_update_status[$sampleId];
+        $crmUpdateLogData['crm_action'] = $this->crm_sample_update_status[$sampleId];
+        $crmUpdateLogData['crm_updation_date_time'] = $this->crm_sample_updation_date_time[$sampleId];
+        CrmLogs::create($crmUpdateLogData);
+
+        $this->dtl_crm_status=$this->crm_sample_update_status[$sampleId];
+        $this->crm_updation_date_time=null;
+        $this->log_quote_estimated_value=null;
+        $this->order_number=null;
+        $this->action_message=null;
+        $this->action_message=null;
+        $this->dtl_crmLogs = CrmLogs::where(['crm_id'=>$crm_id,'crm_reminder'=>Null])->orderBy('id','DESC')->get();
+        $this->showcrmUpdateMessage = true;
+        $this->crmUpdateMessage = 'CRM Sample Status Updated Successfully..!';
+    }
+
+    public function crmUpdateComplaints($crmId){
+        $validatedData = $this->validate([
+            'crm_complaints_update_status' => 'required',
+            'crm_complaints_updation_date_time' => 'required',
+            'crm_complaints_action_message' => 'required',
+        ]);
+        
+        $crmUpdateData['crm_status'] = $this->crm_complaints_update_status;
+        $crmUpdateData['crm_action'] = $this->crm_complaints_update_status;
+        $crmUpdateData['crm_updation_date_time'] = $this->crm_complaints_updation_date_time;
+        Crms::find($crm_id)->update($crmUpdateData);
+        
+        $crmUpdateLogData['crm_id']=$crmId;
+        $crmUpdateLogData['description'] = json_encode($crmUpdateData);
+        $crmUpdateLogData['action_message'] = $this->crm_complaints_action_message;
+        $crmUpdateLogData['crm_status'] = $this->crm_complaints_update_status;
+        $crmUpdateLogData['crm_action'] = $this->crm_complaints_update_status;
+        $crmUpdateLogData['crm_updation_date_time'] = $this->crm_complaints_updation_date_time;
+        CrmLogs::create($crmUpdateLogData);
+
+        $this->dtl_crm_status=$this->crm_complaints_update_status;
+        $this->crm_updation_date_time=null;
+        $this->log_quote_estimated_value=null;
+        $this->order_number=null;
+        $this->action_message=null;
+        $this->action_message=null;
+        $this->dtl_crmLogs = CrmLogs::where(['crm_id'=>$crmId,'crm_reminder'=>Null])->orderBy('id','DESC')->get();
+        $this->showcrmUpdateMessage = true;
+        $this->crmUpdateMessage = 'CRM Sample Status Updated Successfully..!';
     }
 }
