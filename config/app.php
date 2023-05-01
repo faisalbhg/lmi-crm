@@ -58,9 +58,9 @@ return [
     |
     */
 
-    'url' => env('APP_URL', 'http://172.23.25.95/lmi-crm/public/'),
+    'url' => env('APP_URL', 'http://localhost/lmi-crm/public/'),
 
-    'asset_url' => env('ASSET_URL', 'http://172.23.25.95/lmi-crm/public/assets/'),
+    'asset_url' => env('ASSET_URL', 'http://localhost/lmi-crm/public/assets/'),
 
     /*
     |--------------------------------------------------------------------------

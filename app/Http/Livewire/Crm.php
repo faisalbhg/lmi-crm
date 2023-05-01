@@ -37,7 +37,7 @@ class Crm extends Component
     
     public $crmTitle;
 
-    public $crm_search_crm_id, $crm_search_related_to, $crm_search_delegated_to, $crm_search_status, $crm_search_new_customer, $filter_from_date, $filter_to_date, $filter_search, $crm_search_created_by;
+    public $crm_search_crm_id, $crm_search_related_to, $crm_search_delegated_to, $crm_search_status, $crm_search_new_customer, $filter_search, $crm_search_created_by, $filter_from_date, $filter_to_date;
 
     public $showNewCrmModal=false, $showCrmDetailsModal = false, $showCrmUpdateModel = false, $showSampleItemSelected=false;
 
