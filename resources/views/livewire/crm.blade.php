@@ -52,12 +52,7 @@
                 <div class="card-body px-2 pt-0 pb-2">
                     <div class="row">
                         <div class="collapse navbar-collapse mt-sm-0 mt-2 me-md-0 me-sm-3 d-flex justify-content-end float-end" >
-                            <div class="col-md-3">
-                                <div class="input-group">
-                                    <span class="input-group-text text-body"><i class="fas fa-search" aria-hidden="true"></i></span>
-                                    <input type="text" class="form-control" wire:model="filter_search" placeholder="Type customer here...">
-                                </div>
-                            </div>
+                            
                             <div class="col-md-3">
                                 <div class="input-group">
                                     <span class="input-group-text text-body"><i class="fas fa-calendar-alt" aria-hidden="true"></i></span>
@@ -77,7 +72,71 @@
                         <thead>
                             <tr>
                                 <th></th>
-                                <th class="text-uppercase text-left text-sm font-weight-bolder">No.</th>
+                                <th class="text-uppercase text-left text-sm font-weight-bolder">
+                                    <input type="text" class="form-control" style="margin-left: 2px !important;padding: 2px 5px !important;" wire:model="crm_search_crm_id" placeholder="ID.." >
+                                </th>
+                                <th class="text-uppercase text-left text-sm font-weight-bolder">
+                                    <select class="form-control" style="margin-left: 2px !important;padding: 2px 5px !important;" wire:model="crm_search_related_to" >
+                                        <option value="">-Select-</option>
+                                        @foreach(config('common.crmRelatedTo') as $crmRelatedToKey => $crmRelatedToValue)
+                                        <option value="{{$crmRelatedToKey}}">{{$crmRelatedToValue}}</option>
+                                        @endforeach
+                                    </select>
+                                </th>
+                                <th class="text-uppercase text-left text-sm font-weight-bolder">
+                                    <input type="text" class="form-control" style="margin-left: 2px !important;padding: 2px 5px !important;" wire:model="crm_search_delegated_to" placeholder="Name" >
+                                </th>
+                                <th class="text-uppercase text-left text-sm font-weight-bolder">
+                                    <select class="form-control" style="margin-left: 2px !important;padding: 2px 5px !important;" wire:model="crm_search_status" >
+                                        <option value="">-Select-</option>
+                                        @foreach(config('common.crm_status') as $crmStatusKey => $crmStatusValue)
+                                        @if($crmStatusKey)
+                                        <option value="{{$crmStatusKey}}">{{$crmStatusValue}}</option>
+                                        @endif
+                                        @endforeach
+                                    </select>
+                                </th>
+                                <th class="text-uppercase text-left text-sm font-weight-bolder"></th>
+                                <th class="text-uppercase text-left text-sm font-weight-bolder">
+                                    <select class="form-control" style="margin-left: 2px !important;padding: 2px 5px !important;" wire:model="crm_search_new_customer" >
+                                        <option value="">-Select-</option>
+                                        @foreach(config('common.new_customer') as $crmNCusKey => $crmNCusValue)
+                                        <option value="{{$crmNCusKey}}">{{$crmNCusValue}}</option>
+                                        @endforeach
+                                    </select>
+                                </th>
+                                <th class="text-uppercase text-left text-sm font-weight-bolder">
+                                    <input type="text" class="form-control" style="margin-left: 2px !important;padding: 2px 5px !important;" wire:model="filter_search" placeholder="Customer">
+                                </th>
+                                <th class="text-uppercase text-left text-sm font-weight-bolder"></th>
+                                <th class="text-uppercase text-left text-sm font-weight-bolder"></th>
+                                <th class="text-uppercase text-left text-sm font-weight-bolder"></th>
+                                <th class="text-uppercase text-left text-sm font-weight-bolder"></th>
+                                <th class="text-uppercase text-left text-sm font-weight-bolder"></th>
+                                <th class="text-uppercase text-left text-sm font-weight-bolder"></th>
+                                <th class="text-uppercase text-left text-sm font-weight-bolder"></th>
+                                <th class="text-uppercase text-left text-sm font-weight-bolder"></th>
+                                <th class="text-uppercase text-left text-sm font-weight-bolder"></th>
+                                
+                                <th class="text-uppercase text-left text-sm font-weight-bolder"></th>
+                                <th class="text-uppercase text-left text-sm font-weight-bolder"></th>
+                                <th class="text-uppercase text-left text-sm font-weight-bolder"></th>
+                                <th class="text-uppercase text-left text-sm font-weight-bolder"></th>
+                                <th class="text-uppercase text-left text-sm font-weight-bolder"></th>
+                                <th class="text-uppercase text-center text-sm font-weight-bolder"></th>
+                                @if(Session::get('user')->isadmin)
+                                <th class="text-uppercase text-left text-sm font-weight-bolder">
+                                    <input type="text" class="form-control" style="margin-left: 2px !important;padding: 2px 5px !important;" wire:model="crm_search_created_by" placeholder="Name...">
+                                </th>
+                                @endif
+                                <th class="text-uppercase text-left text-sm font-weight-bolder"></th>
+                                <th class="text-uppercase text-left text-sm font-weight-bolder"></th>
+                            </tr>
+                            <tr>
+                                <th></th>
+                                <th class="text-uppercase text-left text-sm font-weight-bolder">CRM Id.</th>
+                                <th class="text-uppercase text-left text-sm font-weight-bolder">CRM Related</th>
+                                <th class="text-uppercase text-left text-sm font-weight-bolder">Delegated To</th>
                                 <th class="text-uppercase text-left text-sm font-weight-bolder">Status</th>
                                 <th class="text-uppercase text-left text-sm font-weight-bolder">Last Action</th>
                                 <th class="text-uppercase text-left text-sm font-weight-bolder">New/Existing Customer</th>
@@ -91,8 +150,7 @@
                                 <th class="text-uppercase text-left text-sm font-weight-bolder">Source</th>
                                 <th class="text-uppercase text-left text-sm font-weight-bolder">Business Category</th>
                                 <th class="text-uppercase text-left text-sm font-weight-bolder">Marketing Channel</th>
-                                <th class="text-uppercase text-left text-sm font-weight-bolder">CRM Related</th>
-                                <th class="text-uppercase text-left text-sm font-weight-bolder">Delegated To</th>
+                                
                                 <th class="text-uppercase text-left text-sm font-weight-bolder">CRM Start Date & time</th>
                                 <th class="text-uppercase text-left text-sm font-weight-bolder">CRM End Date & time</th>
                                 <th class="text-uppercase text-left text-sm font-weight-bolder">CRM Followup Date & time</th>
@@ -115,8 +173,18 @@
                             <td class="text-center text-dark">
                                 <p class="text-sm font-weight-bold mb-0">
                                 <span class="text-dark">
-                                    <?php printf("%01d", $key+1); ?>
+                                    {{$crmData->id}}
                                 </span>
+                                </p>
+                            </td>
+                            <td class="text-center text-dark">
+                                <p class="text-xs font-weight-bold mb-0"><span class="text-dark">
+                                    {{config('common.crmRelatedTo')[$crmData->related_to]}}
+                                </span>
+                                </p>
+                            </td>
+                            <td class="text-center text-dark">
+                                <p class="text-xs font-weight-bold mb-0"><span class="text-dark">{{$crmData->userInfo['name']}}</span>
                                 </p>
                             </td>
                             <td class="text-center text-xs text-dark">
@@ -183,16 +251,7 @@
                                 @endif
                                 </p>
                             </td>
-                            <td class="text-center text-dark">
-                                <p class="text-xs font-weight-bold mb-0"><span class="text-dark">
-                                    {{config('common.crmRelatedTo')[$crmData->related_to]}}
-                                </span>
-                                </p>
-                            </td>
-                            <td class="text-center text-dark">
-                                <p class="text-xs font-weight-bold mb-0"><span class="text-dark">{{$crmData->userName}}</span>
-                                </p>
-                            </td>
+                            
                             
                             <td class="text-center text-dark">
                                 <p class="text-xs font-weight-bold mb-0"><span class="text-dark">
@@ -242,7 +301,7 @@
                             
                             @if(Session::get('user')->isadmin)
                             <td class="text-center text-dark">
-                                <button type="button" class="text-xs btn btn-sm bg-gradient-default btn-outline-dark">{{$crmData->userInfo['name']}}</button>
+                                <button type="button" class="text-xs btn btn-sm bg-gradient-default btn-outline-dark">{{$crmData->userName}}</button>
                             </td>
                             @endif
                             <td>

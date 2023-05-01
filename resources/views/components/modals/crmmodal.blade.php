@@ -69,13 +69,14 @@
                                                     </div>
                                                     <div class="card-body text-lg-left text-left pt-0">
                                                         @foreach($searchSampleItems as $searchItem)
-                                                        <div class="justify-content-lg-start justify-content-left p-2" wire:click="selectedSample('{{json_encode($searchItem,true)}}')">
+                                                        @if($searchItem['PartNum']!=Null)
+                                                        <div class="justify-content-lg-start justify-content-left p-2" wire:click="selectedSample({{json_encode($searchItem,true)}})">
                                                             <div class="icon icon-shape icon-xs bg-gradient-secondary shadow text-center" >
                                                                 <i class="fas fa-minus" aria-hidden="true"></i>
                                                             </div>
-                                                            <span class="ps-3">{{$searchItem['PartDescription']}}</span><hr class="m-0">
+                                                            <span class="ps-3"> {{$searchItem['PartDescription']}}</span><hr class="m-0">
                                                         </div>
-                                                        
+                                                        @endif
                                                         @endforeach
                                                     </div>
                                                 </div>                                         

@@ -37,7 +37,7 @@ class Crm extends Component
     
     public $crmTitle;
 
-    public $filter_from_date, $filter_to_date, $filter_search;
+    public $crm_search_crm_id, $crm_search_related_to, $crm_search_delegated_to, $crm_search_status, $crm_search_new_customer, $filter_from_date, $filter_to_date, $filter_search, $crm_search_created_by;
 
     public $showNewCrmModal=false, $showCrmDetailsModal = false, $showCrmUpdateModel = false, $showSampleItemSelected=false;
 
@@ -107,6 +107,39 @@ class Crm extends Component
 
             $crmQuery = $crmQuery->where('crms.customer_name', 'like', "%{$this->filter_search}%");
         }
+        if(!empty($this->crm_search_crm_id)){
+
+            $crmQuery = $crmQuery->where('crms.id', 'like', "%{$this->crm_search_crm_id}%");
+        }
+
+        if(!empty($this->crm_search_related_to)){
+
+            $crmQuery = $crmQuery->where('crms.related_to', '=', $this->crm_search_related_to);
+        }
+        if(!empty($this->crm_search_delegated_to))
+        {
+            $crm_search_delegated_to = $this->crm_search_delegated_to;
+            $crmQuery = $crmQuery->whereHas('userInfo', function ($q) use ($crm_search_delegated_to)
+                {
+                    $q->where('name', 'like', "%{$this->crm_search_delegated_to}%");
+                }
+            );
+        }
+        if(!empty($this->crm_search_status))
+        {
+            $crmQuery = $crmQuery->where('crms.crm_status', '=', $this->crm_search_status);
+        }
+        if(!empty($this->crm_search_new_customer))
+        {
+            $crmQuery = $crmQuery->where('crms.newCustomer', '=', $this->crm_search_new_customer);
+        }
+        if(!empty($this->crm_search_created_by)){
+
+            $crmQuery = $crmQuery->where('users.name', 'like', "%{$this->crm_search_created_by}%");
+        }
+        
+
+        
 
         if(!empty($this->filter_from_date) && !empty($this->filter_to_date)){
             $crmQuery = $crmQuery->where('crms.crm_start_date_time','>=', $this->filter_from_date)->where('crms.crm_end_date_time','<=',$this->filter_to_date);
@@ -259,7 +292,8 @@ class Crm extends Component
 
     public function selectedSample($sample)
     {
-        $sample = json_decode($sample);
+        //dd($sample);
+        $sample = (object)($sample);
         $this->selectedSamples[$sample->PartNum] = $sample;
         //$this->search_sample_item = $sample->PartDescription;
         $this->selectedSampleItemCompany[$sample->PartNum] = isset($sample->Company)?$sample->Company:' ';
@@ -652,7 +686,7 @@ class Crm extends Component
             //dd($this->sampleItems);
         }
 
-        if($crmDetails->related_to==12)
+        if($crmDetails->related_to==12 || $crmDetails->related_to==9)
         {
             $this->crmSamplesDisplay = false;
             $this->crmComplaintsDisplay = true;
@@ -947,6 +981,36 @@ class Crm extends Component
         if(!empty($this->filter_search)){
 
             $crmQuery = $crmQuery->where('crms.customer_name', 'like', "%{$this->filter_search}%");
+        }
+        if(!empty($this->crm_search_crm_id)){
+
+            $crmQuery = $crmQuery->where('crms.id', 'like', "%{$this->crm_search_crm_id}%");
+        }
+
+        if(!empty($this->crm_search_related_to)){
+
+            $crmQuery = $crmQuery->where('crms.related_to', '=', $this->crm_search_related_to);
+        }
+        if(!empty($this->crm_search_delegated_to))
+        {
+            $crm_search_delegated_to = $this->crm_search_delegated_to;
+            $crmQuery = $crmQuery->whereHas('userInfo', function ($q) use ($crm_search_delegated_to)
+                {
+                    $q->where('name', 'like', "%{$this->crm_search_delegated_to}%");
+                }
+            );
+        }
+        if(!empty($this->crm_search_status))
+        {
+            $crmQuery = $crmQuery->where('crms.crm_status', '=', $this->crm_search_status);
+        }
+        if(!empty($this->crm_search_new_customer))
+        {
+            $crmQuery = $crmQuery->where('crms.newCustomer', '=', $this->crm_search_new_customer);
+        }
+        if(!empty($this->crm_search_created_by)){
+
+            $crmQuery = $crmQuery->where('users.name', 'like', "%{$this->crm_search_created_by}%");
         }
 
         if(!empty($this->filter_from_date) && !empty($this->filter_to_date)){
