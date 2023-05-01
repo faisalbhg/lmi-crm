@@ -256,7 +256,8 @@ return [
 		"1"=>"Walk In",
 		"2"=>"Email",
 		"3"=>"Telphone",
-		"4"=>"Social Media"
+		"4"=>"Social Media",
+		"5"=>"Sales Person"
 	],
 
 	'business_category' => [
