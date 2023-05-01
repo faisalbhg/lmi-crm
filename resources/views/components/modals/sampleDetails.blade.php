@@ -39,6 +39,7 @@
                                             </div>
                                             <div class="ms-auto">
                                                 @if($sample->status==0)
+                                                
                                                     @if(Session::get('user')->usertype == config('common.sample_status_action_userType')[$sample->status])
                                                     
                                                     <div class="form-group">
