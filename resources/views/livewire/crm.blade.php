@@ -29,6 +29,7 @@
 
 @endpush
 <main class="main-content position-relative h-100 border-radius-lg">
+
 <div class="container-fluid">
     <div class="row">
         <div class="col-12">
