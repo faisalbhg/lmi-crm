@@ -557,6 +557,8 @@ class Crm extends Component
             $inquiryLogsData['quote_estimated_value'] = $this->quote_estimated_value;
         }
         CrmLogs::create($inquiryLogsData);//Inserting inquiry Detaisl
+
+        return redirect()->to('/crm');
         
         $this->showNewCrmModal=true;
         $this->dispatchBrowserEvent('hideNewCrmModal', [
