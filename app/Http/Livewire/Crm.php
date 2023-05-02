@@ -93,15 +93,17 @@ class Crm extends Component
         ->with('teritoryInfo')
         ->with('countryInfo')
         ->with('userInfo');
+        $crmQuery->where(['is_deleted' => 0]);
 
-        if(!Session::get('user')->isadmin)
+        if(Session::get('user')->usertype==5)
         {
-            $crmQuery = $crmQuery->where(['assigned_id'=>Session::get('user')->id,'is_deleted' => 0]);
+            $crmQuery = $crmQuery->whereIn('related_to',['9','12']);
         }
-        else
+        else if(!Session::get('user')->isadmin)
         {
-            $crmQuery = $crmQuery->where(['is_deleted' => 0]);
+            $crmQuery = $crmQuery->where(['assigned_id'=>Session::get('user')->id]);
         }
+        
 
         if(!empty($this->filter_search)){
 
