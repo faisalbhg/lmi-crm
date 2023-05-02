@@ -630,24 +630,26 @@ class Crm extends Component
 
     public function emailSampleRequest($crmId)
     {
-        $userDetails = User::where(['usertype'=>6])->first();
+        $userDetails = User::where(['usertype'=>6])->get();
         $files=null;
-        $mailData = [
-            'name' => $userDetails->name,
-            'body' => 'New Sample Request are created, check the below link to view the sample requests '.URL::to("/sample-details/".$crmId),
-            'title' => 'CRM Samples Requests Approvals',
-            'email' => $userDetails->email,
-        ];
-        Mail::send('emails.crm_email', $mailData, function($message)use($mailData, $files) {
-            $message->subject($mailData['title']);
-            $message->to($mailData["email"]);
-            $message->bcc('faisal@buhaleeba.ae');
-            if($files){
-                foreach ($files as $file){
-                    $message->attach($file);
-                }
-            }            
-        });
+        foreach($userDetails as $sendEMail){
+            $mailData = [
+                'name' => $sendEMail->name,
+                'body' => 'New Sample Request are created, check the below link to view the sample requests '.URL::to("/sample-details/".$crmId),
+                'title' => 'CRM Samples Requests Approvals',
+                'email' => $sendEMail->email,
+            ];
+            Mail::send('emails.crm_email', $mailData, function($message)use($mailData, $files) {
+                $message->subject($mailData['title']);
+                $message->to($mailData["email"]);
+                $message->bcc('faisal@buhaleeba.ae');
+                if($files){
+                    foreach ($files as $file){
+                        $message->attach($file);
+                    }
+                }            
+            });
+        }
     }
 
     public function crmView($id){
