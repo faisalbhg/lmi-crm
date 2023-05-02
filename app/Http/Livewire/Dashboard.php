@@ -23,7 +23,7 @@ class Dashboard extends Component
     public function render()
     {
         
-        $data['status'] = Crms::select(
+        $crmDashCounts = Crms::select(
             array(
                 \DB::raw('count(DISTINCT(customer_name)) customers'),
                 \DB::raw('count(case when crm_status = 1 then crm_status end) new'),
@@ -33,10 +33,26 @@ class Dashboard extends Component
                 \DB::raw('count(case when crm_status = 5 then crm_status end) loss'),
                 \DB::raw('count(case when crm_status in (1,2,3,4,5) then crm_status end) total'),
             )
-        )->where(['is_deleted' => 0])->first();
+        );
+        $crmDashCounts = $crmDashCounts->where(['is_deleted' => 0]);
+
+        if(Session::get('user')->usertype==5)
+        {
+            $crmDashCounts = $crmDashCounts->whereIn('related_to',['9','12']);
+        }
+        else if(!Session::get('user')->isadmin)
+        {
+            $crmDashCounts = $crmDashCounts->where(['assigned_id'=>Session::get('user')->id]);
+        }
+
+        $crmDashCounts = $crmDashCounts->first();
+
+        $data['status'] = $crmDashCounts;
 
         $crmLogs = CrmLogs::select('crm_logs.*','crms.related_to','crms.crm_description','crms.customer_name as company','crms.company_address')
         ->leftjoin('crms','crms.id','=','crm_logs.crm_id');
+
+
         if(!Session::get('user')->isadmin)
         {
             $crmLogs = $crmLogs->where(['crms.assigned_id'=>Session::get('user')->id,'crms.is_deleted' => 0]);

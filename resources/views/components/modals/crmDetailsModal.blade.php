@@ -351,9 +351,15 @@
                                                         <label for="selectCrmComplaintsUpdateStatus">Complaints Status Updation</label>
                                                         <select class="form-control chosen-select" wire:model="crm_complaints_update_status" name="crm_complaints_update_status" id="selectCrmComplaintsUpdateStatus" >
                                                             <option value="">-Select-</option>
-                                                            @foreach(config('common.complaints_status_updation') as $spKey => $sampleUpdation)
-                                                            <option value="{{$spKey}}">{{$sampleUpdation}}</option>
+                                                            @if($dtl_related_to==12)
+                                                            @foreach(config('common.complaints_status_updation') as $cuKey => $complaintsUpdation)
+                                                            <option value="{{$cuKey}}">{{$complaintsUpdation}}</option>
                                                             @endforeach
+                                                            @elseif($dtl_related_to==9)
+                                                            @foreach(config('common.inquiry_status_updation') as $iuKey => $inquiryUpdation)
+                                                            <option value="{{$iuKey}}">{{$inquiryUpdation}}</option>
+                                                            @endforeach
+                                                            @endif
                                                         </select>
                                                         @error('crm_complaints_update_status') <span class="mb-4 text-danger"> {{ $message }} </span> @enderror
                                                     </div>
@@ -560,13 +566,13 @@
                         <ul class="list-group">
                             <li class="list-group-item border-0 p-2 mb-2 mt-3 bg-gray-100 border-radius-lg">
                                 <div class="row p-0 m-0">
+                                    
                                     <h6 class="mb-3 text-sm">CRM Reminder</h6>
                                     <div class="col-md-6">
                                         <div class="form-check form-switch ps-0">
                                             <div class="form-check form-switch ps-0" >
                                                 <?php
-                                                //echo $crmData->crm_remind_on;exit;
-                                                if($crmData->crm_remind_on!=null){
+                                                if(@$crmData->crm_remind_on!=null){
                                                     $crm_reminder_date = date('Y-m-d',strtotime($crmData->crm_remind_on));
                                                     $crm_reminder_time = date('H:i',strtotime($crmData->crm_remind_on));
                                                 }
@@ -583,14 +589,15 @@
                                                 @error('upd_crm_remind_on') <span class="mb-4 text-danger">{{ $message }}</span> @enderror
                                             </div>
                                             <div class="form-group">
-                                                <input type="hidden"  name="reminderEmailSubject" wire:model="reminderEmailSubject" value="Reminder of #<?php printf("%01d", $crmData->id); ?> <?=substr($crmData->crm_description,0,40);?>">
+                                                <input type="hidden"  name="reminderEmailSubject" wire:model="reminderEmailSubject" value="Reminder of #<?php printf("%01d", $dtl_crm_id); ?> <?=substr($dtl_crm_description,0,40);?>">
                                                 <label for="reminderEmailMessageTextarea">Message of Reminder</label>
-                                                <textarea class="form-control" id="reminderEmailMessageTextarea" name="reminderEmailMessage" wire:model="reminderEmailMessage" rows="3">Reminder of #<?php printf("%01d", $crmData->id); ?> <?=substr($crmData->crm_description,0,40);?></textarea>
+                                                <textarea class="form-control" id="reminderEmailMessageTextarea" name="reminderEmailMessage" wire:model="reminderEmailMessage" rows="3">Reminder of #<?php printf("%01d", $dtl_crm_id); ?> <?=substr($dtl_crm_description,0,40);?></textarea>
                                             </div>
                                         </div>
                                         
                                         <div><button type="button" class="btn btn-sm bg-gradient-info"  wire:click="saveCrmReminder()" >Save Reminder</button></div>
                                     </div>
+                                    
                                     @if(count($dtl_crmReminderLogs)>0)
                                     <div class="col-md-6">
                                         <h6 class="mb-0">Reminders</h6>
@@ -650,7 +657,7 @@
                                         </div>
                                         <div class="form-group" >
                                             <label for="sendEailSubjectInput">Subject</label>
-                                            <input type="text" class="form-control" id="sendEailSubjectInput" name="sendEailSubject" wire:model="sendEailSubject" placeholder="Email Subject" value="#<?php printf("%01d", $crmData->id); ?> <?=substr($crmData->crm_description,0,40);?>">
+                                            <input type="text" class="form-control" id="sendEailSubjectInput" name="sendEailSubject" wire:model="sendEailSubject" placeholder="Email Subject" value="#<?php printf("%01d", $dtl_crm_id); ?> <?=substr($dtl_crm_description,0,40);?>">
                                         </div>
                                         <div class="form-group">
                                             <label for="customerEmailMessageTextarea">Message</label>
