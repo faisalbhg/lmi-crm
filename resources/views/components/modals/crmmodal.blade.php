@@ -93,6 +93,7 @@
                                                     <option value="{{$dtVal->id}}">{{$dtVal->name}}</option>
                                                     @endforeach
                                                 </select>
+                                                @error('deligated_to') <span class="mb-4 text-danger">{{ $message }}</span> @enderror
                                             </div>
                                         </div>
                                         @endif

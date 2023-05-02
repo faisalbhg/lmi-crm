@@ -408,7 +408,7 @@ class Crm extends Component
 
     public function saveCRM()
     {
-        $validatedData = $this->validate([
+        $validateCrmSave = [
             'related_to' => 'required',
             'crm_start_date_time' => 'required',
             'crm_end_date_time' => 'required',
@@ -424,7 +424,33 @@ class Crm extends Component
             'marketing_channel' => 'required',
             'brands_list' => 'required',
             'crm_description' => 'required',
-        ]);
+        ];
+        if($this->related_to==2)
+        {
+            $newCrmData['quote_estimated_value'] = $this->quote_estimated_value;
+            $validateCrmSave['quote_estimated_value']= 'required';
+        }
+        else if($this->related_to==7)
+        {
+            $newCrmData['crm_followup_date_time'] = $this->crm_followup_date_time;
+            $validateCrmSave['crm_followup_date_time']= 'required';
+        }
+        else if($this->related_to==9)
+        {
+            $newCrmData['deligated_to'] = $this->deligated_to;
+            $newCrmData['deligated_by'] = Session::get('user')->id;
+            $newCrmData['assigned_id'] =  $this->deligated_to;
+            $validateCrmSave['deligated_to']= 'required';
+        }
+        else if($this->related_to==12)
+        {
+            $newCrmData['deligated_to'] = $this->deligated_to;
+            $newCrmData['deligated_by'] = Session::get('user')->id;
+            $newCrmData['assigned_id'] =  $this->deligated_to;
+            $validateCrmSave['deligated_to']= 'required';
+        }
+        
+        $validatedData = $this->validate($validateCrmSave);
 
         //dd($this);
         foreach($this->brands_list as $keyBl => $brands_list)
@@ -477,27 +503,7 @@ class Crm extends Component
         $newCrmData['competitor_brand'] = json_encode($this->competitor_brands_list);
         $newCrmData['crm_description'] = $this->crm_description;
         
-        if($this->related_to==2)
-        {
-            $newCrmData['quote_estimated_value'] = $this->quote_estimated_value;
-        }
-        else if($this->related_to==7)
-        {
-            $newCrmData['crm_followup_date_time'] = $this->crm_followup_date_time;
-        }
-        else if($this->related_to==9)
-        {
-            $newCrmData['deligated_to'] = $this->deligated_to;
-            $newCrmData['deligated_by'] = Session::get('user')->id;
-            $newCrmData['assigned_id'] =  $this->deligated_to;
-            
-        }
-        else if($this->related_to==12)
-        {
-            $newCrmData['deligated_to'] = $this->deligated_to;
-            $newCrmData['deligated_by'] = Session::get('user')->id;
-            $newCrmData['assigned_id'] =  $this->deligated_to;
-        }
+        
         $newCrmData['crm_status'] = 1;
         $newCrmData['crm_action'] = 1;
         $newCrmData['user_id'] =  Session::get('user')->id;
@@ -559,10 +565,7 @@ class Crm extends Component
             $inquiryLogsData['quote_estimated_value'] = $this->quote_estimated_value;
         }
         CrmLogs::create($inquiryLogsData);//Inserting inquiry Detaisl
-
-        return redirect()->to('/crm');
-        
-        $this->showNewCrmModal=true;
+        $this->showNewCrmModal=false;
         $this->dispatchBrowserEvent('hideNewCrmModal', [
             'type' => 'success',
             'message' => 'CRM Created Successfully..!',
