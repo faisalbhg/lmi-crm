@@ -96,24 +96,26 @@ class Samples extends Component
         $this->sampleInfo = Sample::with('userInfo')->with('teritoryInfo')->with('countryInfo')->where('crm_id','=',$sampleOrderDtls->crm_id)->first();
 
         if($status==1){
-            $userDetails = User::where(['usertype'=>7])->first();
+            $userDetails = User::where(['usertype'=>7])->get();
             $files=null;
-            $mailData = [
-                'name' => $userDetails->name,
-                'body' => 'New Sample Preparation Request are created, check the below link to view the sample requests '.URL::to("/sample-details/".$sampleOrderDtls->crm_id),
-                'title' => 'CRM Samples Preparation Requests Approvals',
-                'email' => $userDetails->email,
-            ];
-            Mail::send('emails.crm_email', $mailData, function($message)use($mailData, $files) {
-                $message->subject($mailData['title']);
-                $message->to($mailData["email"]);
-                $message->bcc('faisal@buhaleeba.ae');
-                if($files){
-                    foreach ($files as $file){
-                        $message->attach($file);
-                    }
-                }            
-            });
+            foreach($userDetails as $sendUser){
+                $mailData = [
+                    'name' => $sendUser->name,
+                    'body' => 'New Sample Preparation Request are created, check the below link to view the sample requests '.URL::to("/sample-details/".$sampleOrderDtls->crm_id),
+                    'title' => 'CRM Samples Preparation Requests Approvals',
+                    'email' => $sendUser->email,
+                ];
+                Mail::send('emails.crm_email', $mailData, function($message)use($mailData, $files) {
+                    $message->subject($mailData['title']);
+                    $message->to($mailData["email"]);
+                    $message->bcc('faisal@buhaleeba.ae');
+                    if($files){
+                        foreach ($files as $file){
+                            $message->attach($file);
+                        }
+                    }            
+                });
+            }
         }
 
         $files = null;
