@@ -185,7 +185,7 @@
                                 </p>
                             </td>
                             <td class="text-center text-dark">
-                                <p class="text-xs font-weight-bold mb-0"><span class="text-dark">{{$crmData->userName}}@if($crmData->userName){{$crmData->userInfo['name']}}@endif</span>
+                                <p class="text-xs font-weight-bold mb-0"><span class="text-dark">@if($crmData->userName){{$crmData->userName}}@endif</span>
                                 </p>
                             </td>
                             <td class="text-center text-xs text-dark">
