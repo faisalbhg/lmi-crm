@@ -445,6 +445,7 @@ class Crm extends Component
         }
         else if($this->related_to==12)
         {
+            
             $newCrmData['deligated_to'] = $this->deligated_to;
             $newCrmData['deligated_by'] = Session::get('user')->id;
             $newCrmData['assigned_id'] =  $this->deligated_to;
