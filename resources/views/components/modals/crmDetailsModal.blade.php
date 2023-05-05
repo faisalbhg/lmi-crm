@@ -223,7 +223,7 @@
                                 </div>
                                 <div class="d-flex align-items-center text-dark text-gradient text-sm font-weight-bold">
                                      @if($dtl_marketing_channel)
-                                    {{config('common.crmRelatedTo')[$dtl_marketing_channel]}}
+                                    {{config('common.marketing_channel')[$dtl_marketing_channel]}}
                                     @endif
                                 </div>
                             </li>
