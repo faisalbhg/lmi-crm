@@ -893,7 +893,7 @@ class Crm extends Component
     
     public function exportExcel() 
     {
-        $crmQuery = Crms::select('crms.crm_status','crms.crm_action','crms.newCustomer','crms.customer_name','crms.company_address','crms.customer_email','crms.mobile_no','crms.phone_no','countries.country_name','territories.territory_name','crms.customer_type','crms.business_category','crms.marketing_channel', 'crms.related_to','crms.crm_start_date_time','crms.crm_end_date_time','crms.crm_followup_date_time','crms.our_brand','crms.competitor_brand','crms.crm_description','u2.name as created_by','u3.name as assigned_to','crms.created_at','crms.updated_at')
+        $crmQuery = Crms::select('crms.id','crms.crm_status','crms.crm_action','crms.newCustomer','crms.customer_name','crms.company_address','crms.customer_email','crms.mobile_no','crms.phone_no','countries.country_name','territories.territory_name','crms.customer_type','crms.business_category','crms.marketing_channel', 'crms.related_to','crms.crm_start_date_time','crms.crm_end_date_time','crms.crm_followup_date_time','crms.our_brand','crms.competitor_brand','crms.crm_description','u2.name as created_by','u3.name as assigned_to','crms.created_at','crms.updated_at')
         ->leftjoin('users','users.id','=','crms.created_by')
         ->leftjoin('territories','territories.id','=','crms.teritory')
         ->join('countries','countries.id','=','crms.country')

@@ -1,11 +1,13 @@
 <div>
-    @include('layouts.navbars.guest.login')
-    <div class="page-header section-height-75">
+    
         <div class="container">
             <div class="row">
                 <div class="col-xl-4 col-lg-5 col-md-6 d-flex flex-column mx-auto">
                     <div class="card card-plain mt-8">
                         <div class="card-header pb-0 text-left bg-transparent">
+                            <a class="navbar-brand font-weight-bolder ms-lg-0 ms-3" href="{{ route('dashboard') }}">
+                                <img src="{{asset('img/logos/logo.svg')}}" width="200">
+                            </a>
                             @if ($showDemoNotification)
                                 <div wire:model="showDemoNotification"
                                     class="mt-3 alert alert-primary alert-dismissible fade show" role="alert">

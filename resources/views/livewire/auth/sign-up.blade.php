@@ -1,16 +1,10 @@
   <section class="h-100-vh mb-8">
       <div class="page-header align-items-start section-height-50 pt-5 pb-11 m-3 border-radius-lg"
-          style="background-image: url('../assets/img/curved-images/curved14.jpg');">
+          style="background-image: url('{{asset('img/curved-images/curved7.jpg')}}');">
           <span class="mask bg-gradient-dark opacity-6"></span>
           <div class="container">
               <div class="row justify-content-center">
-                  <div class="col-lg-5 text-center mx-auto">
-                      <h1 class="text-white mb-2 mt-5">{{ __('Welcome!') }}</h1>
-                      <p class="text-lead text-white">
-                          {{ __('Use these awesome forms to login or create new account in your
-                          project for free.') }}
-                      </p>
-                  </div>
+                  
               </div>
           </div>
       </div>
@@ -19,9 +13,15 @@
               <div class="col-xl-4 col-lg-5 col-md-7 mx-auto">
                   <div class="card z-index-0">
                       <div class="card-header text-center pt-4">
-                          <h5>{{ __('Register with') }}</h5>
+                          <a class="navbar-brand font-weight-bolder ms-lg-0 ms-3" href="{{ route('dashboard') }}">
+                              <img src="{{asset('img/logos/logo.svg')}}" width="200">
+                          </a>
+                          <h1 class="text-dark mb-2 mt-5">{{ __('Welcome!') }}</h1>
+                          <p class="text-lead text-dark">
+                              {{ __('Register new account in your CRM.') }}
+                          </p>
                       </div>
-                      <div class="row px-xl-5 px-sm-4 px-3">
+                      <div class="d-none row px-xl-5 px-sm-4 px-3">
                           <div class="col-3 ms-auto px-1">
                               <a class="btn btn-outline-light w-100" href="javascript:;">
                                   <svg width="24px" height="32px" viewBox="0 0 64 64" version="1.1"
@@ -127,6 +127,18 @@
                                       href="{{ route('login') }}"
                                       class="text-dark font-weight-bolder">{{ __('Sign in') }}</a>
                               </p>
+
+                              @if ($signupError)
+                                <div wire:model="showFailureNotification"
+                                    class="mt-3 alert alert-primary alert-dismissible fade show" role="alert">
+                                    <span class="alert-text text-white">
+                                        {{$signupErrorMsg}}
+                                        </span>
+                                    <button wire:click="$set('signupError', false)" type="button"
+                                        class="btn-close" data-bs-dismiss="alert" aria-label="Close">
+                                    </button>
+                                </div>
+                            @endif
                           </form>
 
                       </div>

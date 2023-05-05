@@ -11,10 +11,12 @@ class SignUp extends Component
     public $name = '';
     public $email = '';
     public $password = '';
+    public $signupError = false;
+    public $signupErrorMsg = '';
 
     protected $rules = [
         'name' => 'required|min:3',
-        'email' => 'required|email:rfc,dns|unique:users',
+        'email' => 'required|email:rfc,dns',
         'password' => 'required|min:6'
     ];
 
@@ -26,15 +28,30 @@ class SignUp extends Component
 
     public function register() {
         $this->validate();
-        $user = User::create([
-            'name' => $this->name,
-            'email' => $this->email,
-            'password' => Hash::make($this->password)
-        ]);
+        $existingUser = User::where(['email'=>$this->email])->first();
+        
+        if($existingUser) {
+            if($existingUser->active)
+            {
+                $this->signupError=true;
+                $this->signupErrorMsg='account already registered please Sign in..!';
+            }else{
+                $user = User::find($existingUser->id)->update([
+                    'name' => $this->name,
+                    'active' => 1,
+                    'password' => Hash::make($this->password)
+                ]);
 
-        auth()->login($user);
+                auth()->login($user);
 
-        return redirect('/dashboard');
+                return redirect('/dashboard');
+            }
+        }
+        else
+        {
+            $this->signupError=true;
+            $this->signupErrorMsg='account does not exist..!';
+        }
     }
 
     public function render()

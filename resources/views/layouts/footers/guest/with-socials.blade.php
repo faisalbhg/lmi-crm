@@ -1,6 +1,6 @@
   <footer class="footer pb-5">
       <div class="container">
-          <div class="row">
+          <div class="d-none row">
               
               <div class="col-lg-8 mx-auto text-center mb-4 mt-2">
                   <a href="https://dribbble.com/creativetim" target="_blank" class="text-secondary me-xl-4 me-4">
