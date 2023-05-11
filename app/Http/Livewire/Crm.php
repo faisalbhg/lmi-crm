@@ -1030,7 +1030,7 @@ class Crm extends Component
             $crmQuery = $crmQuery->where('crm_logs.crm_updation_date_time','>=', $this->filter_from_date)->where('crm_logs.crm_updation_date_time','<=',$this->filter_to_date);
         }
         $crmQuery = $crmQuery->groupBy('crm_logs.id')->get();
-        dd($crmQuery);
+        //dd($crmQuery);
         return Excel::download(new CrmExport($crmQuery), 'crms.xlsx');
     }
 
