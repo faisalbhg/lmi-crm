@@ -910,11 +910,11 @@ class Crm extends Component
     {
         $crmQuery = CrmLogs::select(
             \DB::raw('(CASE 
-                WHEN crm_logs.crm_status = 1 THEN "new" 
-                WHEN crm_logs.crm_status = 2 THEN "quotation" 
-                WHEN crm_logs.crm_status = 3 THEN "followup" 
-                WHEN crm_logs.crm_status = 4 THEN "won" 
-                WHEN crm_logs.crm_status = 5 THEN "loss" 
+                WHEN crm_logs.crm_status = 1 THEN "New" 
+                WHEN crm_logs.crm_status = 2 THEN "Quotation" 
+                WHEN crm_logs.crm_status = 3 THEN "Followup" 
+                WHEN crm_logs.crm_status = 4 THEN "Won" 
+                WHEN crm_logs.crm_status = 5 THEN "Loss" 
                 END) AS crm_status'),
             \DB::raw('(CASE 
                 WHEN crm_logs.crm_action = 1 THEN "New CRM Created" 
@@ -974,9 +974,11 @@ class Crm extends Component
                 WHEN crms.related_to = 12 THEN "Complaint"
                 WHEN crms.related_to = 13 THEN "Cold Calling"
                 END) AS related_to'),
-            'crms.crm_start_date_time','crms.crm_end_date_time','crms.crm_followup_date_time','crms.our_brand','crms.competitor_brand','crms.crm_description','crm_logs.crm_status','crm_logs.crm_action','crm_logs.action_message','crm_logs.crm_updation_date_time','users.name as created_by','crms.created_at','crms.updated_at')
+            'crms.crm_description',
+            'crms.crm_start_date_time','crms.crm_end_date_time','crm_logs.crm_updation_date_time','crm_logs.action_message','crms.our_brand','crms.competitor_brand','users.name as created_by','assu.name as assigned_user','crms.created_at','crms.updated_at')
         ->leftjoin('crms','crms.id','=','crm_logs.crm_id')
         ->leftjoin('users','users.id','=','crms.created_by')
+        ->leftjoin('users as assu','assu.id','=','crms.assigned_id')
         ->leftjoin('territories','territories.id','=','crms.teritory')
         ->join('countries','countries.id','=','crms.country');
 
@@ -1028,7 +1030,7 @@ class Crm extends Component
             $crmQuery = $crmQuery->where('crm_logs.crm_updation_date_time','>=', $this->filter_from_date)->where('crm_logs.crm_updation_date_time','<=',$this->filter_to_date);
         }
         $crmQuery = $crmQuery->groupBy('crm_logs.id')->get();
-        //dd($crmQuery);
+        dd($crmQuery);
         return Excel::download(new CrmExport($crmQuery), 'crms.xlsx');
     }
 

@@ -31,7 +31,7 @@ class CrmExport implements FromCollection, WithHeadings, WithEvents
      */
     public function headings(): array
     {
-        return ["Status", "Last Aaction", "New Customer","Customer Name","Address","Email","Mobile No","Phone No","Country","Territory","Customer Type","Business Category","Marketing Channel","Related To","CRM Start Date Time","CRM End Date Time","CRM Followup Date Time","Our Brand","Competitor Brand","Description","Created by","Assigned To","Created At","Last Updated At"];
+        return ["Status", "Last Aaction", "New Customer","Customer Name","Address","Email","Mobile No","Phone No","Country","Territory","Customer Type","Business Category","Marketing Channel","Related To","CRM Description","CRM Start Date Time","CRM End Date Time","CRM Updation Date Time","Updation Notes","Our Brand","Competitor Brand","Created by","Assigned To","Created At","Last Updated At"];
     }
 
     /**
@@ -41,7 +41,7 @@ class CrmExport implements FromCollection, WithHeadings, WithEvents
     {
         return [
             AfterSheet::class    => function(AfterSheet $event) {
-                $cellRange = 'A1:W1'; // All headers
+                $cellRange = 'A1:X1'; // All headers
                 $event->sheet->getDelegate()->getStyle($cellRange)->getFont()->setSize(12)->setBold(true);
             },
         ];
