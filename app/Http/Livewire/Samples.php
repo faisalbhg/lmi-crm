@@ -40,7 +40,11 @@ class Samples extends Component
     public function render()
     {
         $sampleQuery = Sample::with('userInfo');
-        if(!in_array(Session::get('user')->usertype,config('common.sampleshowAll')))
+        if(Session::get('user')->usertype==7)
+        {
+            $sampleQuery->where(['status'=>1]);
+        }
+        else if(!in_array(Session::get('user')->usertype,config('common.sampleshowAll')))
         {
             $sampleQuery->where(['created_by'=>Session::get('user')->id]);
         }
