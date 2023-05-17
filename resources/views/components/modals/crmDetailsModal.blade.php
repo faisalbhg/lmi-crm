@@ -343,12 +343,12 @@
 
                                     <ul class="list-group">
                                         <li class="list-group-item border-0 p-4 mb-2 bg-gray-100 border-radius-lg">
-                                            <h6 class="mb-3 text-sm">Complaints Updates</h6>
+                                            <h6 class="mb-3 text-sm">{{$labelTileRelate}} Updates</h6>
                                             <div class="row p-0 m-0 mt-2">
 
                                                 <div class="col-md-12 ps-0">
                                                     <div class="form-group">
-                                                        <label for="selectCrmComplaintsUpdateStatus">Complaints Status Updation</label>
+                                                        <label for="selectCrmComplaintsUpdateStatus">{{$labelTileRelate}} Status Updation</label>
                                                         <select class="form-control chosen-select" wire:model="crm_complaints_update_status" name="crm_complaints_update_status" id="selectCrmComplaintsUpdateStatus" >
                                                             <option value="">-Select-</option>
                                                             @if($dtl_related_to==12)

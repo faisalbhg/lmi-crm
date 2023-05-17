@@ -186,6 +186,7 @@ return [
 		"17"=> "Not Approved due to Quality",
 		"18"=> "Awaiting owners confirmation",
 		"19"=> "Sample not tried yet",
+		"20"=> "Followed and converted",
 	],
 
 	'crm_action' => [
@@ -209,6 +210,7 @@ return [
 		"17"=> "Not Approved due to Quality",
 		"18"=> "Awaiting owners confirmation",
 		"19"=> "Sample not tried yet",
+		"20"=> "Followed and converted",
 	],
 
 	'crm_process' => [
@@ -241,6 +243,7 @@ return [
 		"17"=>"bg-gradient-primary",
 		"18"=>"bg-gradient-primary",
 		"19"=>"bg-gradient-primary",
+		"20"=>"bg-gradient-dark",
 	],
 
 
@@ -266,6 +269,7 @@ return [
 		"17"=>"text-primary",
 		"18"=>"text-primary",
 		"19"=>"text-primary",
+		"20"=>"text-dark",
 	],
 
 
@@ -338,6 +342,7 @@ return [
 		"10"=>"Followed up with customer",
 		"11"=>"Did not follow-up",
 		"12"=>"Not relevant",
+		"20"=>"Followed and converted",
 	],
 
 	'sample_status_updation' => [

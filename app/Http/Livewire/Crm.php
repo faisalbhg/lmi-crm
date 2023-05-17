@@ -39,7 +39,7 @@ class Crm extends Component
 
     public $crm_search_crm_id, $crm_search_related_to, $crm_search_delegated_to, $crm_search_status, $crm_search_new_customer, $filter_search, $crm_search_created_by, $filter_from_date, $filter_to_date;
 
-    public $showNewCrmModal=false, $showCrmDetailsModal = false, $showCrmUpdateModel = false, $showSampleItemSelected=false;
+    public $showNewCrmModal=false, $showCrmDetailsModal = false, $showCrmUpdateModel = false, $showSampleItemSelected=false, $showCrmEndDateTime = true;
 
     public $searchSampleItems=[], $selectedSampleItemPartDescription=[], $deligatedToValue=[], $customersList = [], $countriesList = [], $territoriesList = [], $brandsList=[], $competitorBrandLists = [];
 
@@ -68,7 +68,7 @@ class Crm extends Component
     public $crmsampleItems=[];
     public $crm_sample_update_status=[], $crm_sample_updation_date_time=[], $crm_sample_action_message=[];
 
-    public $crmComplaintsDisplay=false;
+    public $crmComplaintsDisplay=false, $labelTileRelate;
     public $crm_complaints_update_status, $crm_complaints_updation_date_time,$crm_complaints_action_message;
 
     function mount( Request $request) {
@@ -177,6 +177,29 @@ class Crm extends Component
         $apiBrandUrl = $brandapiUrl."?$select=Description&$filter=".$companyFilter."&$top=1000";
         $brandResponse = Http::withBasicAuth('manager', 'manager')->get($apiBrandUrl);
         $brandResponse = json_decode((string) $brandResponse->getBody(), true);
+
+        /*$brandUniqArray=[];
+        foreach($brandResponse['value'] as $brandsEp)
+        {
+            $brandnNew = explode("-",$brandsEp['Description']);
+            if(!empty($brandnNew[1]))
+            {
+                if(($brandnNew[1]!='') && !in_array($brandnNew[1], $brandUniqArray))
+                {
+                    array_push($brandUniqArray, $brandnNew[1]);
+                }
+            }
+            
+        }
+        foreach($brandUniqArray as $keyBr => $ValBr) {
+            dd($ValBr);
+            asort($ValBr);
+            $brandUniqArray[$keyBr] = $ValBr;
+        }
+        dd($brandUniqArray);*/
+
+
+
         
         $this->brandsList = $brandResponse['value'];
 
@@ -240,24 +263,28 @@ class Crm extends Component
                 $this->showSampleItemName=false;
                 $this->showCrmFollowupDateTime=false;
                 $this->showDeligatedTo=false;
+                $this->showCrmEndDateTime=true;
                 break;
             case '4':
                 $this->showQuoteEstimatedValue=false;
                 $this->showSampleItemName=true;
                 $this->showCrmFollowupDateTime=false;
                 $this->showDeligatedTo=false;
+                $this->showCrmEndDateTime=false;
                 break;
             case '7':
                 $this->showQuoteEstimatedValue=false;
                 $this->showSampleItemName=false;
                 $this->showCrmFollowupDateTime=true;
                 $this->showDeligatedTo=false;
+                $this->showCrmEndDateTime=true;
                 break;
             case '9':
                 $this->showQuoteEstimatedValue=false;
                 $this->showSampleItemName=false;
                 $this->showCrmFollowupDateTime=false;
                 $this->showDeligatedTo=true;
+                $this->showCrmEndDateTime=true;
                 $this->deligatedToValue = User::where('id', '!=' , Session::get('user')->id)->where(['active'=>1])->get();
                 break;
 
@@ -266,6 +293,7 @@ class Crm extends Component
                 $this->showSampleItemName=false;
                 $this->showCrmFollowupDateTime=false;
                 $this->showDeligatedTo=true;
+                $this->showCrmEndDateTime=true;
                 $this->deligatedToValue = User::where('id', '!=' , Session::get('user')->id)->where(['active'=>1])->get();
                 break;
 
@@ -274,6 +302,7 @@ class Crm extends Component
                 $this->showSampleItemName=false;
                 $this->showCrmFollowupDateTime=false;
                 $this->showDeligatedTo=false;
+                $this->showCrmEndDateTime=true;
         }
     }
 
@@ -411,7 +440,6 @@ class Crm extends Component
         $validateCrmSave = [
             'related_to' => 'required',
             'crm_start_date_time' => 'required',
-            'crm_end_date_time' => 'required',
             'customer_name' => 'required',
             'customer_email' => 'required|email',
             'country' => 'required',
@@ -426,6 +454,11 @@ class Crm extends Component
             'crm_description' => 'required',
         ];
         $newCrmData['assigned_id'] =  Session::get('user')->id;
+
+        if($this->related_to!=4){
+            $validateCrmSave['crm_end_date_time']= 'required';
+        }
+
         if($this->related_to==2)
         {
             $newCrmData['quote_estimated_value'] = $this->quote_estimated_value;
@@ -701,6 +734,13 @@ class Crm extends Component
         {
             $this->crmSamplesDisplay = false;
             $this->crmComplaintsDisplay = true;
+            if($crmDetails->related_to==12){
+                $this->labelTileRelate = 'Complaint';
+            }
+            else
+            {
+                $this->labelTileRelate = 'Inquiry';
+            }
         }
 
         $this->dtl_crm_id = $crmDetails->id;

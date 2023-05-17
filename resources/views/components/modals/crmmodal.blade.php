@@ -107,6 +107,7 @@
                                                 @error('crm_start_date_time') <span class="mb-4 text-danger">{{ $message }}</span> @enderror
                                             </div>
                                         </div>
+                                        @if($showCrmEndDateTime)
                                         <div class="col-md-4">
                                             <div class="form-group mb-0" id="form-inputcrmEndDateTime">
                                                 <label for="inputcrmEndDateTime" class="form-control-label required">CRM End Date & Time</label>
@@ -114,6 +115,7 @@
                                                 @error('crm_end_date_time') <span class="mb-4 text-danger">{{ $message }}</span> @enderror
                                             </div>
                                         </div>
+                                        @endif
                                         @if($showCrmFollowupDateTime)
                                         <div class="col-md-4">
                                             <div class="form-group mb-0" id="form-inputcrmFollowupDateTime">

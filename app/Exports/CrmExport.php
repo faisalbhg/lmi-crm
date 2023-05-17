@@ -41,7 +41,7 @@ class CrmExport implements FromCollection, WithHeadings, WithEvents
     {
         return [
             AfterSheet::class    => function(AfterSheet $event) {
-                $cellRange = 'A1:X1'; // All headers
+                $cellRange = 'A1:Z1'; // All headers
                 $event->sheet->getDelegate()->getStyle($cellRange)->getFont()->setSize(12)->setBold(true);
             },
         ];
