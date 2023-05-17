@@ -57,13 +57,13 @@
                             <div class="col-md-3">
                                 <div class="input-group">
                                     <span class="input-group-text text-body"><i class="fas fa-calendar-alt" aria-hidden="true"></i></span>
-                                    <input type="text" class="form-control datepicker" id="from_date" wire:model="filter_from_date" placeholder="CRM Start Date...">
+                                    <input type="text" class="form-control datepicker" autocomplete="off" id="from_date" wire:model="filter_from_date" placeholder="CRM Start Date...">
                                 </div>
                             </div>
                             <div class="col-md-3">
                                 <div class="input-group">
                                     <span class="input-group-text text-body"><i class="fas fa-calendar-alt" aria-hidden="true"></i></span>
-                                    <input type="text" class="form-control datepicker" id="to_date" wire:model="filter_to_date"  placeholder="CRM End Date..."> 
+                                    <input type="text" class="form-control datepicker"  autocomplete="off" id="to_date" wire:model="filter_to_date"  placeholder="CRM End Date..."> 
                                 </div>
                             </div>
                         </div>
