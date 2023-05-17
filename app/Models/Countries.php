@@ -18,4 +18,6 @@ class Countries extends Model
         'created_by',
         'updated_by',
     ];
+
+    
 }

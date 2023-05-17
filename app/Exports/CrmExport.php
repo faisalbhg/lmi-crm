@@ -31,7 +31,7 @@ class CrmExport implements FromCollection, WithHeadings, WithEvents
      */
     public function headings(): array
     {
-        return ["Status", "Last Aaction", "New Customer","Customer Name","Address","Email","Mobile No","Phone No","Country","Territory","Customer Type","Business Category","Marketing Channel","Related To","CRM Description","CRM Start Date Time","CRM End Date Time","CRM Updation Date Time","Updation Notes","Our Brand","Competitor Brand","Created by","Assigned To","Created At","Last Updated At"];
+        return ["Crm Id","Status", "Last Aaction", "New Customer","Customer Name","Address","Email","Mobile No","Phone No","Country","Territory","Customer Type","Business Category","Marketing Channel","Related To","CRM Description","CRM Start Date Time","CRM End Date Time","CRM Updation Date Time","Updation Notes","Our Brand","Competitor Brand","Created by","Assigned To","Created At","Last Updated At"];
     }
 
     /**

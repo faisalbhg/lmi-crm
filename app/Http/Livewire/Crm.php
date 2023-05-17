@@ -908,7 +908,7 @@ class Crm extends Component
 
     public function exportExcelCRM()
     {
-        $crmQuery = CrmLogs::select(
+        $crmQuery = CrmLogs::select('crms.id',
             \DB::raw('(CASE 
                 WHEN crm_logs.crm_status = 1 THEN "New" 
                 WHEN crm_logs.crm_status = 2 THEN "Quotation" 
