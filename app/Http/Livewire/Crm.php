@@ -178,12 +178,15 @@ class Crm extends Component
         $brandResponse = Http::withBasicAuth('manager', 'manager')->get($apiBrandUrl);
         $brandResponse = json_decode((string) $brandResponse->getBody(), true);
 
-        /*$brandUniqArray=[];
+        $brandUniqArray=['ROASTERY STN'];
         foreach($brandResponse['value'] as $brandsEp)
         {
             $brandnNew = explode("-",$brandsEp['Description']);
             if(!empty($brandnNew[1]))
             {
+                if($brandnNew[1][0]==' '){
+                    $brandnNew[1] = substr($brandnNew[1], 1);
+                }
                 if(($brandnNew[1]!='') && !in_array($brandnNew[1], $brandUniqArray))
                 {
                     array_push($brandUniqArray, $brandnNew[1]);
@@ -191,18 +194,10 @@ class Crm extends Component
             }
             
         }
-        foreach($brandUniqArray as $keyBr => $ValBr) {
-            dd($ValBr);
-            asort($ValBr);
-            $brandUniqArray[$keyBr] = $ValBr;
-        }
-        dd($brandUniqArray);*/
-
-
-
+        asort($brandUniqArray);
         
-        $this->brandsList = $brandResponse['value'];
-
+        $this->brandsList = $brandUniqArray;
+        
         $this->dispatchBrowserEvent('showNewCrmModal');
 
     }
