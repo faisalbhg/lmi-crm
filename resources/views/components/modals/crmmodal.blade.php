@@ -24,7 +24,7 @@
                                         <div class="col-md-4">
                                             <div class="form-group">
                                                 <label for="departmentCodeInput">Related To</label>
-                                                <select class="form-control chosen-select" wire:model="related_to" wire:click="relatedToChangeEvent($event.target.value)" name="related_to" id="relatedToSelect" >
+                                                <select class="form-control chosen-select" wire:model="related_to" wire:change="relatedToChangeEvent($event.target.value)" name="related_to" id="relatedToSelect" >
                                                     <option value="">-Select-</option>
                                                     @foreach(config('common.crmRelatedTo') as $crmRelatedToKey => $crmRelatedToValue)
                                                     <option value="{{$crmRelatedToKey}}">{{$crmRelatedToValue}}</option>
