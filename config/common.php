@@ -25,7 +25,7 @@ return [
 		"5"=>"Delivery",
 		"6"=>"Cheque Collection",
 		//"7"=>"Follow-up Meeting",
-		"8"=>"Gul food",
+		"8"=>"Exhibition",
 		"9"=>"Inquiry",
 		"10"=>"Training",
 		"11"=>"orientation",
