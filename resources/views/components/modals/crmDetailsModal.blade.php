@@ -419,7 +419,7 @@
                                                                         <label for="selectCrmSampleUpdateStatus">Status Updation</label>
                                                                         <select class="form-control chosen-select" wire:model="crm_sample_update_status.{{$sample->id}}" name="crm_sample_update_status" id="selectCrmSampleUpdateStatus" >
                                                                             <option value="">-Select-</option>
-                                                                            @foreach(config('common.sampleUpdation') as $spKey => $sampleUpdation)
+                                                                            @foreach(config('common.sample_status_updation') as $spKey => $sampleUpdation)
                                                                             <option value="{{$spKey}}">{{$sampleUpdation}}</option>
                                                                             @endforeach
                                                                         </select>
