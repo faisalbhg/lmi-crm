@@ -407,6 +407,15 @@
                             <div class="card-footer mt-0 pt-0">
                                 <button type="button" class="btn bg-gradient-primary" wire:click="saveCRM()">Submit</button>
                                 <button type="button" class="float-end btn bg-gradient-secondary" data-bs-dismiss="modal">Close</button>
+                                <div wire:loading wire:target="saveCRM">
+                                    <div style="display: flex; justify-content: center; align-items: center; background-color: black; position: fixed; top: 0px; left: 0px; z-index:999999; width:100%; height:100%; opacity: .75;" >
+                                        <div class="la-ball-beat">
+                                            <div></div>
+                                            <div></div>
+                                            <div></div>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
