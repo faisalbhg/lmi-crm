@@ -43,7 +43,7 @@
                 </a>
             </li>
             @endif
-            @if(Session::get('user')->isadmin)
+            @if(Session::get('user')->usertype == 1)
             <li class="nav-item mt-2">
                 <h6 class="ps-4 ms-2 text-uppercase text-xs font-weight-bolder opacity-6">Laravel Examples</h6>
             </li>
