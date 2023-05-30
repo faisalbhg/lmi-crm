@@ -17,6 +17,8 @@ use Mail;
 use App\Mail\SendEmail;
 use Illuminate\Http\Request;
 use URL;
+use App\Exports\Sample as SampleExport;
+use Maatwebsite\Excel\Facades\Excel;
 
 
 class Samples extends Component
@@ -25,6 +27,7 @@ class Samples extends Component
     protected $paginationTheme = 'bootstrap';
     public $showsampleDetails=false;
     public $sampleInfo=[],$sampleItems=[], $sampleCrmId,$sample_comment=[], $sampleLogs=[];
+    public $filter_from_date,$filter_to_date;
 
     function mount( Request $request) {
         $id = $request->id;
@@ -141,5 +144,32 @@ class Samples extends Component
         });
 
         
+    }
+
+    public function exportExcelSample(){
+        
+        $sampleQuery = SampleLogs::select('samples.crm_id',
+            \DB::raw('(CASE 
+                WHEN sample_logs.status = 0 THEN "Sample Requested" 
+                WHEN sample_logs.status = 1 THEN "Brand Aproved" 
+                WHEN sample_logs.status = 2 THEN "Showroom Forwarded to Sales" 
+                WHEN sample_logs.status = 4 THEN "Dispatched" 
+                WHEN sample_logs.status = 5 THEN "Delivered" 
+                WHEN sample_logs.status = 6 THEN "Rejected"
+                END) AS sample_status'),
+            'samples.partNum','samples.partDescription','samples.prodCode','crms.customer_name','crms.company_address','crms.customer_email','crms.mobile_no','crms.phone_no','countries.country_name','territories.territory_name','users.name as created_by','sample_logs.created_at','sample_logs.updated_at')
+        ->leftjoin('samples','samples.id','=','sample_logs.sample_order_id')
+        ->leftjoin('crms','crms.id','=','samples.crm_id')
+        ->leftjoin('users','users.id','=','samples.created_by')
+        ->leftjoin('territories','territories.id','=','samples.teritory')
+        ->join('countries','countries.id','=','samples.country');
+
+        if(!empty($this->filter_from_date) && !empty($this->filter_to_date)){
+            $sampleQuery = $sampleQuery->where('sample_logs.updated_at','>=', $this->filter_from_date)->where('sample_logs.updated_at','<=',$this->filter_to_date);
+        }
+        $sampleQuery = $sampleQuery->groupBy('sample_logs.id')->get();
+        //dd($sampleQuery);
+        return Excel::download(new SampleExport($sampleQuery), 'crms.xlsx');
+    
     }
 }

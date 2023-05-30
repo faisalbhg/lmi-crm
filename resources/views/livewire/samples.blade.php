@@ -1,4 +1,33 @@
 @push('custom_css')
+<link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+<style type="text/css">
+    .select2-container--default .select2-selection--single{
+        border: 1px solid #d2d6da !important;
+        border-radius: 0.5rem !important;
+    }
+    .select2-container .select2-selection--single
+    {
+        height: 40px;
+    }
+    .right{
+      direction: rtl;
+    }
+    .right li{
+        list-style: arabic-indic;
+    }
+    .left li{
+        list-style: binary;
+    }
+    .select2-container
+    {
+        z-index: 999999 !important;
+        width: 100% !important;
+    }
+</style>
+
+<link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.13.2/themes/smoothness/jquery-ui.css">
+
+
 @endpush
 <main class="main-content position-relative h-100 border-radius-lg">
 <div class="container-fluid">
@@ -8,12 +37,35 @@
             <div class="card mb-4">
                 <div class="card-header pb-0">
                     <div class=" flex-row justify-content-between">
-                        <div class="float-start">
-                            <h6>Samples</h6>                            
+                        <div class=" flex-row justify-content-between">
+                            <div class="float-start">
+                                <h6>Samples</h6>
+                                
+                            </div>
+                            <div class="float-end">
+                                <span class="mx-2 btn btn-sm btn-success active mb-0 text-white float-end" wire:click="exportExcelSample" >Export Excel</span>
+                            </div>
                         </div>
                     </div>
                 </div>
                 <div class="card-body">
+                    <div class="row">
+                        <div class="collapse navbar-collapse mt-sm-0 mt-2 me-md-0 me-sm-3 d-flex justify-content-end float-end" >
+                            
+                            <div class="col-md-3">
+                                <div class="input-group">
+                                    <span class="input-group-text text-body"><i class="fas fa-calendar-alt" aria-hidden="true"></i></span>
+                                    <input type="text" class="form-control datepicker" autocomplete="off" id="from_date" wire:model="filter_from_date" placeholder="CRM Start Date...">
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="input-group">
+                                    <span class="input-group-text text-body"><i class="fas fa-calendar-alt" aria-hidden="true"></i></span>
+                                    <input type="text" class="form-control datepicker"  autocomplete="off" id="to_date" wire:model="filter_to_date"  placeholder="CRM End Date..."> 
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                     <div class="table-responsive">
                         <table class="table align-items-center mb-0" id="example">
                             <thead>
@@ -90,6 +142,42 @@
 </div>
 </main>
 @push('custom_script')
+
+<!-- jQuery UI JS -->
+<script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.13.2/jquery-ui.min.js"></script>
+<script>
+$(document).ready(function(){
+
+    $("#from_date").datepicker({
+        dateFormat: "yy-mm-dd",
+        changeYear: true,
+        changeMonth: true,
+        onSelect: function (selected) {
+             var dt = new Date(selected);
+
+             @this.set('filter_from_date', selected);
+
+             dt.setDate(dt.getDate() + 1);
+             $("#to_date").datepicker("option", "minDate", dt);
+        }
+    });
+
+    $("#to_date").datepicker({
+        dateFormat: "yy-mm-dd",
+        changeYear: true,
+        changeMonth: true,
+        onSelect: function (selected) {
+             var dt = new Date(selected);
+
+             @this.set('filter_to_date', selected);
+
+             dt.setDate(dt.getDate() - 1);
+             $("#from_date").datepicker("option", "maxDate", dt);
+        }
+    });
+});
+</script>
+
 <script type="text/javascript">
     window.addEventListener('showSampleDetailModal',event=>{
         $('#sampleDetailModal').modal('show');
