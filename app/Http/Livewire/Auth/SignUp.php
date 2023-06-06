@@ -29,9 +29,9 @@ class SignUp extends Component
     public function register() {
         $this->validate();
         $existingUser = User::where(['email'=>$this->email])->first();
-        
+        //dd($existingUser->active);
         if($existingUser) {
-            if($existingUser->active)
+            if($existingUser->active==1)
             {
                 $this->signupError=true;
                 $this->signupErrorMsg='account already registered please Sign in..!';
@@ -42,7 +42,7 @@ class SignUp extends Component
                     'password' => Hash::make($this->password)
                 ]);
 
-                auth()->login($user);
+                //auth()->login($user);
 
                 return redirect('/dashboard');
             }
