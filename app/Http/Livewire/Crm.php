@@ -142,7 +142,6 @@ class Crm extends Component
         
 
         
-
         if(!empty($this->filter_from_date) && !empty($this->filter_to_date)){
             $crmQuery = $crmQuery->where('crms.crm_start_date_time','>=', $this->filter_from_date)->where('crms.crm_end_date_time','<=',$this->filter_to_date);
         }
@@ -1091,7 +1090,8 @@ class Crm extends Component
 
             $crmQuery = $crmQuery->where('users.name', 'like', "%{$this->crm_search_created_by}%");
         }
-
+        $this->filter_from_date = $this->filter_from_date.' 00:00:00';
+        $this->filter_to_date = $this->filter_to_date.' 23:59:59';
         if(!empty($this->filter_from_date) && !empty($this->filter_to_date)){
             $crmQuery = $crmQuery->where('crm_logs.crm_updation_date_time','>=', $this->filter_from_date)->where('crm_logs.crm_updation_date_time','<=',$this->filter_to_date);
         }
