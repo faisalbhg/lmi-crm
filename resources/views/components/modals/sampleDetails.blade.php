@@ -130,6 +130,14 @@
                 <p class="text-center text-danger">No available</p>
                 @endif
             </div>
+            <div class="modal-footer">
+            <div class="row">
+                <div class="col-md-12 m-0">
+                    <button type="button" class="float-end btn bg-gradient-secondary" data-bs-dismiss="modal">Close</button>
+                </div>
+            </div>
         </div>
+        </div>
+        
     </div>
 </div>
