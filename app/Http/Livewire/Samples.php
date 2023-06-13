@@ -172,7 +172,7 @@ class Samples extends Component
         }
         $sampleQuery = $sampleQuery->groupBy('sample_logs.id')->get();
         //dd($sampleQuery);
-        return Excel::download(new SampleExport($sampleQuery), 'samples.xlsx');
+        return Excel::download(new SampleExport($sampleQuery), 'samples_report.xlsx');
     
     }
 }
