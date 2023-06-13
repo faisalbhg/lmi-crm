@@ -164,6 +164,9 @@ class Samples extends Component
         ->leftjoin('territories','territories.id','=','samples.teritory')
         ->join('countries','countries.id','=','samples.country');
 
+        $this->filter_from_date = $this->filter_from_date.' 00:00:00';
+        $this->filter_to_date = $this->filter_to_date.' 23:59:59';
+
         if(!empty($this->filter_from_date) && !empty($this->filter_to_date)){
             $sampleQuery = $sampleQuery->where('sample_logs.updated_at','>=', $this->filter_from_date)->where('sample_logs.updated_at','<=',$this->filter_to_date);
         }
