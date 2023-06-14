@@ -54,7 +54,7 @@ return [
     |
     */
 
-    'asset_url' => env('ASSET_URL', "http://172.23.44.173/lmi-crm/public"),
+    'asset_url' => env('ASSET_URL', "http://172.23.43.134/lmi-crm/public"),
 
     /*
     |--------------------------------------------------------------------------

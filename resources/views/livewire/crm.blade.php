@@ -52,18 +52,22 @@
                 </div>
                 <div class="card-body px-2 pt-0 pb-2">
                     <div class="row">
+                        <div class="collapse navbar-collapse mt-sm-0 mt-2 me-md-0 me-sm-3 d-flex justify-content-start float-start" >
+                            <div class="col-md-3 float-start"></div>
+                            
+                        </div>
                         <div class="collapse navbar-collapse mt-sm-0 mt-2 me-md-0 me-sm-3 d-flex justify-content-end float-end" >
                             
                             <div class="col-md-3">
                                 <div class="input-group">
                                     <span class="input-group-text text-body"><i class="fas fa-calendar-alt" aria-hidden="true"></i></span>
-                                    <input type="text" class="form-control datepicker" autocomplete="off" id="from_date" wire:model="filter_from_date" placeholder="Sample Date...">
+                                    <input type="text" class="form-control datepicker" autocomplete="off" id="from_date" wire:model="filter_from_date" placeholder="From Date...">
                                 </div>
                             </div>
                             <div class="col-md-3">
                                 <div class="input-group">
                                     <span class="input-group-text text-body"><i class="fas fa-calendar-alt" aria-hidden="true"></i></span>
-                                    <input type="text" class="form-control datepicker"  autocomplete="off" id="to_date" wire:model="filter_to_date"  placeholder="Sample Date..."> 
+                                    <input type="text" class="form-control datepicker"  autocomplete="off" id="to_date" wire:model="filter_to_date"  placeholder="To Date..."> 
                                 </div>
                             </div>
                         </div>
@@ -322,7 +326,7 @@
                         
                       </tbody>
                     </table>
-                    <div class="float-end">{{$crmlists->onEachSide(1)->links()}}</div>
+                    <div class="float-end"> <small>{{ $crmlists->count() }} rows from {{ $crmlists->total() }} records</small> {{$crmlists->onEachSide(1)->links()}}</div>
                   </div>
                 </div>
                 @if($showNewCrmModal)
