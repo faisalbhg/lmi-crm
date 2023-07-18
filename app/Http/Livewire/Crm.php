@@ -302,13 +302,27 @@ class Crm extends Component
 
     public function sampleItemSearch()
     {
+        //dd(Session::get('user')->company);
+        $firscom=true;
+        $companyFilter="(";
+        foreach(explode(",",Session::get('user')->company) as $companies)
+        {
+            if($firscom==false)
+            {
+                $companyFilter.="%20or%20";
+            }
+            $companyFilter.="Company%20eq%20'".$companies."'";
+            $firscom=false;
+        }
+        $companyFilter.=")";
         $select = '$select';
         $filter = '$filter';
         $top = '$top';
         $apiUrl = "https://lmi-epic-app02.buhaleeba.ae/erp11live/api/v1/Erp.BO.PartSvc/Parts";
         $itemName = str_replace(" ","%20",$this->search_sample_item);
         $itemName = str_replace("&","%26",$itemName);
-        $getSamplePartApiUrl = $apiUrl."?$select=Company,PartNum,SearchWord,PartDescription,ProdCode&$filter=indexof%28PartDescription%2C%20%27".$itemName."%27%29%20eq%201";
+        $getSamplePartApiUrl = $apiUrl."?$select=Company,PartNum,SearchWord,PartDescription,ProdCode&$filter=indexof%28PartDescription%2C%20%27".$itemName."%27%29%20eq%201%20and%20".$companyFilter;
+        //dd($getSamplePartApiUrl);
         $response = Http::withBasicAuth('manager', 'manager')->get($getSamplePartApiUrl);
         $response = json_decode((string) $response->getBody(), true);
         $this->searchSampleItems = $response['value'];
