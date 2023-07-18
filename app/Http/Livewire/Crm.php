@@ -307,6 +307,7 @@ class Crm extends Component
         $top = '$top';
         $apiUrl = "https://lmi-epic-app02.buhaleeba.ae/erp11live/api/v1/Erp.BO.PartSvc/Parts";
         $itemName = str_replace(" ","%20",$this->search_sample_item);
+        $itemName = str_replace("&","%26",$itemName);
         $getSamplePartApiUrl = $apiUrl."?$select=Company,PartNum,SearchWord,PartDescription,ProdCode&$filter=indexof%28PartDescription%2C%20%27".$itemName."%27%29%20eq%201";
         $response = Http::withBasicAuth('manager', 'manager')->get($getSamplePartApiUrl);
         $response = json_decode((string) $response->getBody(), true);
