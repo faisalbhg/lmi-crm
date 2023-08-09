@@ -32,7 +32,7 @@ class Sample implements FromCollection, WithHeadings, WithEvents
      */
     public function headings(): array
     {
-        return ["Crm Id","Sample Id","Status", "Part Number", "Part Description", "Prod Code", "Brand Name","Quantities" "New Customer", "Customer Name","Address","Email","Mobile No","Phone No","Country","Territory", "Created by","Created At","Last Updated At"];
+        return ["Crm Id","Sample Id","Status", "Part Number", "Part Description", "Prod Code", "Brand Name","Quantities","New Customer", "Customer Name","Address","Email","Mobile No","Phone No","Country","Territory", "Created by","Created At","Last Updated At"];
     }
 
     /**
