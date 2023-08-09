@@ -179,13 +179,13 @@ return [
 		"10"=>"Followed up with customer",
 		"11"=>"Did not follow-up",
 		"12"=>"Inquiry Not relevant",
-		"13"=> "Approved and order placed",
-		"14"=> "Approved awaiting order",
-		"15"=> "Approved but don’t want to add to menu",
+		"13"=> "Approved",
+		"14"=> "Pending",
+		/*"15"=> "Approved but don’t want to add to menu",
 		"16"=> "Not Approved due to Price",
 		"17"=> "Not Approved due to Quality",
-		"18"=> "Awaiting owners confirmation",
-		"19"=> "Sample not tried yet",
+		"18"=> "Awaiting owners confirmation",*/
+		"19"=> "Not Approved",
 		"20"=> "Followed and converted",
 	],
 
@@ -203,13 +203,13 @@ return [
 		"10"=>"Followed up with customer",
 		"11"=>"Did not follow-up",
 		"12"=>"Inquiry Not relevant",
-		"13"=> "Approved and order placed",
-		"14"=> "Approved awaiting order",
-		"15"=> "Approved but don’t want to add to menu",
+		"13"=> "Approved",
+		"14"=> "Pending",
+		/*"15"=> "Approved but don’t want to add to menu",
 		"16"=> "Not Approved due to Price",
 		"17"=> "Not Approved due to Quality",
-		"18"=> "Awaiting owners confirmation",
-		"19"=> "Sample not tried yet",
+		"18"=> "Awaiting owners confirmation",*/
+		"19"=> "Not Approved",
 		"20"=> "Followed and converted",
 	],
 
@@ -346,14 +346,20 @@ return [
 	],
 
 	'sample_status_updation' => [
-		"13"=> "Approved and order placed",
-		"14"=> "Approved awaiting order",
-		"15"=> "Approved but don’t want to add to menu",
+		"13"=> "Approved",
+		"14"=> "Pending",
+		/*"15"=> "Approved but don’t want to add to menu",
 		"16"=> "Not Approved due to Price",
 		"17"=> "Not Approved due to Quality",
-		"18"=> "Awaiting owners confirmation",
-		"19"=> "Sample not tried yet",
-	]
+		"18"=> "Awaiting owners confirmation",*/
+		"19"=> "Not Approved"
+	],
+
+	"not_approved_reasons"=>[
+		"1"=>"Not Approved due to price",
+		"2"=>"Not Aproved due tp Quality",
+		"3"=>"Client don’t want to add to menu"
+	],
 
 
 ];

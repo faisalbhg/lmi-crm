@@ -49,7 +49,7 @@ class Crm extends Component
     
 
     public $crmId, $related_to, $search_sample_item, $deligated_to;
-    public $selectedSampleItemCompany=[], $selectedSampleItemPartNum=[], $selectedSampleItemSearchWord=[], $selectedSampleItemProdCode=[];
+    public $selectedSampleItemCompany=[], $selectedSampleItemPartNum=[], $selectedSampleItemSearchWord=[], $selectedSampleItemProdCode=[],$selectedSampleItemBrand=[],$selectedSampleItemQty=[];
     public $newCustomer=true, $selectedCustomer;
     public $crm_start_date_time, $crm_end_date_time, $crm_followup_date_time;
     public $customer_name, $customer_email, $country = 237, $country_code = 971, $territory, $mobile_no, $phone_no, $company_address, $customer_type, $business_category, $marketing_channel, $quote_estimated_value, $brands_list = [], $competitor_brands_list = [], $othre_brands_list = [], $selected_brands_list = [], $our_brand=[], $competitor_brand=[], $othre_brand = [], $crm_description;
@@ -66,7 +66,7 @@ class Crm extends Component
 
     public $crmSamplesDisplay = false;
     public $crmsampleItems=[];
-    public $crm_sample_update_status=[], $crm_sample_updation_date_time=[], $crm_sample_action_message=[];
+    public $crm_sample_status=[],$crm_sample_feedback=[],$nar_crm_sample_feedback=[],$nar_show=false, $crm_sample_updation_date_time=[], $crm_sample_action_message=[];
 
     public $crmComplaintsDisplay=false, $labelTileRelate;
     public $crm_complaints_update_status, $crm_complaints_updation_date_time,$crm_complaints_action_message;
@@ -321,7 +321,8 @@ class Crm extends Component
         $apiUrl = "https://lmi-epic-app02.buhaleeba.ae/erp11live/api/v1/Erp.BO.PartSvc/Parts";
         $itemName = str_replace(" ","%20",$this->search_sample_item);
         $itemName = str_replace("&","%26",$itemName);
-        $getSamplePartApiUrl = $apiUrl."?$select=Company,PartNum,SearchWord,PartDescription,ProdCode&$filter=indexof%28PartDescription%2C%20%27".$itemName."%27%29%20eq%201%20and%20".$companyFilter;
+        $parcodeSearch = "or%20indexof%28ProdCode%2C%20%27".$itemName."%27%29%20eq%201%20";
+        $getSamplePartApiUrl = $apiUrl."?$select=Company,PartNum,SearchWord,PartDescription,ProdCode,Brand_c&$filter=indexof%28PartDescription%2C%20%27".$itemName."%27%29%20eq%201%20".$parcodeSearch.'and%20'.$companyFilter;
         //dd($getSamplePartApiUrl);
         $response = Http::withBasicAuth('manager', 'manager')->get($getSamplePartApiUrl);
         $response = json_decode((string) $response->getBody(), true);
@@ -341,6 +342,9 @@ class Crm extends Component
         $this->selectedSampleItemSearchWord[$sample->PartNum] = $sample->SearchWord;
         $this->selectedSampleItemPartDescription[$sample->PartNum] = $sample->PartDescription;
         $this->selectedSampleItemProdCode[$sample->PartNum] = $sample->ProdCode;
+        $this->selectedSampleItemBrand[$sample->PartNum] = $sample->Brand_c;
+        $this->selectedSampleItemQty[$sample->PartNum] = 1;
+
         $this->showSampleItemSelected = true;
 
     }
@@ -352,6 +356,10 @@ class Crm extends Component
         unset($this->selectedSampleItemSearchWord[$keyId]);
         unset($this->selectedSampleItemPartDescription[$keyId]);
         unset($this->selectedSampleItemProdCode[$keyId]);
+        unset($this->selectedSampleItemBrand[$keyId]);
+        unset($this->selectedSampleItemQty[$keyId]);
+
+        
         if(count($this->selectedSampleItemPartDescription)==0)
         {
             $this->showSampleItemSelected = false;
@@ -459,13 +467,13 @@ class Crm extends Component
             'customer_type' => 'required',
             'business_category' => 'required',
             'marketing_channel' => 'required',
-            'brands_list' => 'required',
             'crm_description' => 'required',
         ];
         $newCrmData['assigned_id'] =  Session::get('user')->id;
 
         if($this->related_to!=4){
             $validateCrmSave['crm_end_date_time']= 'required';
+            $validateCrmSave['brands_list']= 'required';
         }
 
         if($this->related_to==2)
@@ -566,6 +574,9 @@ class Crm extends Component
                 $sampleData['partNum'] = $this->selectedSampleItemPartNum[$samKey];
                 $sampleData['partDescription'] = $sampleItemList;
                 $sampleData['prodCode'] = $this->selectedSampleItemProdCode[$samKey];
+                $sampleData['itemBrand'] = $this->selectedSampleItemBrand[$samKey];
+                $sampleData['itemQty'] = $this->selectedSampleItemQty[$samKey];
+
 
                 if(!$this->newCustomer)
                 {
@@ -1120,14 +1131,33 @@ class Crm extends Component
         $sampleId = $sample['id'];
         $crm_id = $sample['crm_id'];
         $validatedData = $this->validate([
-            'crm_sample_update_status.'.$sampleId => 'required',
+            'crm_sample_status.'.$sampleId => 'required',
+            'crm_sample_feedback.'.$sampleId => 'required',
             'crm_sample_updation_date_time.'.$sampleId => 'required',
             'crm_sample_action_message.'.$sampleId => 'required',
         ]);
 
-        $crmUpdateData['crm_status'] = $this->crm_sample_update_status[$sampleId];
-        $crmUpdateData['crm_action'] = $this->crm_sample_update_status[$sampleId];
+        $crmUpdateData['crm_status'] = $this->crm_sample_status[$sampleId];
+        $crmUpdateData['crm_action'] = $this->crm_sample_status[$sampleId];
         $crmUpdateData['crm_updation_date_time'] = $this->crm_sample_updation_date_time[$sampleId];
+
+        Sample::find($sampleId)->update([
+            'status'=>$this->crm_sample_status[$sampleId],
+            'sample_feedback'=>$this->crm_sample_feedback[$sampleId],
+            'sample_feedback_reason'=>$this->nar_crm_sample_feedback[$sampleId]
+        ]);
+        
+        $sampleInsertLog = [
+            'sample_order_id'=>$sampleId,
+            'status'=>$this->crm_sample_status[$sampleId],
+            'department'=>$sample['department'],
+            'sample_feedback'=>$this->crm_sample_feedback[$sampleId],
+            'sample_feedback_reason'=>isset($this->nar_crm_sample_feedback[$sampleId])?$this->nar_crm_sample_feedback[$sampleId]:'',
+            'updates'=>json_encode(['sample_feedback'=>$this->crm_sample_feedback[$sampleId],'sample_feedback_reason'=>$this->nar_crm_sample_feedback[$sampleId]]),
+            'created_by'=>Session::get('user')->id
+        ];
+        SampleLogs::create($sampleInsertLog);
+
         Crms::find($crm_id)->update($crmUpdateData);
         
         $crmUpdateLogData['crm_id']=$crm_id;
@@ -1147,6 +1177,16 @@ class Crm extends Component
         $this->dtl_crmLogs = CrmLogs::where(['crm_id'=>$crm_id,'crm_reminder'=>Null])->orderBy('id','DESC')->get();
         $this->showcrmUpdateMessage = true;
         $this->crmUpdateMessage = 'CRM Sample Status Updated Successfully..!';
+    }
+
+    public function checkFeedbackStatus($id)
+    {
+        if($id=='19'){
+            $this->nar_show=true;
+        }
+        else{
+            $this->nar_show=false;
+        }
     }
 
     public function crmUpdateComplaints($crmId){

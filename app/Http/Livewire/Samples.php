@@ -148,7 +148,7 @@ class Samples extends Component
 
     public function exportExcelSample(){
         
-        $sampleQuery = SampleLogs::select('samples.crm_id',
+        $sampleQuery = SampleLogs::select('samples.crm_id','samples.id',
             \DB::raw('(CASE 
                 WHEN sample_logs.status = 0 THEN "Sample Requested" 
                 WHEN sample_logs.status = 1 THEN "Brand Aproved" 
@@ -157,21 +157,27 @@ class Samples extends Component
                 WHEN sample_logs.status = 5 THEN "Delivered" 
                 WHEN sample_logs.status = 6 THEN "Rejected"
                 END) AS sample_status'),
-            'samples.partNum','samples.partDescription','samples.prodCode','crms.customer_name','crms.company_address','crms.customer_email','crms.mobile_no','crms.phone_no','countries.country_name','territories.territory_name','users.name as created_by','sample_logs.created_at','sample_logs.updated_at')
+            'samples.partNum','samples.partDescription','samples.prodCode','samples.itemBrand',
+            \DB::raw('(CASE 
+                WHEN crms.newCustomer = 0 THEN "Existing Customer" 
+                WHEN crms.newCustomer = 1 THEN "New Customer" 
+                WHEN crms.newCustomer = 2 THEN "Existing Customer"
+                END) AS newCustomer'),
+            'crms.customer_name','crms.company_address','crms.customer_email','crms.mobile_no','crms.phone_no','countries.country_name','territories.territory_name','users.name as created_by','sample_logs.created_at','sample_logs.updated_at')
         ->leftjoin('samples','samples.id','=','sample_logs.sample_order_id')
         ->leftjoin('crms','crms.id','=','samples.crm_id')
         ->leftjoin('users','users.id','=','samples.created_by')
         ->leftjoin('territories','territories.id','=','samples.teritory')
-        ->join('countries','countries.id','=','samples.country');
-
-        $this->filter_from_date = $this->filter_from_date.' 00:00:00';
-        $this->filter_to_date = $this->filter_to_date.' 23:59:59';
+        ->leftjoin('countries','countries.id','=','samples.country');
+        //dd($sampleQuery);
+        
 
         if(!empty($this->filter_from_date) && !empty($this->filter_to_date)){
+            $this->filter_from_date = $this->filter_from_date.' 00:00:00';
+            $this->filter_to_date = $this->filter_to_date.' 23:59:59';
             $sampleQuery = $sampleQuery->where('sample_logs.updated_at','>=', $this->filter_from_date)->where('sample_logs.updated_at','<=',$this->filter_to_date);
         }
         $sampleQuery = $sampleQuery->groupBy('sample_logs.id')->get();
-        //dd($sampleQuery);
         return Excel::download(new SampleExport($sampleQuery), 'samples_report.xlsx');
     
     }

@@ -60,7 +60,9 @@
                                                         <div class="icon icon-shape icon-xs bg-gradient-success shadow text-center">
                                                             <i class="fas fa-check opacity-10" aria-hidden="true"></i>
                                                         </div>
-                                                        <span class="ps-3">{{$selectedItem}}</span><small wire:click="removeSelectedSample('{{$keySelSampl}}')" class="float-end cursor-pointer text-danger text-xxs">Remove</small><hr class="m-0">
+                                                        <span class="ps-3">
+                                                            <input class="w-15 mx-2" type="number" name="crmItemQty" wire:model="selectedSampleItemQty.{{$keySelSampl}}" >
+                                                        {{$selectedItem}}</span><small wire:click="removeSelectedSample('{{$keySelSampl}}')" class="float-end cursor-pointer text-danger text-xxs">Remove</small><hr class="m-0">
                                                     </div>
                                                     @endforeach
                                                 </div>
@@ -80,8 +82,8 @@
                                                         @foreach($searchSampleItems as $searchItem)
                                                         @if($searchItem['PartNum']!=Null)
                                                         <div class="justify-content-lg-start justify-content-left p-2" wire:click="selectedSample({{json_encode($searchItem,true)}})">
-                                                            <div class="icon icon-shape icon-xs bg-gradient-secondary shadow text-center" >
-                                                                <i class="fas fa-minus" aria-hidden="true"></i>
+                                                            <div class="icon icon-shape icon-xs bg-gradient-info shadow text-center" >
+                                                                <i class="fas fa-plus" aria-hidden="true"></i>
                                                             </div>
                                                             <span class="ps-3"> {{$searchItem['PartDescription']}}</span><hr class="m-0">
                                                         </div>

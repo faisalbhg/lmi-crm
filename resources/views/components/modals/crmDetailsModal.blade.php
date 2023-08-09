@@ -416,16 +416,45 @@
                                                             <div class="row p-0 m-0 mt-2">
                                                                 <div class="col-md-12 ps-0">
                                                                     <div class="form-group">
-                                                                        <label for="selectCrmSampleUpdateStatus">Status Updation</label>
-                                                                        <select class="form-control chosen-select" wire:model="crm_sample_update_status.{{$sample->id}}" name="crm_sample_update_status" id="selectCrmSampleUpdateStatus" >
+                                                                        <label for="selectCrmSampleUpdateStatus">Sample Status</label>
+                                                                        <select class="form-control chosen-select" wire:model="crm_sample_status.{{$sample->id}}" name="crm_sample_status" id="selectCrmSampleUpdateStatus"  >
+                                                                            <option value="">-Select-</option>
+                                                                            @foreach(config('common.sample_status') as $spStausKey => $sampleStatusVal)
+                                                                            @if($spStausKey>2)
+                                                                            <option value="{{$spStausKey}}" >{{$sampleStatusVal}}</option>
+                                                                            @endif
+                                                                            @endforeach
+                                                                        </select>
+                                                                        @error('crm_sample_status.'.$sample->id) <span class="mb-4 text-danger">Select Sample Status.</span> @enderror
+                                                                    </div>
+                                                                </div>
+
+                                                                <div class="col-md-12 ps-0">
+                                                                    <div class="form-group">
+                                                                        <label for="selectCrmSampleUpdateStatus">Sample Feedback</label>
+                                                                        <select class="form-control chosen-select" wire:model="crm_sample_feedback.{{$sample->id}}" name="crm_sample_feedback" id="selectCrmSampleUpdateStatus" wire:change="checkFeedbackStatus($event.target.value)" >
                                                                             <option value="">-Select-</option>
                                                                             @foreach(config('common.sample_status_updation') as $spKey => $sampleUpdation)
                                                                             <option value="{{$spKey}}">{{$sampleUpdation}}</option>
                                                                             @endforeach
                                                                         </select>
-                                                                        @error('crm_sample_update_status.'.$sample->id) <span class="mb-4 text-danger">Select Sample Status.</span> @enderror
+                                                                        @error('crm_sample_feedback.'.$sample->id) <span class="mb-4 text-danger">Select Sample Feedback.</span> @enderror
                                                                     </div>
                                                                 </div>
+                                                                @if($nar_show)
+                                                                <div class="col-md-12 ps-0">
+                                                                    <div class="form-group">
+                                                                        <label for="selectCrmSampleUpdateStatus">Not Aproved Reasons</label>
+                                                                        <select class="form-control chosen-select" wire:model="nar_crm_sample_feedback.{{$sample->id}}" name="nar_crm_sample_feedback" id="nar_crm_sample_update_status">
+                                                                            <option value="">-Select-</option>
+                                                                            @foreach(config('common.not_approved_reasons') as $nar_spKey => $nar_sampleUpdation)
+                                                                            <option value="{{$nar_spKey}}">{{$nar_sampleUpdation}}</option>
+                                                                            @endforeach
+                                                                        </select>
+                                                                        
+                                                                    </div>
+                                                                </div>
+                                                                @endif
                                                                 <div class="col-md-12 ps-0">
                                                                     <div class="form-group mb-0" id="form-inputCrmSampleUpdateDateTime">
                                                                         <label for="inputCrmSampleUpdateDateTime" class="form-control-label required">Update Date & Time</label>
