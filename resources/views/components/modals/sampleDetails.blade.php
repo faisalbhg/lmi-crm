@@ -52,7 +52,7 @@
                                                     <a class="btn btn-link text-danger text-gradient px-3 mb-0" href="javascript:;" wire:click=updateSample('{{$sample->id}}','5')><i class="far fa-trash-alt me-2"></i>Reject</a>
                                                     <a class="btn btn-link text-success px-3 mb-0" href="javascript:;" wire:click=updateSample('{{$sample->id}}','{{$sample->status+1}}')><i class="fas fa-pencil-alt text-success me-2" aria-hidden="true"></i>Aprove</a>
                                                      @endif
-                                                @elseif($sample->status!=5)
+                                                @elseif($sample->status==1 || $sample->status==2)
                                                 
                                                     @if(Session::get('user')->usertype == config('common.sample_status_action_userType')[$sample->status])
                                                     <h6 class="mb-0">Make Action </h6>
