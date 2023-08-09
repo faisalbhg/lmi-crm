@@ -738,7 +738,7 @@ class Crm extends Component
         }
     }
 
-    public function emailFrozenSampleRequest(){
+    public function emailFrozenSampleRequest($crmId){
         $files=null;
         $mailData = [
             'name' => 'Team',
