@@ -29,7 +29,9 @@
                                     <li class="list-group-item border-0 d-flex p-4 mb-2 bg-gray-100 border-radius-lg">
                                         <div class="row">
                                             <div class="d-flex flex-column">
-                                                <h6 class="mb-3 text-sm">{{$sample->partDescription}}</h6>
+                                                <h6 class="mb-0 text-sm">{{$sample->partDescription}}</h6>
+                                                <h6 class="mb-0 text-sm text-dark">Quantity: {{$sample->itemQty}}</h6>
+                                                <h6 class="mb-3 text-sm text-dark">Brand: {{$sample->itemBrand}}</h6>
                                                 <span class="mb-2 text-xs">Part Num: <span
                                                         class="text-dark font-weight-bold ms-2">{{$sample->partNum}}</span></span>
                                                 <span class="text-xs">Product Code: <span class="text-dark ms-2 font-weight-bold">{{$sample->prodCode}}</span></span>

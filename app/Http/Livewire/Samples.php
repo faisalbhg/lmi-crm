@@ -157,7 +157,7 @@ class Samples extends Component
                 WHEN sample_logs.status = 5 THEN "Delivered" 
                 WHEN sample_logs.status = 6 THEN "Rejected"
                 END) AS sample_status'),
-            'samples.partNum','samples.partDescription','samples.prodCode','samples.itemBrand',
+            'samples.partNum','samples.partDescription','samples.prodCode','samples.itemBrand','samples.itemQty',
             \DB::raw('(CASE 
                 WHEN crms.newCustomer = 0 THEN "Existing Customer" 
                 WHEN crms.newCustomer = 1 THEN "New Customer" 
