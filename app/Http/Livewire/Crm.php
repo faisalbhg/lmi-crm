@@ -603,7 +603,9 @@ class Crm extends Component
                 $sampleData['created_by'] = Session::get('user')->id;
                 $this->saveSampleRequest($sampleData);
 
-                if($this->selectedSampleItemCategory[$samKey]=='FROZEN' && $sendfrozenemail == false){
+                if (str_contains($this->selectedSampleItemCategory[$samKey], 'FROZEN') && $sendfrozenemail == false) { 
+
+                
                     $sendfrozenemail=true;
                     $sendNormalSampleEmail=false;
                 }
