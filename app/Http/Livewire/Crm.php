@@ -49,7 +49,7 @@ class Crm extends Component
     
 
     public $crmId, $related_to, $search_sample_item, $deligated_to;
-    public $selectedSampleItemCompany=[], $selectedSampleItemPartNum=[], $selectedSampleItemSearchWord=[], $selectedSampleItemProdCode=[],$selectedSampleItemBrand=[],$selectedSampleItemQty=[];
+    public $selectedSampleItemCompany=[], $selectedSampleItemPartNum=[], $selectedSampleItemSearchWord=[], $selectedSampleItemProdCode=[],$selectedSampleItemBrand=[],$selectedSampleItemCategory=[],$selectedSampleItemQty=[];
     public $newCustomer=true, $selectedCustomer;
     public $crm_start_date_time, $crm_end_date_time, $crm_followup_date_time;
     public $customer_name, $customer_email, $country = 237, $country_code = 971, $territory, $mobile_no, $phone_no, $company_address, $customer_type, $business_category, $marketing_channel, $quote_estimated_value, $brands_list = [], $competitor_brands_list = [], $othre_brands_list = [], $selected_brands_list = [], $our_brand=[], $competitor_brand=[], $othre_brand = [], $crm_description;
@@ -322,7 +322,7 @@ class Crm extends Component
         $itemName = str_replace(" ","%20",$this->search_sample_item);
         $itemName = str_replace("&","%26",$itemName);
         $parcodeSearch = "or%20indexof%28ProdCode%2C%20%27".$itemName."%27%29%20eq%201%20";
-        $getSamplePartApiUrl = $apiUrl."?$select=Company,PartNum,SearchWord,PartDescription,ProdCode,Brand_c&$filter=indexof%28PartDescription%2C%20%27".$itemName."%27%29%20eq%201%20".$parcodeSearch.'and%20'.$companyFilter;
+        $getSamplePartApiUrl = $apiUrl."?$select=Company,PartNum,SearchWord,PartDescription,ProdCode,Brand_c,Category_c&$filter=indexof%28PartDescription%2C%20%27".$itemName."%27%29%20eq%201%20".$parcodeSearch.'and%20'.$companyFilter;
         //dd($getSamplePartApiUrl);
         $response = Http::withBasicAuth('manager', 'manager')->get($getSamplePartApiUrl);
         $response = json_decode((string) $response->getBody(), true);
@@ -343,6 +343,7 @@ class Crm extends Component
         $this->selectedSampleItemPartDescription[$sample->PartNum] = $sample->PartDescription;
         $this->selectedSampleItemProdCode[$sample->PartNum] = $sample->ProdCode;
         $this->selectedSampleItemBrand[$sample->PartNum] = $sample->Brand_c;
+        $this->selectedSampleItemCategory[$sample->PartNum] = $sample->Category_c;
         $this->selectedSampleItemQty[$sample->PartNum] = 1;
 
         $this->showSampleItemSelected = true;
@@ -357,6 +358,7 @@ class Crm extends Component
         unset($this->selectedSampleItemPartDescription[$keyId]);
         unset($this->selectedSampleItemProdCode[$keyId]);
         unset($this->selectedSampleItemBrand[$keyId]);
+        unset($this->selectedSampleItemCategory[$keyId]);
         unset($this->selectedSampleItemQty[$keyId]);
 
         
@@ -565,6 +567,8 @@ class Crm extends Component
 
         if($this->related_to==4)
         {
+            $sendfrozenemail=false;
+            $sendNormalSampleEmail=false;
             
             foreach($this->selectedSampleItemPartDescription as $samKey => $sampleItemList)
             {
@@ -575,6 +579,7 @@ class Crm extends Component
                 $sampleData['partDescription'] = $sampleItemList;
                 $sampleData['prodCode'] = $this->selectedSampleItemProdCode[$samKey];
                 $sampleData['itemBrand'] = $this->selectedSampleItemBrand[$samKey];
+                $sampleData['itemCategory'] = $this->selectedSampleItemCategory[$samKey];
                 $sampleData['itemQty'] = $this->selectedSampleItemQty[$samKey];
 
 
@@ -597,8 +602,24 @@ class Crm extends Component
                 $sampleData['department'] = 0;
                 $sampleData['created_by'] = Session::get('user')->id;
                 $this->saveSampleRequest($sampleData);
+
+                if($this->selectedSampleItemCategory[$samKey]=='FROZEN' && $sendfrozenemail == false){
+                    $sendfrozenemail=true;
+                    $sendNormalSampleEmail=false;
+                }
+                else if($sendNormalSampleEmail == false){
+                    $sendfrozenemail=false;
+                    $sendNormalSampleEmail=true;
+                }
             }
-            $this->emailSampleRequest($this->crmId);
+            if($sendfrozenemail==true)
+            {
+                $this->emailFrozenSampleRequest($this->crmId);
+            }
+
+            if($sendNormalSampleEmail==true){
+                $this->emailSampleRequest($this->crmId);
+            }
             
         }
         else if($this->related_to==9){
@@ -713,6 +734,26 @@ class Crm extends Component
                 }            
             });
         }
+    }
+
+    public function emailFrozenSampleRequest(){
+        $files=null;
+        $mailData = [
+            'name' => 'Team',
+            'body' => 'New Sample Request are created, check the below link to view the sample requests '.URL::to("/sample-details/".$crmId),
+            'title' => 'CRM Samples Requests Approvals',
+            'email' => 'sales.co1@lmi.ae',
+        ];
+        Mail::send('emails.crm_email', $mailData, function($message)use($mailData, $files) {
+            $message->subject($mailData['title']);
+            $message->to($mailData["email"]);
+            $message->bcc('faisal@buhaleeba.ae');
+            if($files){
+                foreach ($files as $file){
+                    $message->attach($file);
+                }
+            }            
+        });
     }
 
     public function crmView($id){

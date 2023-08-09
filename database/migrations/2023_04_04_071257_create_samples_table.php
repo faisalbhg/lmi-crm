@@ -29,9 +29,12 @@ return new class extends Migration
             $table->string('partNum')->nullable();
             $table->text('partDescription')->nullable();
             $table->text('prodCode')->nullable();
+            $table->string('itemCategory')->nullable();
             $table->string('itemBrand')->nullable();
             $table->integer('itemQty')->nullable();
             $table->integer('status')->nullable();
+            $table->string('sample_feedback')->nullable();
+            $table->text('sample_feedback_reason')->nullable();
             $table->integer('department')->nullable();
             $table->integer('is_emailed')->nullable();
             $table->integer('is_deleted')->nullable();

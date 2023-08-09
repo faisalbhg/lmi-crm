@@ -26,6 +26,7 @@ class Sample extends Model
         'partNum',
         'partDescription',
         'prodCode',
+        'itemCategory',
         'itemBrand',
         'itemQty',
         'status',
