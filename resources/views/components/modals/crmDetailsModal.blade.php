@@ -436,7 +436,7 @@
                                                                         <label for="selectCrmSampleUpdateStatus">Sample Feedback</label>
                                                                         <select class="form-control chosen-select" wire:model="crm_sample_feedback.{{$sample->id}}" name="crm_sample_feedback" id="selectCrmSampleUpdateStatus" wire:change="checkFeedbackStatus($event.target.value)" >
                                                                             <option value="">-Select-</option>
-                                                                            @foreach(config('common.sample_status_updation') as $spKey => $sampleUpdation)
+                                                                            @foreach(config('common.sample_feedback') as $spKey => $sampleUpdation)
                                                                             <option value="{{$spKey}}">{{$sampleUpdation}}</option>
                                                                             @endforeach
                                                                         </select>
@@ -449,7 +449,7 @@
                                                                         <label for="selectCrmSampleUpdateStatus">Not Aproved Reasons</label>
                                                                         <select class="form-control chosen-select" wire:model="nar_crm_sample_feedback.{{$sample->id}}" name="nar_crm_sample_feedback" id="nar_crm_sample_update_status">
                                                                             <option value="">-Select-</option>
-                                                                            @foreach(config('common.not_approved_reasons') as $nar_spKey => $nar_sampleUpdation)
+                                                                            @foreach(config('common.sample_feedback_reason') as $nar_spKey => $nar_sampleUpdation)
                                                                             <option value="{{$nar_spKey}}">{{$nar_sampleUpdation}}</option>
                                                                             @endforeach
                                                                         </select>

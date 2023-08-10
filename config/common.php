@@ -345,7 +345,7 @@ return [
 		"20"=>"Followed and converted",
 	],
 
-	'sample_status_updation' => [
+	'sample_feedback' => [
 		"13"=> "Approved",
 		"14"=> "Pending",
 		/*"15"=> "Approved but don’t want to add to menu",
@@ -355,7 +355,7 @@ return [
 		"19"=> "Not Approved"
 	],
 
-	"not_approved_reasons"=>[
+	"sample_feedback_reason"=>[
 		"1"=>"Not Approved due to price",
 		"2"=>"Not Aproved due tp Quality",
 		"3"=>"Client don’t want to add to menu"

@@ -1171,6 +1171,7 @@ class Crm extends Component
 
     public function crmUpdateSample($sample)
     {
+        //dd($this);
         $sampleId = $sample['id'];
         $crm_id = $sample['crm_id'];
         $validatedData = $this->validate([
@@ -1187,7 +1188,7 @@ class Crm extends Component
         Sample::find($sampleId)->update([
             'status'=>$this->crm_sample_status[$sampleId],
             'sample_feedback'=>$this->crm_sample_feedback[$sampleId],
-            'sample_feedback_reason'=>$this->nar_crm_sample_feedback[$sampleId]
+            'sample_feedback_reason'=>isset($this->nar_crm_sample_feedback[$sampleId])?$this->nar_crm_sample_feedback[$sampleId]:''
         ]);
         
         $sampleInsertLog = [
@@ -1196,7 +1197,7 @@ class Crm extends Component
             'department'=>$sample['department'],
             'sample_feedback'=>$this->crm_sample_feedback[$sampleId],
             'sample_feedback_reason'=>isset($this->nar_crm_sample_feedback[$sampleId])?$this->nar_crm_sample_feedback[$sampleId]:'',
-            'updates'=>json_encode(['sample_feedback'=>$this->crm_sample_feedback[$sampleId],'sample_feedback_reason'=>$this->nar_crm_sample_feedback[$sampleId]]),
+            'updates'=>json_encode(['sample_feedback'=>$this->crm_sample_feedback[$sampleId],'sample_feedback_reason'=>isset($this->nar_crm_sample_feedback[$sampleId])?$this->nar_crm_sample_feedback[$sampleId]:'']),
             'created_by'=>Session::get('user')->id
         ];
         SampleLogs::create($sampleInsertLog);
@@ -1206,12 +1207,12 @@ class Crm extends Component
         $crmUpdateLogData['crm_id']=$crm_id;
         $crmUpdateLogData['description'] = json_encode($crmUpdateData);
         $crmUpdateLogData['action_message'] = $this->crm_sample_action_message[$sampleId];
-        $crmUpdateLogData['crm_status'] = $this->crm_sample_update_status[$sampleId];
-        $crmUpdateLogData['crm_action'] = $this->crm_sample_update_status[$sampleId];
+        $crmUpdateLogData['crm_status'] = $this->crm_sample_status[$sampleId];
+        $crmUpdateLogData['crm_action'] = $this->crm_sample_status[$sampleId];
         $crmUpdateLogData['crm_updation_date_time'] = $this->crm_sample_updation_date_time[$sampleId];
         CrmLogs::create($crmUpdateLogData);
 
-        $this->dtl_crm_status=$this->crm_sample_update_status[$sampleId];
+        $this->dtl_crm_status=$this->crm_sample_status[$sampleId];
         $this->crm_updation_date_time=null;
         $this->log_quote_estimated_value=null;
         $this->order_number=null;

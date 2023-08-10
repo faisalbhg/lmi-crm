@@ -12,6 +12,8 @@ class SampleLogs extends Model
     protected $fillable = [
         'sample_order_id',
         'updates',
+        'sample_feedback',
+        'sample_feedback_reason',
         'status',
         'department',
         'command',
