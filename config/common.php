@@ -357,7 +357,7 @@ return [
 
 	"sample_feedback_reason"=>[
 		"1"=>"Not Approved due to price",
-		"2"=>"Not Aproved due tp Quality",
+		"2"=>"Not Aproved due to Quality",
 		"3"=>"Client don’t want to add to menu"
 	],
 	"SampleBeverageAprovals"=>[
