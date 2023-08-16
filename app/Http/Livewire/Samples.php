@@ -166,7 +166,7 @@ class Samples extends Component
             \DB::raw('(CASE 
                 WHEN sample_logs.sample_feedback_reason = 0 THEN "" 
                 WHEN sample_logs.sample_feedback_reason = 1 THEN "Not Approved due to price" 
-                WHEN sample_logs.sample_feedback_reason = 2 THEN "Not Aproved due t0 Quality" 
+                WHEN sample_logs.sample_feedback_reason = 2 THEN "Not Aproved due to Quality" 
                 WHEN sample_logs.sample_feedback_reason = 3 THEN "Client don’t want to add to menu" 
                 END) AS sample_feedback_reason'),
             'samples.partNum','samples.partDescription','samples.prodCode','samples.itemBrand','samples.itemQty',
