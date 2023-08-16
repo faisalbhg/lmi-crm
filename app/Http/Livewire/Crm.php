@@ -321,7 +321,7 @@ class Crm extends Component
         $apiUrl = "https://lmi-epic-app02.buhaleeba.ae/erp11live/api/v1/Erp.BO.PartSvc/Parts";
         $itemName = str_replace(" ","%20",$this->search_sample_item);
         $itemName = str_replace("&","%26",$itemName);
-        $parcodeSearch = "or%20indexof%28ProdCode%2C%20%27".$itemName."%27%29%20eq%201%20";
+        $parcodeSearch = "or%20indexof%28ProdCode%2C%20%27".$itemName."%27%29%20eq%201%20or%20indexof%28Sup_Part_c%2C%20%27".$itemName."%27%29%20eq%201%20";
         $getSamplePartApiUrl = $apiUrl."?$select=Company,PartNum,SearchWord,PartDescription,ProdCode,Brand_c,Category_c&$filter=indexof%28PartDescription%2C%20%27".$itemName."%27%29%20eq%201%20".$parcodeSearch.'and%20'.$companyFilter;
         //dd($getSamplePartApiUrl);
         $response = Http::withBasicAuth('manager', 'manager')->get($getSamplePartApiUrl);
@@ -569,6 +569,7 @@ class Crm extends Component
         {
             $sendfrozenemail=false;
             $sendNormalSampleEmail=false;
+            $sendBeverageSampleEmail=false;
             
             foreach($this->selectedSampleItemPartDescription as $samKey => $sampleItemList)
             {
@@ -607,11 +608,14 @@ class Crm extends Component
 
                 
                     $sendfrozenemail=true;
-                    $sendNormalSampleEmail=false;
+                    //$sendNormalSampleEmail=false;
                 }
                 else if($sendNormalSampleEmail == false){
-                    $sendfrozenemail=false;
+                    //$sendfrozenemail=false;
                     $sendNormalSampleEmail=true;
+                }
+                else if((in_array($this->selectedSampleItemBrand[$samKey], config('common.SampleBeverageAprovals'))) && $sendBeverageSampleEmail == false)
+                    $sendBeverageSampleEmail=true;
                 }
             }
             if($sendfrozenemail==true)
@@ -621,6 +625,10 @@ class Crm extends Component
 
             if($sendNormalSampleEmail==true){
                 $this->emailSampleRequest($this->crmId);
+            }
+
+            if($sendBeverageSampleEmail==true){
+                $this->emailBeverageSampleRequest($this->crmId);
             }
             
         }
@@ -745,6 +753,26 @@ class Crm extends Component
             'body' => 'New Sample Request are created, check the below link to view the sample requests '.URL::to("/sample-details/".$crmId),
             'title' => 'CRM Samples Requests Approvals',
             'email' => 'sales.co1@lmi.ae',
+        ];
+        Mail::send('emails.crm_email', $mailData, function($message)use($mailData, $files) {
+            $message->subject($mailData['title']);
+            $message->to($mailData["email"]);
+            $message->bcc('faisal@buhaleeba.ae');
+            if($files){
+                foreach ($files as $file){
+                    $message->attach($file);
+                }
+            }            
+        });
+    }
+
+    public function emailBeverageSampleRequest($crmId){
+        $files=null;
+        $mailData = [
+            'name' => 'FNB Team',
+            'body' => 'New Sample Request are created, check the below link to view the sample requests '.URL::to("/sample-details/".$crmId),
+            'title' => 'CRM FNB Samples Requests Approvals',
+            'email' => 'cm@lmi.ae',
         ];
         Mail::send('emails.crm_email', $mailData, function($message)use($mailData, $files) {
             $message->subject($mailData['title']);

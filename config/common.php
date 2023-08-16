@@ -360,7 +360,16 @@ return [
 		"2"=>"Not Aproved due tp Quality",
 		"3"=>"Client don’t want to add to menu"
 	],
-
+	"SampleBeverageAprovals"=>[
+		"ROUTIN 1883",
+		"MEC3 IN CUPS",
+		"PELLINI",
+		"MIA FNB",
+		"JAF TEA",
+		"COLAC",
+		"SWEETBIRD",
+		"ROASTERY",
+	],
 
 ];
 
