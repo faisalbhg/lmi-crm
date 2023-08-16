@@ -16,6 +16,7 @@ use App\Http\Livewire\Rtl;
 
 use App\Http\Livewire\Crm;
 use App\Http\Livewire\Samples;
+use App\Http\Livewire\CustomerFeedback;
 
 use App\Http\Livewire\LaravelExamples\UserProfile;
 use App\Http\Livewire\LaravelExamples\UserManagement;
@@ -52,6 +53,10 @@ Route::middleware('auth')->group(function () {
     //Samples
     Route::get('/samples', Samples::class)->name('samples');
     Route::get('/sample-details/{id}',Samples::class)->name('sample_details');
+
+    //Customer Feedback
+    Route::get('/customer-feedback', CustomerFeedback::class)->name('customer-feedback');
+    Route::get('/customer-feedback-details/{id}',CustomerFeedback::class)->name('customer-feedback-details');
 
 
     Route::get('/dashboard', Dashboard::class)->name('dashboard');

@@ -103,7 +103,7 @@ class Samples extends Component
         $this->sampleInfo = Sample::with('userInfo')->with('teritoryInfo')->with('countryInfo')->where('crm_id','=',$sampleOrderDtls->crm_id)->first();
 
         if($status==1){
-            $userDetails = User::where(['usertype'=>7])->get();
+            $userDetails = User::where(['sample_showroom_aprove'=>1])->get();
             $files=null;
             foreach($userDetails as $sendUser){
                 $mailData = [

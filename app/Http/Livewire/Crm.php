@@ -716,7 +716,7 @@ class Crm extends Component
 
     public function emailSampleRequest($crmId)
     {
-        $userDetails = User::where(['usertype'=>6])->get();
+        $userDetails = User::where(['sample_brand_aprove'=>1])->get();
         $files=null;
         foreach($userDetails as $sendEMail){
             $mailData = [

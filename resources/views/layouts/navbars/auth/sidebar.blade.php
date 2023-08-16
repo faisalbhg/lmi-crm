@@ -43,6 +43,23 @@
                 </a>
             </li>
             @endif
+            @if(Session::get('user')->isadmin || Session::get('user')->usertype == 7  || Session::get('user')->feedbackSettings)
+            <li class="nav-item mt-2">
+                <h6 class="ps-4 ms-2 text-uppercase text-xs font-weight-bolder opacity-6">Feedback</h6>
+            </li>
+            @endif
+            @if(Session::get('user')->usertype == 1)
+            <li class="nav-item pb-2">
+                <a class="nav-link {{ Route::currentRouteName() == 'customer-feedback' ? 'active' : '' }}"
+                    href="{{ route('customer-feedback') }}">
+                    <div
+                        class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
+                        <i class="fa fa-user text-lg opacity-10 {{ in_array(request()->route()->getName(),['customer-feedback']) ? 'text-white' : 'text-dark' }}" aria-hidden="true"></i>
+                    </div>
+                    <span class="nav-link-text ms-1">Customer Feedback</span>
+                </a>
+            </li>
+            @endif
             @if(Session::get('user')->usertype == 1)
             <li class="nav-item mt-2">
                 <h6 class="ps-4 ms-2 text-uppercase text-xs font-weight-bolder opacity-6">Laravel Examples</h6>
