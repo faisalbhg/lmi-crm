@@ -614,9 +614,10 @@ class Crm extends Component
                     //$sendfrozenemail=false;
                     $sendNormalSampleEmail=true;
                 }
-                else if((in_array($this->selectedSampleItemBrand[$samKey], config('common.SampleBeverageAprovals'))) && $sendBeverageSampleEmail == false)
+                else if( (in_array($this->selectedSampleItemBrand[$samKey], config('common.SampleBeverageAprovals'))) && $sendBeverageSampleEmail == false){
                     $sendBeverageSampleEmail=true;
                 }
+                
             }
             if($sendfrozenemail==true)
             {
