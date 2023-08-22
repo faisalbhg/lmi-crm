@@ -2,11 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\CustmerFeedbackValues;
-use App\Http\Requests\StoreCustmerFeedbackValuesRequest;
-use App\Http\Requests\UpdateCustmerFeedbackValuesRequest;
+use App\Models\CustomerFeedbacks;
+use App\Http\Requests\StoreCustomerFeedbacksRequest;
+use App\Http\Requests\UpdateCustomerFeedbacksRequest;
 
-class CustmerFeedbackValuesController extends Controller
+class CustomerFeedbacksController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -27,7 +27,7 @@ class CustmerFeedbackValuesController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StoreCustmerFeedbackValuesRequest $request)
+    public function store(StoreCustomerFeedbacksRequest $request)
     {
         //
     }
@@ -35,7 +35,7 @@ class CustmerFeedbackValuesController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(CustmerFeedbackValues $custmerFeedbackValues)
+    public function show(CustomerFeedbacks $customerFeedbacks)
     {
         //
     }
@@ -43,7 +43,7 @@ class CustmerFeedbackValuesController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(CustmerFeedbackValues $custmerFeedbackValues)
+    public function edit(CustomerFeedbacks $customerFeedbacks)
     {
         //
     }
@@ -51,7 +51,7 @@ class CustmerFeedbackValuesController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateCustmerFeedbackValuesRequest $request, CustmerFeedbackValues $custmerFeedbackValues)
+    public function update(UpdateCustomerFeedbacksRequest $request, CustomerFeedbacks $customerFeedbacks)
     {
         //
     }
@@ -59,7 +59,7 @@ class CustmerFeedbackValuesController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(CustmerFeedbackValues $custmerFeedbackValues)
+    public function destroy(CustomerFeedbacks $customerFeedbacks)
     {
         //
     }

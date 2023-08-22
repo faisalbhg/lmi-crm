@@ -2,11 +2,11 @@
 
 namespace App\Policies;
 
-use App\Models\CustmerFeedbackValues;
+use App\Models\CustomerFeedbackQtn;
 use App\Models\User;
 use Illuminate\Auth\Access\Response;
 
-class CustmerFeedbackValuesPolicy
+class CustomerFeedbackQtnPolicy
 {
     /**
      * Determine whether the user can view any models.
@@ -19,7 +19,7 @@ class CustmerFeedbackValuesPolicy
     /**
      * Determine whether the user can view the model.
      */
-    public function view(User $user, CustmerFeedbackValues $custmerFeedbackValues): bool
+    public function view(User $user, CustomerFeedbackQtn $customerFeedbackQtn): bool
     {
         //
     }
@@ -35,7 +35,7 @@ class CustmerFeedbackValuesPolicy
     /**
      * Determine whether the user can update the model.
      */
-    public function update(User $user, CustmerFeedbackValues $custmerFeedbackValues): bool
+    public function update(User $user, CustomerFeedbackQtn $customerFeedbackQtn): bool
     {
         //
     }
@@ -43,7 +43,7 @@ class CustmerFeedbackValuesPolicy
     /**
      * Determine whether the user can delete the model.
      */
-    public function delete(User $user, CustmerFeedbackValues $custmerFeedbackValues): bool
+    public function delete(User $user, CustomerFeedbackQtn $customerFeedbackQtn): bool
     {
         //
     }
@@ -51,7 +51,7 @@ class CustmerFeedbackValuesPolicy
     /**
      * Determine whether the user can restore the model.
      */
-    public function restore(User $user, CustmerFeedbackValues $custmerFeedbackValues): bool
+    public function restore(User $user, CustomerFeedbackQtn $customerFeedbackQtn): bool
     {
         //
     }
@@ -59,7 +59,7 @@ class CustmerFeedbackValuesPolicy
     /**
      * Determine whether the user can permanently delete the model.
      */
-    public function forceDelete(User $user, CustmerFeedbackValues $custmerFeedbackValues): bool
+    public function forceDelete(User $user, CustomerFeedbackQtn $customerFeedbackQtn): bool
     {
         //
     }

@@ -11,12 +11,8 @@ return new class extends Migration
      */
     public function up(): void
     {
-        
-        Schema::create('custmer_feedback', function (Blueprint $table) {
+        Schema::create('customer_feedbacks', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('feedback_id');
-            $table->text('feedback_question');
-            $table->string('feedback_answer')->nullable();
             $table->string('Company')->nullable();
             $table->string('CustID')->nullable();
             $table->string('CustNum')->nullable();
@@ -37,7 +33,6 @@ return new class extends Migration
             $table->integer('updated_by')->nullable();
             $table->integer('deleted_by')->nullable();
             $table->timestamps();
-            $table->foreign('feedback_id')->references('id')->on('custmer_feedback_values')->onDelete('cascade');
         });
     }
 
@@ -46,6 +41,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('custmer_feedback');
+        Schema::dropIfExists('customer_feedbacks');
     }
 };

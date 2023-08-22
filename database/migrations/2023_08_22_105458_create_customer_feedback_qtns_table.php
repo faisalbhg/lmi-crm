@@ -11,7 +11,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('custmer_feedback_values', function (Blueprint $table) {
+        Schema::create('customer_feedback_qtns', function (Blueprint $table) {
             $table->id();
             $table->text('feedback_question');
             $table->integer('feedback_type')->nullable();
@@ -29,6 +29,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('custmer_feedback_values');
+        Schema::dropIfExists('customer_feedback_qtns');
     }
 };

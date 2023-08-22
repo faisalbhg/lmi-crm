@@ -2,11 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\CustmerFeedback;
-use App\Http\Requests\StoreCustmerFeedbackRequest;
-use App\Http\Requests\UpdateCustmerFeedbackRequest;
+use App\Models\CustomerFeedbackEntries;
+use App\Http\Requests\StoreCustomerFeedbackEntriesRequest;
+use App\Http\Requests\UpdateCustomerFeedbackEntriesRequest;
 
-class CustmerFeedbackController extends Controller
+class CustomerFeedbackEntriesController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -27,7 +27,7 @@ class CustmerFeedbackController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StoreCustmerFeedbackRequest $request)
+    public function store(StoreCustomerFeedbackEntriesRequest $request)
     {
         //
     }
@@ -35,7 +35,7 @@ class CustmerFeedbackController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(CustmerFeedback $custmerFeedback)
+    public function show(CustomerFeedbackEntries $customerFeedbackEntries)
     {
         //
     }
@@ -43,7 +43,7 @@ class CustmerFeedbackController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(CustmerFeedback $custmerFeedback)
+    public function edit(CustomerFeedbackEntries $customerFeedbackEntries)
     {
         //
     }
@@ -51,7 +51,7 @@ class CustmerFeedbackController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateCustmerFeedbackRequest $request, CustmerFeedback $custmerFeedback)
+    public function update(UpdateCustomerFeedbackEntriesRequest $request, CustomerFeedbackEntries $customerFeedbackEntries)
     {
         //
     }
@@ -59,7 +59,7 @@ class CustmerFeedbackController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(CustmerFeedback $custmerFeedback)
+    public function destroy(CustomerFeedbackEntries $customerFeedbackEntries)
     {
         //
     }
