@@ -19,7 +19,7 @@
                             </div>
                             <div class="float-end">
                                 <button class="btn btn-primary btn-sm active mb-0 text-white float-end" role="button" aria-pressed="true" wire:click="newFeedBackForm()"> New FeedBack </button>
-                                <button class="btn btn-success btn-sm active mx-2 mb-0 text-white float-end" role="button" aria-pressed="true" wire:click="exportExcelCRM">Export</button>
+                                <!-- <button class="btn btn-success btn-sm active mx-2 mb-0 text-white float-end" role="button" aria-pressed="true" wire:click="exportExcelCRM">Export</button> -->
                             </div>
                         </div>
                     </div>
