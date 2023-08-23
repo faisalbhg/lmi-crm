@@ -125,8 +125,8 @@
                                             <div class="d-flex align-items-start flex-column justify-content-center">
                                                 <h6 class="mb-0 text-sm"><?=$krycfV+1;?>. {{$customerFeedbacks->feedback_question}}</h6>
                                                 <input type="text" class="form-control" placeholder="Answer..!" aria-label="Answer..!" wire:model="customer_feedback_qtn.{{$customerFeedbacks->id}}"  name="customer_feedback_qtn">
-                                                <!-- <button type="button" class="float-end btn bg-gradient-info mt-2" wire:click="saveCF()">Submit</button> --><!-- 
-                                                <a class="btn bg-gradient-info pe-3 ps-0 mb-0 ms-auto" href="javascript:;">Save Reply</a> -->
+                                                @error('customer_feedback_qtn.'.$customerFeedbacks->id) <span class="mb-4 text-danger">Feedback is misssing..! </span> @enderror
+                                                
                                             </div>
                                             
                                             

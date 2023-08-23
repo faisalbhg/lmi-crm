@@ -119,7 +119,11 @@ class CustomerFeedback extends Component
 
     public function saveCF()
     {
-        //dd($this);
+        foreach($this->customerFeedbackValues as $keyCFQQQTn => $customer_feedback_answerQtn){
+            $validateCrmSave['customer_feedback_qtn.'.$customer_feedback_answerQtn->id] = 'required';
+        }
+        $validatedData = $this->validate($validateCrmSave);
+        
         $newCFMain['Company']=$this->Company;
         $newCFMain['CustID'] = $this->CustID;
         $newCFMain['CustNum'] = $this->CustNum;
