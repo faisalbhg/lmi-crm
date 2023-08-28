@@ -58,6 +58,23 @@
                 </a>
             </li>
             @endif
+
+            @if(Session::get('user')->isadmin  || Session::get('user')->lsSettings==1)
+            <li class="nav-item mt-2">
+                <h6 class="ps-4 ms-2 text-uppercase text-xs font-weight-bolder opacity-6">Location Solution</h6>
+            </li>
+            <li class="nav-item pb-2">
+                <a class="nav-link {{ Route::currentRouteName() == 'location-solution' ? 'active' : '' }}"
+                    href="{{ route('location-solution') }}">
+                    <div
+                        class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
+                        <i class="fa fa-map-marker text-lg opacity-10 {{ in_array(request()->route()->getName(),['location-solution']) ? 'text-white' : 'text-dark' }}" aria-hidden="true"></i>
+                    </div>
+                    <span class="nav-link-text ms-1">Location Solution</span>
+                </a>
+            </li>
+            @endif
+
             @if(Session::get('user')->usertype == 1)
             <li class="nav-item mt-2">
                 <h6 class="ps-4 ms-2 text-uppercase text-xs font-weight-bolder opacity-6">Laravel Examples</h6>
