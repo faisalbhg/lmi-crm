@@ -103,18 +103,18 @@ class Samples extends Component
         $this->sampleInfo = Sample::with('userInfo')->with('teritoryInfo')->with('countryInfo')->where('crm_id','=',$sampleOrderDtls->crm_id)->first();
 
         if($status==1){
-            $userDetails = User::where(['sample_showroom_aprove'=>1])->get();
-            $files=null;
-            foreach($userDetails as $sendUser){
-                $mailData = [
-                    'name' => $sendUser->name,
+            if($sampleOrderDtls->userInfo['company'] =='CO03')
+            {
+                $files=null;
+                $mailData1 = [
+                    'name' => 'FAITH JOAN CALAGUAN',
                     'body' => 'New Sample Preparation Request are created, check the below link to view the sample requests '.URL::to("/sample-details/".$sampleOrderDtls->crm_id),
                     'title' => 'CRM Samples Preparation Requests Approvals',
-                    'email' => $sendUser->email,
+                    'email' => 'admin@lmi.om',
                 ];
-                Mail::send('emails.crm_email', $mailData, function($message)use($mailData, $files) {
-                    $message->subject($mailData['title']);
-                    $message->to($mailData["email"]);
+                Mail::send('emails.crm_email', $mailData1, function($message)use($mailData1, $files) {
+                    $message->subject($mailData1['title']);
+                    $message->to($mailData1["email"]);
                     $message->bcc('faisal@buhaleeba.ae');
                     if($files){
                         foreach ($files as $file){
@@ -123,18 +123,44 @@ class Samples extends Component
                     }            
                 });
             }
+            else
+            {
+
+                $userDetails = User::where(['sample_showroom_aprove'=>1])->get();
+                $files=null;
+                foreach($userDetails as $sendUser){
+                    $mailData2 = [
+                        'name' => $sendUser->name,
+                        'body' => 'New Sample Preparation Request are created, check the below link to view the sample requests '.URL::to("/sample-details/".$sampleOrderDtls->crm_id),
+                        'title' => 'CRM Samples Preparation Requests Approvals',
+                        'email' => $sendUser->email,
+                    ];
+                    Mail::send('emails.crm_email', $mailData2, function($message)use($mailData2, $files) {
+                        $message->subject($mailData2['title']);
+                        $message->to($mailData2["email"]);
+                        $message->bcc('faisal@buhaleeba.ae');
+                        if($files){
+                            foreach ($files as $file){
+                                $message->attach($file);
+                            }
+                        }            
+                    });
+                }
+            }
+
+
         }
 
         $files = null;
-        $mailData = [
+        $mailData3 = [
             'name' => $sampleOrderDtls->userInfo['name'],
             'body' => 'Your sample request is '.config('common.sample_status')[$status].', please find the Sample request details '.URL::to("/crm-details/".$sampleOrderDtls->crm_id),
             'title' => 'Sample Status: '.config('common.sample_status')[$status],
             'email' => $sampleOrderDtls->userInfo['email'],
         ];
-        Mail::send('emails.crm_email', $mailData, function($message)use($mailData, $files) {
-            $message->subject($mailData['title']);
-            $message->to($mailData["email"]);
+        Mail::send('emails.crm_email', $mailData3, function($message)use($mailData3, $files) {
+            $message->subject($mailData3['title']);
+            $message->to($mailData3["email"]);
             $message->bcc('faisal@buhaleeba.ae');
             if($files){
                 foreach ($files as $file){
