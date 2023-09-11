@@ -1211,8 +1211,14 @@ class Crm extends Component
             'crm_sample_action_message.'.$sampleId => 'required',
         ]);
 
-        $crmUpdateData['crm_status'] = $this->crm_sample_status[$sampleId];
-        $crmUpdateData['crm_action'] = $this->crm_sample_status[$sampleId];
+        $crmSampleUpdateStatus=3;
+        if($this->crm_sample_status[$sampleId]==3 || $this->crm_sample_status[$sampleId]==4)
+        {
+            $crmSampleUpdateStatus=4;
+        }
+
+        $crmUpdateData['crm_status'] = $crmSampleUpdateStatus;
+        $crmUpdateData['crm_action'] = $crmSampleUpdateStatus;
         $crmUpdateData['crm_updation_date_time'] = $this->crm_sample_updation_date_time[$sampleId];
 
         Sample::find($sampleId)->update([

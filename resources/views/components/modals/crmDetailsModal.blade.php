@@ -238,7 +238,6 @@
                                 </div>
                             </li>
                             
-
                             
                         </ul>
                     </div>
@@ -413,8 +412,6 @@
                                                             @if(Session::get('user')->usertype == config('common.sample_status_action_userType')[$sample->status])
                                                             <h6 class="mb-0">Make Action </h6>
                                                             
-                                                            
-
                                                             <div class="row p-0 m-0 mt-2">
                                                                 <div class="col-md-12 ps-0">
                                                                     <div class="form-group">

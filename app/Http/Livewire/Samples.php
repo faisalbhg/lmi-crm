@@ -147,15 +147,15 @@ class Samples extends Component
     }
 
     public function exportExcelSample(){
-        
+
         $sampleQuery = SampleLogs::select('samples.crm_id','samples.id',
             \DB::raw('(CASE 
                 WHEN sample_logs.status = 0 THEN "Sample Requested" 
                 WHEN sample_logs.status = 1 THEN "Brand Aproved" 
                 WHEN sample_logs.status = 2 THEN "Showroom Forwarded to Sales" 
-                WHEN sample_logs.status = 4 THEN "Dispatched" 
-                WHEN sample_logs.status = 5 THEN "Delivered" 
-                WHEN sample_logs.status = 6 THEN "Rejected"
+                WHEN sample_logs.status = 3 THEN "Dispatched" 
+                WHEN sample_logs.status = 4 THEN "Delivered" 
+                WHEN sample_logs.status = 5 THEN "Rejected"
                 END) AS sample_status'),
             \DB::raw('(CASE 
                 WHEN sample_logs.sample_feedback = 0 THEN "" 
