@@ -383,7 +383,9 @@ class Crm extends Component
             \DB::raw("(SELECT 'existing') as customer_in"),
             'customer_type','business_category','marketing_channel',
         )
-        ->where('customer_name', 'like', "%{$this->customer_name}%" )->groupBy('customer_name')->orderBy('id','DESC')->get();
+        ->where('customer_name', 'like', "%{$this->customer_name}%" )
+        ->where('company', 'like', "%{Session::get('user')->company}%" )
+        ->groupBy('customer_name')->orderBy('id','DESC')->get();
         if(count($crmDbCustomers)>0)
         {
             foreach($crmDbCustomers as $keyDbc => $dbcust)
@@ -406,12 +408,24 @@ class Crm extends Component
         }
         else
         {
+            $firscom=true;
+            $companyFilter="(";
+            foreach(explode(",",Session::get('user')->company) as $companies)
+            {
+                if($firscom==false)
+                {
+                    $companyFilter.="%20or%20";
+                }
+                $companyFilter.="Company%20eq%20'".$companies."'";
+                $firscom=false;
+            }
+            $companyFilter.=")";
             $select = '$select';
             $filter = '$filter';
             $top = '$top';
             $apiUrl = "https://lmi-epic-app02.buhaleeba.ae/erp11live/api/v1/Erp.BO.CustomerSvc/Customers";
             $customerName = str_replace(" ","%20",$this->customer_name);
-            $getCustDtlsApiUrl = $apiUrl."?$select=Company,CustID,CustNum,Name,City,State,Zip,Country,Address1,Address2,Address3,PhoneNum,EMailAddress,AddrList&$filter=indexof%28Name%2C%20%27".$customerName."%27%29%20eq%201";
+            $getCustDtlsApiUrl = $apiUrl."?$select=Company,CustID,CustNum,Name,City,State,Zip,Country,Address1,Address2,Address3,PhoneNum,EMailAddress,AddrList&$filter=indexof%28Name%2C%20%27".$customerName."%27%29%20eq%201"."%20and%20".$companyFilter;
             $response = Http::withBasicAuth('manager', 'manager')->get($getCustDtlsApiUrl);
             $response = json_decode((string) $response->getBody(), true);
             $this->customersList = $response['value'];

@@ -149,6 +149,15 @@
                                             <div class="input-group mb-3">
                                                 <input type="text" class="form-control" placeholder="Customer Name..." aria-label="Recipient's username" aria-describedby="searchCustomerNameBtn" name="customer_name" wire:model="customer_name" id="customer_name">
                                                 <button class="btn btn-outline-primary mb-0" type="button" id="searchCustomerNameBtn" wire:click="searchCustomerName">Search</button>
+                                                <div wire:loading wire:target="searchCustomerName">
+                                                    <div style="display: flex; justify-content: center; align-items: center; background-color: black; position: fixed; top: 0px; left: 0px; z-index:999999; width:100%; height:100%; opacity: .75;" >
+                                                        <div class="la-ball-beat">
+                                                            <div></div>
+                                                            <div></div>
+                                                            <div></div>
+                                                        </div>
+                                                    </div>
+                                                </div>
                                             </div>
                                             @error('customer_name') <span class="mb-4 text-danger">{{ $message }}</span> @enderror
                                         </div>
