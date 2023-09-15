@@ -377,15 +377,16 @@ class Crm extends Component
 
     public function searchCustomerName()
     {
-        $crmDbCustomers = Crms::select('customer_name as Name','country as Country','country_code_no','mobile_no as PhoneNum','phone_no','teritory as State','company_address as Address1','customer_email as EMailAddress',
+        $crmDbCustomers = Crms::select('customer_name as Name','country as Country','country_code_no','mobile_no as PhoneNum','phone_no','teritory as State','company_address as Address1','customer_email as EMailAddress','company',
             \DB::raw("(SELECT ' ') as Address2"),
             \DB::raw("(SELECT ' ') as Address3"),
             \DB::raw("(SELECT 'existing') as customer_in"),
             'customer_type','business_category','marketing_channel',
         )
         ->where('customer_name', 'like', "%{$this->customer_name}%" )
-        ->where('company', 'like', "%{Session::get('user')->company}%" )
+        //->where('company', 'like', "%{Session::get('user')->company}%" )
         ->groupBy('customer_name')->orderBy('id','DESC')->get();
+        //dd($crmDbCustomers);
         if(count($crmDbCustomers)>0)
         {
             foreach($crmDbCustomers as $keyDbc => $dbcust)
