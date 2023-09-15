@@ -430,7 +430,6 @@ class Crm extends Component
             $response = json_decode((string) $response->getBody(), true);
             $this->customersList = $response['value'];
         }
-        
         $this->showSearchCustomers=true;
     }
     public function selectCustomer($customer)
