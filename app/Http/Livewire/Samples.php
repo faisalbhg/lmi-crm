@@ -123,6 +123,26 @@ class Samples extends Component
                     }            
                 });
             }
+            else if($sampleOrderDtls->userInfo['company'] =='CO05')
+            {
+                $files=null;
+                $mailData1 = [
+                    'name' => 'Ahtasham Khan',
+                    'body' => 'New Sample Preparation Request are created, check the below link to view the sample requests '.URL::to("/sample-details/".$sampleOrderDtls->crm_id),
+                    'title' => 'CRM Samples Preparation Requests Approvals',
+                    'email' => 'cs@masdar-lmi.com',
+                ];
+                Mail::send('emails.crm_email', $mailData1, function($message)use($mailData1, $files) {
+                    $message->subject($mailData1['title']);
+                    $message->to($mailData1["email"]);
+                    $message->bcc('faisal@buhaleeba.ae');
+                    if($files){
+                        foreach ($files as $file){
+                            $message->attach($file);
+                        }
+                    }            
+                });
+            }
             else
             {
 

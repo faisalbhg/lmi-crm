@@ -620,13 +620,9 @@ class Crm extends Component
                 $this->saveSampleRequest($sampleData);
 
                 if (str_contains($this->selectedSampleItemCategory[$samKey], 'FROZEN') && $sendfrozenemail == false) { 
-
-                
                     $sendfrozenemail=true;
-                    //$sendNormalSampleEmail=false;
                 }
                 else if($sendNormalSampleEmail == false){
-                    //$sendfrozenemail=false;
                     $sendNormalSampleEmail=true;
                 }
                 else if( (in_array($this->selectedSampleItemBrand[$samKey], config('common.SampleBeverageAprovals'))) && $sendBeverageSampleEmail == false){
@@ -740,7 +736,23 @@ class Crm extends Component
 
     public function emailSampleRequest($crmId)
     {
-        $userDetails = User::where(['sample_brand_aprove'=>1])->get();
+        $isMasdar = false;
+        foreach(explode(",",Session::get('user')->company) as $companyCode)
+        {
+            if($companyCode=='CO05'){
+                $isMasdar = true;
+            }
+        }
+
+        if($isMasdar==true){
+            $userDetails = User::where(['sample_brand_aprove_masdar'=>1])->get();
+        }
+        else
+        {
+            $userDetails = User::where(['sample_brand_aprove'=>1])->get();
+        }
+
+        
         $files=null;
         foreach($userDetails as $sendEMail){
             $mailData = [
@@ -763,12 +775,26 @@ class Crm extends Component
     }
 
     public function emailFrozenSampleRequest($crmId){
+        $isMasdar = false;
+        foreach(explode(",",Session::get('user')->company) as $companyCode)
+        {
+            if($companyCode=='CO05'){
+                $isMasdar = true;
+            }
+        }
+
+        $sampleEmailTo = 'sales.co1@lmi.ae';
+        if($isMasdar==true){
+            $sampleEmailTo = 'sm@masdar-lmi.ae';
+        }
+
+
         $files=null;
         $mailData = [
             'name' => 'Team',
             'body' => 'New Sample Request are created, check the below link to view the sample requests '.URL::to("/sample-details/".$crmId),
             'title' => 'CRM Samples Requests Approvals',
-            'email' => 'sales.co1@lmi.ae',
+            'email' => $sampleEmailTo,
         ];
         Mail::send('emails.crm_email', $mailData, function($message)use($mailData, $files) {
             $message->subject($mailData['title']);
@@ -783,12 +809,26 @@ class Crm extends Component
     }
 
     public function emailBeverageSampleRequest($crmId){
+
+        $isMasdar = false;
+        foreach(explode(",",Session::get('user')->company) as $companyCode)
+        {
+            if($companyCode=='CO05'){
+                $isMasdar = true;
+            }
+        }
+
+        $sampleEmailTo = 'cm@lmi.ae';
+        if($isMasdar==true){
+            $sampleEmailTo = 'sm@masdar-lmi.ae';
+        }
+
         $files=null;
         $mailData = [
             'name' => 'FNB Team',
             'body' => 'New Sample Request are created, check the below link to view the sample requests '.URL::to("/sample-details/".$crmId),
             'title' => 'CRM FNB Samples Requests Approvals',
-            'email' => 'cm@lmi.ae',
+            'email' => $sampleEmailTo,
         ];
         Mail::send('emails.crm_email', $mailData, function($message)use($mailData, $files) {
             $message->subject($mailData['title']);

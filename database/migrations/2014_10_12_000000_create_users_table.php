@@ -31,6 +31,7 @@ class CreateUsersTable extends Migration
             $table->integer('ticketSettings')->nullable();
             $table->integer('lsSettings')->nullable();
             $table->integer('sampleSettings')->nullable();
+            $table->integer('sample_brand_aprove_masdar')->nullable();
             $table->string('reset_hash')->nullable();
             $table->string('reset_expires')->nullable();
             $table->integer('usertype')->nullable();
