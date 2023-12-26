@@ -15,11 +15,13 @@
                         <h6>Location Solution Orders Lists</h6>
                         
                     </div>
+                    @if(Session::get('user')->isadmin)
                     <div class="float-end">
                         <button class="btn btn-primary active mb-0 text-white float-end" role="button" aria-pressed="true" wire:click="getNewLsOrders()">
                             Get New LS Orders
                         </button>
                     </div>
+                    @endif
 
                     
                 </div>
