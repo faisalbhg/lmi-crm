@@ -15,7 +15,7 @@
                         <h6>Location Solution Orders Lists</h6>
                         
                     </div>
-                    @if(Session::get('user')->isadmin)
+                    @if(Session::get('user')->id==1)
                     <div class="float-end">
                         <button class="btn btn-primary active mb-0 text-white float-end" role="button" aria-pressed="true" wire:click="getNewLsOrders()">
                             Get New LS Orders
