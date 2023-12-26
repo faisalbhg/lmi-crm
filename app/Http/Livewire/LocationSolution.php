@@ -113,8 +113,12 @@ class LocationSolution extends Component
                     if($getAttachmentRows==0){
                         $saveData = $atachementVal['@attributes'];
                         $saveData['ordder_id']= $atachementVal['@attributes']['id'];
-                        $saveData['dropWindow_startTime'] = Carbon::parse($atachementVal['dropWindows']['dropWindow']['@attributes']['startTime'])->format('Y-m-d H:i:s');
-                        $saveData['dropWindow_endTime'] = Carbon::parse($atachementVal['dropWindows']['dropWindow']['@attributes']['endTime'])->format('Y-m-d H:i:s');
+
+                        
+
+
+                        $saveData['dropWindow_startTime'] = Carbon::createFromFormat('d/m/Y H:i', $atachementVal['dropWindows']['dropWindow']['@attributes']['startTime'])->format('Y-m-d H:i:s');
+                        $saveData['dropWindow_endTime'] = Carbon::createFromFormat('d/m/Y H:i', $atachementVal['dropWindows']['dropWindow']['@attributes']['endTime'])->format('Y-m-d H:i:s');
 
 
                         unset($saveData['id']);
