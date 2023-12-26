@@ -73,6 +73,8 @@ class LocationSolution extends Component
     
 
     public function getNewLsOrders(){
+        $this->showAttachemntCompleteMessage = false;
+        $this->attachemntCompleteMessage = '';
         $this->getLsOrderModal=true;
         $this->dispatchBrowserEvent('showGetLsOrderModal');
     }
@@ -98,6 +100,7 @@ class LocationSolution extends Component
         else
         {
             $lsorderattachement = $getOrderResponseBody['OrdersWithZoneResponse']['orders']['order'];
+            //dd($lsorderattachement);
             
             foreach($lsorderattachement as $atachementVal)
             {
@@ -105,6 +108,7 @@ class LocationSolution extends Component
 
                     $referenceNumber = $atachementVal['@attributes']['referenceNumber'];
                     $getAttachmentRows = LsattachmentModel::where(['referenceNumber'=>$referenceNumber])->get()->count();
+                    //dd($referenceNumber.$getAttachmentRows);
                     
                     if($getAttachmentRows==0){
                         $saveData = $atachementVal['@attributes'];
