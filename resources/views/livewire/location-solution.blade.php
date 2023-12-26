@@ -9,7 +9,21 @@
         
         <div class="col-12">
           <div class="card mb-4">
-            
+            <div class="card-header pb-0">
+                <div class=" flex-row justify-content-between">
+                    <div class="float-start">
+                        <h6>Location Solution Orders Lists</h6>
+                        
+                    </div>
+                    <div class="float-end">
+                        <button class="btn btn-primary active mb-0 text-white float-end" role="button" aria-pressed="true" wire:click="getNewLsOrders()">
+                            Get New LS Orders
+                        </button>
+                    </div>
+
+                    
+                </div>
+            </div>
             <div class="card-body px-2 pt-2 pb-2">
               <div class="row d-none">
                 <div class="collapse navbar-collapse mt-sm-0 mt-2 me-md-0 me-sm-3 d-flex justify-content-start float-start" >
@@ -118,7 +132,11 @@
           </div>
           @if($showLSDetailsModal)
                 @include('components.modals.lsDetails')
-                @endif
+          @endif
+
+          @if($getLsOrderModal)
+                @include('components.modals.getLsOrderModal')
+          @endif
         </div>
       </div>
 </div>
@@ -164,6 +182,13 @@ $(document).ready(function(){
   });
   window.addEventListener('hideLSDetailsModal',event=>{
         $('#lsDetailsModal').modal('hide');
+  });
+
+  window.addEventListener('showGetLsOrderModal', event=>{
+      $('#getLsOrdersModal').modal('show');
+  });
+  window.addEventListener('hideGetLsOrderModal', event=>{
+      $('#getLsOrdersModal').modal('hide');
   });
 </script>
 
