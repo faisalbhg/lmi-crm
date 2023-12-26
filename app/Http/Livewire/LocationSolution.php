@@ -135,7 +135,7 @@ class LocationSolution extends Component
                             $url = $attachmentImgVal;
                             $info = pathinfo($url);
                             $contents = file_get_contents($url);
-                            $file = $_SERVER['DOCUMENT_ROOT'].'/lmi-crm/public/ls-order-attachment/' . $imageSaveData['image'];
+                            $file = $_SERVER['DOCUMENT_ROOT'].'ls-order-attachment/' . $imageSaveData['image'];
                             file_put_contents($file, $contents);
                             $uploaded_file = new UploadedFile($file, $imageSaveData['image']);
                         }
