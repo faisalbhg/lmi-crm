@@ -51,8 +51,12 @@ class Samples extends Component
         {
             $sampleQuery->where(['created_by'=>Session::get('user')->id]);
         }
+
+        $sampleQuery = $sampleQuery->where(function ($query) {
+            $query->whereRelation('userInfo','users.id','!=',1);
+        });
         
-        $data['samplesList'] = $sampleQuery->where('users.id','!=',1)->orderBy('id','DESC')->groupBy('crm_id')->paginate(20);
+        $data['samplesList'] = $sampleQuery->orderBy('id','DESC')->groupBy('crm_id')->paginate(20);
         //dd($data);
         return view('livewire.samples',$data);
     }
