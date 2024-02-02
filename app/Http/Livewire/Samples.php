@@ -235,7 +235,7 @@ class Samples extends Component
             $this->filter_to_date = $this->filter_to_date.' 23:59:59';
             $sampleQuery = $sampleQuery->where('sample_logs.updated_at','>=', $this->filter_from_date)->where('sample_logs.updated_at','<=',$this->filter_to_date);
         }
-        $sampleQuery = $sampleQuery->groupBy('sample_logs.id')->get();
+        $sampleQuery = $sampleQuery->where('users.id','!=',1)->groupBy('sample_logs.id')->get();
         return Excel::download(new SampleExport($sampleQuery), 'samples_report.xlsx');
     
     }
