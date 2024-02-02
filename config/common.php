@@ -2,10 +2,10 @@
 return [
 	'user_companies' => [
 		"CO01"=>"LMI",
-	    "CO02"=>"LMIEER",
-	    "CO03"=>"OMAN",
-	    "CO04"=>"LAPRIMA",
-	    "CO05"=>"MASDAR"
+    "CO02"=>"LMIEER",
+    "CO03"=>"OMAN",
+    "CO04"=>"LAPRIMA",
+    "CO05"=>"MASDAR",
 	],
 	'user_type' => [
 		"1"=>"Administrator",

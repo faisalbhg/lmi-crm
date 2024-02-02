@@ -215,7 +215,7 @@ class Samples extends Component
                 WHEN sample_logs.sample_feedback_reason = 2 THEN "Not Aproved due to Quality" 
                 WHEN sample_logs.sample_feedback_reason = 3 THEN "Client don’t want to add to menu" 
                 END) AS sample_feedback_reason'),
-            'samples.partNum','samples.partDescription','samples.prodCode','samples.itemBrand','samples.itemQty',
+            'samples.partNum','samples.partDescription','samples.prodCode','users.company','samples.itemBrand','samples.itemQty',
             \DB::raw('(CASE 
                 WHEN crms.newCustomer = 0 THEN "Existing Customer" 
                 WHEN crms.newCustomer = 1 THEN "New Customer" 
