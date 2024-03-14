@@ -18,6 +18,7 @@ use App\Http\Livewire\Crm;
 use App\Http\Livewire\Samples;
 use App\Http\Livewire\CustomerFeedback;
 use App\Http\Livewire\LocationSolution;
+use App\Http\Livewire\LsOrderStatus;
 
 use App\Http\Livewire\LaravelExamples\UserProfile;
 use App\Http\Livewire\LaravelExamples\UserManagement;
@@ -61,6 +62,7 @@ Route::middleware('auth')->group(function () {
 
     //LocationSolution
     Route::get('/location-solution', LocationSolution::class)->name('location-solution');
+    Route::get('/ls-order-status', LsOrderStatus::class)->name('ls-order-status');
 
 
     Route::get('/dashboard', Dashboard::class)->name('dashboard');

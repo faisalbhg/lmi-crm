@@ -63,7 +63,6 @@ class LocationSolution extends Component
     }
 
     public function lsDetailsView($order){
-        //dd($order);
         $this->showLSDetailsModal=true;
         $this->orderDetailsImage = $order['image'];
         $this->dispatchBrowserEvent('showLSDetailsModal');
@@ -80,14 +79,12 @@ class LocationSolution extends Component
     }
 
     public function saveSubmit(){
-
         $fromdatelsatchment = Carbon::parse($this->fromdatelsatchment)->format('d/m/Y');
         $sessionUrl = 'https://lamarquise.maxoptra.com/rest/2/authentication/createSession?accountID=lamarquise&user=Integration&password=integration@lmi';
         $sessionResponse = simplexml_load_string(Http::post($sessionUrl));
         $sessionResponseJson = json_encode($sessionResponse);
         $sessionResponseBody= json_decode($sessionResponseJson, true);
         $sessionID = $sessionResponseBody['authResponse']['sessionID'];
-
 
         $getOrderUrl = "https://lamarquise.maxoptra.com/rest/2/distribution-api/orders/getOrdersWithZone?sessionID=".$sessionID."&date=".$fromdatelsatchment."&aocID=1109";
         $getOrderResponse = simplexml_load_string(Http::post($getOrderUrl));
@@ -100,7 +97,6 @@ class LocationSolution extends Component
         else
         {
             $lsorderattachement = $getOrderResponseBody['OrdersWithZoneResponse']['orders']['order'];
-            //dd($lsorderattachement);
             
             foreach($lsorderattachement as $atachementVal)
             {
@@ -108,7 +104,6 @@ class LocationSolution extends Component
 
                     $referenceNumber = $atachementVal['@attributes']['referenceNumber'];
                     $getAttachmentRows = LsattachmentModel::where(['referenceNumber'=>$referenceNumber])->get()->count();
-                    //dd($referenceNumber.$getAttachmentRows);
                     
                     if($getAttachmentRows==0){
                         $saveData = $atachementVal['@attributes'];
@@ -127,7 +122,6 @@ class LocationSolution extends Component
                         
 
                         $atachementVal['attachments']['attachment'] = (array)$atachementVal['attachments']['attachment'];
-                        //dd($atachementVal['attachments']['attachment']);
                         foreach($atachementVal['attachments']['attachment'] as $attachmentImgVal)
                         {
                             $imageSaveData['ls_id'] = $lsAttachmentInsertId;
@@ -152,5 +146,28 @@ class LocationSolution extends Component
         $this->attachemntCompleteMessage = 'Atachemnts are added to the system from Location Solution successfully..!';
 
 
+    }
+
+    public function order_status(){
+        $lsQuery = LsattachmentModel::with(['lsImages'])->select('*');
+        
+        
+        if(!empty($this->referenceNumber)){
+            $lsQuery = $lsQuery->where('lsattachment_models.referenceNumber', 'like', "%{$this->referenceNumber}%");
+        }
+
+        if(!empty($this->order_id)){
+            $lsQuery = $lsQuery->where('lsattachment_models.ordder_id', 'like', "%{$this->order_id}%");
+        }
+        if(!empty($this->lsaddress)){
+            $lsQuery = $lsQuery->where('lsattachment_models.address', 'like', "%{$this->lsaddress}%");
+        }
+
+        if(!empty($this->filter_from_date) && !empty($this->filter_to_date)){
+            $lsQuery = $lsQuery->where('lsattachment_models.orderLsDate','>=', $this->filter_from_date)->where('lsattachment_models.orderLsDate','<=',$this->filter_to_date);
+        }
+
+        $data['lsattachments'] = $lsQuery->orderBy('lsattachment_models.orderLsDate','DESC')->paginate(20);
+        return view('livewire.orderStatus',$data);
     }
 }

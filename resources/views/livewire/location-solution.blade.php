@@ -13,7 +13,6 @@
                 <div class=" flex-row justify-content-between">
                     <div class="float-start">
                         <h6>Location Solution Orders Lists</h6>
-                        
                     </div>
                     @if(Session::get('user')->id==1)
                     <div class="float-end">
@@ -27,7 +26,7 @@
                 </div>
             </div>
             <div class="card-body px-2 pt-2 pb-2">
-              <div class="row d-none">
+              <div class="row">
                 <div class="collapse navbar-collapse mt-sm-0 mt-2 me-md-0 me-sm-3 d-flex justify-content-start float-start" >
                   <div class="col-md-3 float-start"></div>
                 </div>
