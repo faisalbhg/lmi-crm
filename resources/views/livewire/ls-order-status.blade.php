@@ -19,13 +19,13 @@
                             <div class="col-md-3">
                                 <div class="input-group">
                                     <span class="input-group-text text-body"><i class="fas fa-calendar-alt" aria-hidden="true"></i></span>
-                                    <input type="text" class="form-control datepicker" autocomplete="off" id="from_date" wire:model="filter_from_date" placeholder="From Date...">
+                                    <input type="date" class="form-control datepicker" autocomplete="off" id="from_dat" wire:model="filter_from_date" placeholder="From Date...">
                                 </div>
                             </div>
                             <div class="col-md-3">
                                 <div class="input-group">
                                     <span class="input-group-text text-body"><i class="fas fa-calendar-alt" aria-hidden="true"></i></span>
-                                    <input type="text" class="form-control datepicker"  autocomplete="off" id="to_date" wire:model="filter_to_date"  placeholder="To Date..."> 
+                                    <input type="date" class="form-control datepicker"  autocomplete="off" id="to_dat" wire:model="filter_to_date"  placeholder="To Date..."> 
                                 </div>
                             </div>
                             <div class="col-md-3">
@@ -217,7 +217,7 @@ $(document).ready(function(){
 
              @this.set('filter_to_date', selected);
 
-             dt.setDate(dt.getDate() - 1);
+             dt.setDate(dt.getDate() + 1);
              $("#from_date").datepicker("option", "maxDate", dt);
         }
     });
