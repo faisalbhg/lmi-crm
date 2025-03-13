@@ -386,12 +386,10 @@ class Crm extends Component
         ->where('customer_name', 'like', "%{$this->customer_name}%" )
         //->where('company', 'like', "%{Session::get('user')->company}%" )
         ->groupBy('customer_name')->orderBy('id','DESC');
-        $crmDbCustomerExist = $crmDbCustomers->exists();
         //dd($crmDbCustomerExist);
-        if($crmDbCustomerExist)
+        if($crmDbCustomers->exists())
         {
-            //dd($crmDbCustomers->get());
-            foreach($crmDbCustomers as $keyDbc => $dbcust)
+            foreach($crmDbCustomers->get() as $keyDbc => $dbcust)
             {
                 $this->customersList[$keyDbc]['Name'] = $dbcust->Name;
                 $this->customersList[$keyDbc]['Country'] = $dbcust->Country;
