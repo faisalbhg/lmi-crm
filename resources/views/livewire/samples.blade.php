@@ -89,7 +89,7 @@
                             </thead>
                             <tbody>
                                 @forelse($samplesList as $key => $samples)
-                                <tr>
+                                <tr wire:click="openSample('{{$samples->crm_id}}')">
                                     <td class="text-xxs text-center">{{$key+1}}</td>
                                     <td>
                                         <div class="d-flex px-2 py-1">
@@ -132,6 +132,7 @@
                                     <td class="align-middle">
                                         <button wire:click="openSample('{{$samples->crm_id}}')" class="btn bg-gradient-primary btn-sm">Open</button>
                                     </td>
+                                </tr>
                                 @empty
                                 <tr>
                                   <td colspan="7">No Record Found</td>

@@ -41,7 +41,7 @@
                                             </div>
                                             <div class="ms-auto">
                                                 @if($sample->status==0)
-                                                    @if(Session::get('user')->usertype == config('common.sample_status_action_userType')[$sample->status])
+                                                    @if(Session::get('user')->sample_brand_aprove == 1)
                                                         <div class="form-group">
                                                             <label for="exampleFormControlTextarea{{$sample->id}}">Update Command</label>
                                                             <textarea class="form-control" id="exampleFormControlTextarea{{$sample->id}}" rows="3" wire:model="sample_comment.{{$sample->id}}"></textarea>
@@ -49,16 +49,30 @@
                                                         </div>
                                                         <a class="btn btn-link text-danger text-gradient px-3 mb-0" href="javascript:;" wire:click=updateSample('{{$sample->id}}','5')><i class="far fa-trash-alt me-2"></i>Reject</a>
                                                         <a class="btn btn-link text-success px-3 mb-0" href="javascript:;" wire:click=updateSample('{{$sample->id}}','{{$sample->status+1}}')><i class="fas fa-pencil-alt text-success me-2" aria-hidden="true"></i>Aprove</a>
+                                                        
+
                                                     @endif
-                                                @elseif($sample->status==1 || $sample->status==2)
-                                                    @if(Session::get('user')->usertype == config('common.sample_status_action_userType')[$sample->status])
+                                                @elseif($sample->status==1)
+                                                    @if(Session::get('user')->sample_showroom_aprove == 1)
                                                     <h6 class="mb-0">Make Action </h6>
                                                     <hr class="horizontal dark">
                                                     <a href="javascript:;" wire:click="updateSample('{{$sample->id}}','{{$sample->status+1}}')" >
-                                                        <button type="button" class="btn btn-{{config('common.sample_status_class')[$samples->status+1]}} btn-sm">{{config('common.sample_status_action')[$samples->status+1]}}</button>
+                                                        <button type="button" class="btn btn-{{config('common.sample_status_class')[$sample->status+1]}} btn-sm">{{config('common.sample_status_action')[$sample->status+1]}}</button>
                                                     </a>
 
                                                     @endif
+                                                @elseif($sample->status==2 && $sample->created_by == auth()->user('user')->id)
+                                                    <h6 class="mb-0">Make Action </h6>
+                                                    <hr class="horizontal dark">
+                                                    <a href="javascript:;" wire:click="updateSample('{{$sample->id}}','{{$sample->status+1}}')" >
+                                                        <button type="button" class="btn btn-{{config('common.sample_status_class')[$sample->status+1]}} btn-sm">{{config('common.sample_status_action')[$sample->status+1]}}</button>
+                                                    </a>
+                                                @elseif($sample->status==3 && $sample->created_by == auth()->user('user')->id)
+                                                    <h6 class="mb-0">Make Action </h6>
+                                                    <hr class="horizontal dark">
+                                                    <a href="javascript:;" wire:click="updateSample('{{$sample->id}}','{{$sample->status+1}}')" >
+                                                        <button type="button" class="btn btn-{{config('common.sample_status_class')[$sample->status+1]}} btn-sm">{{config('common.sample_status_action')[$sample->status+1]}}</button>
+                                                    </a>
                                                 @endif
                                             </div>
                                         </div>
@@ -84,6 +98,15 @@
                                     </li>
                                     @endforeach
                                 </ul>
+                                <div wire:loading wire:target="updateSample">
+                                    <div style="display: flex; justify-content: center; align-items: center; background-color: black; position: fixed; top: 0px; left: 0px; z-index:999999; width:100%; height:100%; opacity: .75;" >
+                                        <div class="la-ball-beat">
+                                            <div></div>
+                                            <div></div>
+                                            <div></div>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
