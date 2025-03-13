@@ -390,7 +390,7 @@ class Crm extends Component
         //dd($crmDbCustomerExist);
         if($crmDbCustomerExist)
         {
-            dd($crmDbCustomers->get());
+            //dd($crmDbCustomers->get());
             foreach($crmDbCustomers as $keyDbc => $dbcust)
             {
                 $this->customersList[$keyDbc]['Name'] = $dbcust->Name;
