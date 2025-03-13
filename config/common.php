@@ -370,6 +370,13 @@ return [
 		"SWEETBIRD",
 		"ROASTERY",
 	],
+	"sample_company_email"=>[
+		"CO01"=>"beverages@lmi.ae",
+    "CO02"=>"beverages@lmi.ae",
+    "CO03"=>"mixologist@lmi.om,sm@lmi.om",
+    "CO04"=>"beverages@lmi.ae",
+    "CO05"=>"mixologist@masdar-lmi.com,bd@masdar-lmi.com",
+	]
 
 ];
 

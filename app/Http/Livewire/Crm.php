@@ -385,10 +385,12 @@ class Crm extends Component
         )
         ->where('customer_name', 'like', "%{$this->customer_name}%" )
         //->where('company', 'like', "%{Session::get('user')->company}%" )
-        ->groupBy('customer_name')->orderBy('id','DESC')->get();
-        //dd($crmDbCustomers);
-        if(count($crmDbCustomers)>0)
+        ->groupBy('customer_name')->orderBy('id','DESC');
+        $crmDbCustomerExist = $crmDbCustomers->exists();
+        //dd($crmDbCustomerExist);
+        if($crmDbCustomerExist)
         {
+            dd($crmDbCustomers->get());
             foreach($crmDbCustomers as $keyDbc => $dbcust)
             {
                 $this->customersList[$keyDbc]['Name'] = $dbcust->Name;
@@ -424,11 +426,37 @@ class Crm extends Component
             $select = '$select';
             $filter = '$filter';
             $top = '$top';
+            $orderBy = '$orderby';
+            $expand = '$expand';
+            $apiUrl = "https://lmi-epic-app02.buhaleeba.ae/erp11live/api/v1/Erp.BO.CustomerSvc/Customers";
+            $customer_name = str_replace(" ","%20",$this->customer_name);
+            $customer_name = str_replace("&","%26",$customer_name);
+            $parcodeSearch= "indexof%28Name%2C%20%27".$customer_name."%27%29%20eq%201%20and%20".$companyFilter;
+            $getCustomersApiUrl = $apiUrl."?$select=Company,CustID,CustNum,Name,City,State,Zip,Country,Address1,Address2,Address3,PhoneNum,EMailAddress,AddrList&$filter=$parcodeSearch&$top=100";
+            $response = Http::withOptions(['verify'=>false])->withBasicAuth('manager', 'Butterfly@2024')->get($getCustomersApiUrl);
+            $response = json_decode((string) $response->getBody(), true);
+
+            $firscom=true;
+            $companyFilter="(";
+            foreach(explode(",",Session::get('user')->company) as $companies)
+            {
+                if($firscom==false)
+                {
+                    $companyFilter.="%20or%20";
+                }
+                $companyFilter.="Company%20eq%20'".$companies."'";
+                $firscom=false;
+            }
+            $companyFilter.=")";
+            $select = '$select';
+            $filter = '$filter';
+            $top = '$top';
             $apiUrl = "https://lmi-epic-app02.buhaleeba.ae/erp11live/api/v1/Erp.BO.CustomerSvc/Customers";
             $customerName = str_replace(" ","%20",$this->customer_name);
             $getCustDtlsApiUrl = $apiUrl."?$select=Company,CustID,CustNum,Name,City,State,Zip,Country,Address1,Address2,Address3,PhoneNum,EMailAddress,AddrList&$filter=indexof%28Name%2C%20%27".$customerName."%27%29%20eq%201"."%20and%20".$companyFilter;
             $response = Http::withBasicAuth('manager', 'manager')->get($getCustDtlsApiUrl);
             $response = json_decode((string) $response->getBody(), true);
+            //dd($response);
             $this->customersList = $response['value'];
         }
         $this->showSearchCustomers=true;
@@ -585,7 +613,7 @@ class Crm extends Component
             $sendfrozenemail=false;
             $sendNormalSampleEmail=false;
             $sendBeverageSampleEmail=false;
-            
+            $sendNormalSampleEmailNew=false;
             foreach($this->selectedSampleItemPartDescription as $samKey => $sampleItemList)
             {
                 $sampleData=[];
@@ -619,7 +647,7 @@ class Crm extends Component
                 $sampleData['created_by'] = Session::get('user')->id;
                 $this->saveSampleRequest($sampleData);
 
-                if (str_contains($this->selectedSampleItemCategory[$samKey], 'FROZEN') && $sendfrozenemail == false) { 
+                /*if (str_contains($this->selectedSampleItemCategory[$samKey], 'FROZEN') && $sendfrozenemail == false) { 
                     $sendfrozenemail=true;
                 }
                 else if($sendNormalSampleEmail == false){
@@ -627,10 +655,13 @@ class Crm extends Component
                 }
                 else if( (in_array($this->selectedSampleItemBrand[$samKey], config('common.SampleBeverageAprovals'))) && $sendBeverageSampleEmail == false){
                     $sendBeverageSampleEmail=true;
-                }
+                }*/
+                $sendNormalSampleEmailNew=true;
+                $sampleCompany = $this->selectedSampleItemCompany[$samKey];
                 
             }
-            if($sendfrozenemail==true)
+
+            /*if($sendfrozenemail==true)
             {
                 $this->emailFrozenSampleRequest($this->crmId);
             }
@@ -641,6 +672,10 @@ class Crm extends Component
 
             if($sendBeverageSampleEmail==true){
                 $this->emailBeverageSampleRequest($this->crmId);
+            }*/
+
+            if($sendNormalSampleEmailNew==true){
+                $this->emailSampleRequestNew($this->crmId,$sampleCompany);
             }
             
         }
@@ -732,6 +767,30 @@ class Crm extends Component
             'created_by'=>Session::get('user')->id,
         ];
         SampleLogs::create($sampleInsertLog);
+    }
+
+    public function emailSampleRequestNew($crmId,$company)
+    {
+        $userDetails = User::where(['sample_brand_aprove'=>1,'company'=>$company])->get();
+        $files=null;
+        foreach($userDetails as $sendEMail){
+            $mailData = [
+                'name' => $sendEMail->name,
+                'body' => 'New Sample Request are created, check the below link to view the sample requests '.URL::to("/sample-details/".$crmId),
+                'title' => 'CRM Samples Requests Approvals',
+                'email' => $sendEMail->email,
+            ];
+            Mail::send('emails.crm_email', $mailData, function($message)use($mailData, $files) {
+                $message->subject($mailData['title']);
+                $message->to($mailData["email"]);
+                $message->bcc('faisal@buhaleeba.ae');
+                if($files){
+                    foreach ($files as $file){
+                        $message->attach($file);
+                    }
+                }            
+            });
+        }
     }
 
     public function emailSampleRequest($crmId)
