@@ -82,10 +82,12 @@ class Samples extends Component
     {
         $this->showsampleDetails = true;
         $sampleQuery = Sample::with('userInfo')->with('teritoryInfo')->with('countryInfo')->with('samplelogs');
-        if(!in_array(Session::get('user')->usertype,config('common.sampleshowAll')))
+
+        /*if(!in_array(Session::get('user')->usertype,config('common.sampleshowAll')))
         {
             $sampleQuery = $sampleQuery->where(['created_by'=>Session::get('user')->id]);
-        }
+        }*/
+        
         $sampleQuery = $sampleQuery->where('crm_id','=',$crms_id);
 
         $this->sampleItems = $sampleQuery->get();
