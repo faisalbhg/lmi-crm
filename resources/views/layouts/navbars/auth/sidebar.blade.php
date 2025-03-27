@@ -28,7 +28,7 @@
                 </a>
             </li>
             @endif
-            @if(Session::get('user')->isadmin || Session::get('user')->usertype == 7  || Session::get('user')->usertype == 6)
+            @if(Session::get('user')->isadmin || Session::get('user')->sampleSettings)
             <li class="nav-item mt-2">
                 <h6 class="ps-4 ms-2 text-uppercase text-xs font-weight-bolder opacity-6">Sample</h6>
             </li>
