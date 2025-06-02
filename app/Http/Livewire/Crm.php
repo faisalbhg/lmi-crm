@@ -172,9 +172,11 @@ class Crm extends Component
         }
         $companyFilter.=")";
 
-        $brandapiUrl = 'https://lmi-epic-app02.buhaleeba.ae/erp11live/api/v1/Erp.BO.PartClassSvc/PartClasses';
+
+        $brandapiUrl = 'https://kineticlive.buhaleeba.ae/Kineticlive/api/v1/Erp.BO.PartClassSvc/PartClasses';
+        //$brandapiUrl = 'https://lmi-epic-app02.buhaleeba.ae/erp11live/api/v1/Erp.BO.PartClassSvc/PartClasses';
         $apiBrandUrl = $brandapiUrl."?$select=Description&$filter=".$companyFilter."&$top=1000";
-        $brandResponse = Http::withBasicAuth('manager', 'manager')->get($apiBrandUrl);
+        $brandResponse = Http::withBasicAuth('manager', 'Butterfly@2024')->get($apiBrandUrl);
         $brandResponse = json_decode((string) $brandResponse->getBody(), true);
 
         $brandUniqArray=['ROASTERY STN'];
@@ -318,14 +320,14 @@ class Crm extends Component
         $select = '$select';
         $filter = '$filter';
         $top = '$top';
-        $apiUrl = "https://lmi-epic-app02.buhaleeba.ae/erp11live/api/v1/Erp.BO.PartSvc/Parts";
+        $apiUrl = "https://kineticlive.buhaleeba.ae/Kineticlive/api/v1/Erp.BO.PartSvc/Parts";
         $itemName = str_replace(" ","%20",$this->search_sample_item);
         $itemName = str_replace("&","%26",$itemName);
         //$parcodeSearch = "or%20indexof%28ProdCode%2C%20%27".$itemName."%27%29%20eq%201%20";
         $parcodeSearch = "or%20indexof%28Sup_Part_c%2C%20%27".$itemName."%27%29%20eq%201%20";
         $getSamplePartApiUrl = $apiUrl."?$select=Company,PartNum,SearchWord,PartDescription,ProdCode,Brand_c,Category_c&$filter=indexof%28PartDescription%2C%20%27".$itemName."%27%29%20eq%201%20".$parcodeSearch.'and%20'.$companyFilter;
         //dd($getSamplePartApiUrl);
-        $response = Http::withBasicAuth('manager', 'manager')->get($getSamplePartApiUrl);
+        $response = Http::withBasicAuth('manager', 'Butterfly@2024')->get($getSamplePartApiUrl);
         $response = json_decode((string) $response->getBody(), true);
         $this->searchSampleItems = $response['value'];
 
@@ -426,7 +428,7 @@ class Crm extends Component
             $top = '$top';
             $orderBy = '$orderby';
             $expand = '$expand';
-            $apiUrl = "https://lmi-epic-app02.buhaleeba.ae/erp11live/api/v1/Erp.BO.CustomerSvc/Customers";
+            $apiUrl = "https://kineticlive.buhaleeba.ae/Kineticlive/api/v1/Erp.BO.CustomerSvc/Customers";
             $customer_name = str_replace(" ","%20",$this->customer_name);
             $customer_name = str_replace("&","%26",$customer_name);
             $parcodeSearch= "indexof%28Name%2C%20%27".$customer_name."%27%29%20eq%201%20and%20".$companyFilter;
@@ -449,10 +451,10 @@ class Crm extends Component
             $select = '$select';
             $filter = '$filter';
             $top = '$top';
-            $apiUrl = "https://lmi-epic-app02.buhaleeba.ae/erp11live/api/v1/Erp.BO.CustomerSvc/Customers";
+            $apiUrl = "https://kineticlive.buhaleeba.ae/Kineticlive/api/v1/Erp.BO.CustomerSvc/Customers";
             $customerName = str_replace(" ","%20",$this->customer_name);
             $getCustDtlsApiUrl = $apiUrl."?$select=Company,CustID,CustNum,Name,City,State,Zip,Country,Address1,Address2,Address3,PhoneNum,EMailAddress,AddrList&$filter=indexof%28Name%2C%20%27".$customerName."%27%29%20eq%201"."%20and%20".$companyFilter;
-            $response = Http::withBasicAuth('manager', 'manager')->get($getCustDtlsApiUrl);
+            $response = Http::withBasicAuth('manager', 'Butterfly@2024')->get($getCustDtlsApiUrl);
             $response = json_decode((string) $response->getBody(), true);
             //dd($response);
             $this->customersList = $response['value'];
