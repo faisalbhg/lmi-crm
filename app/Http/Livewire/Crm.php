@@ -771,26 +771,53 @@ class Crm extends Component
 
     public function emailSampleRequestNew($crmId,$company)
     {
-        $userDetails = User::where(['sample_brand_aprove'=>1,'company'=>$company])->get();
-        $files=null;
-        foreach($userDetails as $sendEMail){
-            $mailData = [
-                'name' => $sendEMail->name,
-                'body' => 'New Sample Request are created, check the below link to view the sample requests '.URL::to("/sample-details/".$crmId),
-                'title' => 'CRM Samples Requests Approvals',
-                'email' => $sendEMail->email,
-            ];
-            Mail::send('emails.crm_email', $mailData, function($message)use($mailData, $files) {
-                $message->subject($mailData['title']);
-                $message->to($mailData["email"]);
-                $message->bcc('faisal@buhaleeba.ae');
-                if($files){
-                    foreach ($files as $file){
-                        $message->attach($file);
-                    }
-                }            
-            });
+        if(Session::get('user')->company_branch!=null){
+            switch (Session::get('user')->company_branch) {
+                case 'OMN':
+                    $emailtoSample = 'admin@lmi.om';
+                    $nametoSample = 'Oman';
+                    break;
+                case 'KSA':
+                    $emailtoSample = 'cs2@masdar-lmi.com';
+                    $nametoSample = 'Masdar KSA';
+                    break;
+                case 'DXB':
+                    $emailtoSample = 'showroom.asst@lmi.ae';
+                    $nametoSample = 'LMI DXB';
+                    break;
+                case 'AUH':
+                    $emailtoSample = 'auh.sales2@lmi.ae';
+                    $nametoSample = 'LMI AUH';
+                    break;
+                
+                default:
+                    $emailtoSample = 'showroom.asst@lmi.ae';
+                    $nametoSample = 'LMI';
+                    break;
+            }
         }
+        else{
+            $emailtoSample = 'showroom.asst@lmi.ae';
+            $nametoSample = 'LMI DXB';
+        }
+        //$userDetails = User::where(['sample_brand_aprove'=>1,'company'=>$company])->get();
+        $files=null;
+        $mailData = [
+            'name' => $nametoSample,
+            'body' => 'New Sample Request are created, check the below link to view the sample requests '.URL::to("/sample-details/".$crmId),
+            'title' => 'CRM Samples Requests Approvals',
+            'email' => $emailtoSample,
+        ];
+        Mail::send('emails.crm_email', $mailData, function($message)use($mailData, $files) {
+            $message->subject($mailData['title']);
+            $message->to($mailData["email"]);
+            $message->bcc('faisal@buhaleeba.ae');
+            if($files){
+                foreach ($files as $file){
+                    $message->attach($file);
+                }
+            }            
+        });
     }
 
     public function emailSampleRequest($crmId)
