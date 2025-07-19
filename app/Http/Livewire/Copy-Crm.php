@@ -325,7 +325,7 @@ class Crm extends Component
         $itemName = str_replace("&","%26",$itemName);
         //$parcodeSearch = "or%20indexof%28ProdCode%2C%20%27".$itemName."%27%29%20eq%201%20";
         $parcodeSearch = "or%20indexof%28Sup_Part_c%2C%20%27".$itemName."%27%29%20eq%201%20";
-        $getSamplePartApiUrl = $apiUrl."?$select=Company,PartNum,SearchWord,PartDescription,ProdCode,Brand_c,Category_c&$filter=indexof%28PartDescription%2C%20%27".$itemName."%27%29%20ge%201%20".$parcodeSearch.'and%20'.$companyFilter;
+        $getSamplePartApiUrl = $apiUrl."?$select=Company,PartNum,SearchWord,PartDescription,ProdCode,Brand_c,Category_c&$filter=indexof%28PartDescription%2C%20%27".$itemName."%27%29%20eq%201%20".$parcodeSearch.'and%20'.$companyFilter;
         //dd($getSamplePartApiUrl);
         $response = Http::withBasicAuth('manager', 'Butterfly@2024')->get($getSamplePartApiUrl);
         $response = json_decode((string) $response->getBody(), true);
@@ -431,7 +431,7 @@ class Crm extends Component
             $apiUrl = "https://kineticlive.buhaleeba.ae/Kineticlive/api/v1/Erp.BO.CustomerSvc/Customers";
             $customer_name = str_replace(" ","%20",$this->customer_name);
             $customer_name = str_replace("&","%26",$customer_name);
-            $parcodeSearch= "indexof%28Name%2C%20%27".$customer_name."%27%29%20ge%201%20and%20".$companyFilter;
+            $parcodeSearch= "indexof%28Name%2C%20%27".$customer_name."%27%29%20eq%201%20and%20".$companyFilter;
             $getCustomersApiUrl = $apiUrl."?$select=Company,CustID,CustNum,Name,City,State,Zip,Country,Address1,Address2,Address3,PhoneNum,EMailAddress,AddrList&$filter=$parcodeSearch&$top=100";
             $response = Http::withOptions(['verify'=>false])->withBasicAuth('manager', 'Butterfly@2024')->get($getCustomersApiUrl);
             $response = json_decode((string) $response->getBody(), true);
@@ -453,7 +453,7 @@ class Crm extends Component
             $top = '$top';
             $apiUrl = "https://kineticlive.buhaleeba.ae/Kineticlive/api/v1/Erp.BO.CustomerSvc/Customers";
             $customerName = str_replace(" ","%20",$this->customer_name);
-            $getCustDtlsApiUrl = $apiUrl."?$select=Company,CustID,CustNum,Name,City,State,Zip,Country,Address1,Address2,Address3,PhoneNum,EMailAddress,AddrList&$filter=indexof%28Name%2C%20%27".$customerName."%27%29%20ge%201"."%20and%20".$companyFilter;
+            $getCustDtlsApiUrl = $apiUrl."?$select=Company,CustID,CustNum,Name,City,State,Zip,Country,Address1,Address2,Address3,PhoneNum,EMailAddress,AddrList&$filter=indexof%28Name%2C%20%27".$customerName."%27%29%20eq%201"."%20and%20".$companyFilter;
             $response = Http::withBasicAuth('manager', 'Butterfly@2024')->get($getCustDtlsApiUrl);
             $response = json_decode((string) $response->getBody(), true);
             //dd($response);
@@ -771,103 +771,6 @@ class Crm extends Component
 
     public function emailSampleRequestNew($crmId,$company)
     {
-        $fnb_brand=false;
-        $pro_brand=false;
-        foreach(Sample::where(['crm_id'=>$crmId])->get() as $itemInfo){
-            if(in_array($itemInfo->itemBrand,config('common.sample_brand.FNB')))
-            {
-                $fnb_brand=true;
-            }else if(in_array($itemInfo->itemBrand,config('common.sample_brand.PRO')))
-            {
-                $pro_brand=true;
-            }
-        }
-        $emailToSend = [];
-        if (str_contains(Session::get('user')->company, 'CO01')) {
-            if($fnb_brand)
-            {
-                $emailToSend[0]['email'] = 'beverages@lmi.ae';
-                $emailToSend[0]['name'] = 'LMI';
-            }
-            if($pro_brand)
-            {
-                $emailToSend[1]['email'] = 'chef.pastry1@lmi.ae';
-                $emailToSend[1]['name'] = 'LMI';
-            }
-            
-        }
-        else if (str_contains(Session::get('user')->company, 'CO02')) {
-            if($fnb_brand)
-            {
-                $emailToSend[0]['email'] = 'beverages@lmi.ae';
-                $emailToSend[0]['name'] = 'LMI';
-            }
-            if($pro_brand)
-            {
-                $emailToSend[1]['email'] = 'chef.pastry1@lmi.ae';
-                $emailToSend[1]['name'] = 'LMI';
-            }
-        }
-        else if (str_contains(Session::get('user')->company, 'CO03')) {
-            if($fnb_brand)
-            {
-                $emailToSend[0]['email'] = 'mixologist@lmi.om; sm@lmi.om';
-                $emailToSend[0]['name'] = 'LMI Oman';
-            }
-            if($pro_brand)
-            {
-                $emailToSend[1]['email'] = 'sm@lmi.om';
-                $emailToSend[1]['name'] = 'LMI Oman';
-            }
-        }
-        else if (str_contains(Session::get('user')->company, 'CO04')) {
-            if($fnb_brand)
-            {
-                $emailToSend[0]['email'] = 'beverages@lmi.ae';
-                $emailToSend[0]['name'] = 'Laprima';
-            }
-            if($pro_brand)
-            {
-                $emailToSend[1]['email'] = 'chef.pastry1@lmi.ae';
-                $emailToSend[1]['name'] = 'Laprima';
-            }
-        }
-        else if (str_contains(Session::get('user')->company, 'CO05')) {
-            if($fnb_brand)
-            {
-                $emailToSend[0]['email'] = 'mixologist@masdar-lmi.com';
-                $emailToSend[0]['name'] = 'Masdar';
-                $emailToSend[1]['email'] = 'bd@masdar-lmi.com';
-                $emailToSend[1]['name'] = 'Masdar';
-            }
-            if($pro_brand)
-            {
-                $emailToSend[2]['email'] = 'bd@masdar-lmi.com';
-                $emailToSend[2]['name'] = 'Masdar';
-            }
-        }
-
-        foreach($emailToSend as $sendUser){
-            $mailData2 = [
-                'name' => $sendUser['name'],
-                'body' => 'New Sample Preparation Request are created, check the below link to view the sample requests '.URL::to("/sample-details/".$crmId),
-                'title' => 'CRM Samples Preparation Requests Approvals',
-                'email' => $sendUser['email'],
-            ];
-            Mail::send('emails.crm_email', $mailData2, function($message)use($mailData2, $files) {
-                $message->subject($mailData2['title']);
-                $message->to($mailData2["email"]);
-                $message->bcc('faisal@buhaleeba.ae');
-                if($files){
-                    foreach ($files as $file){
-                        $message->attach($file);
-                    }
-                }            
-            });
-        }
-
-        /*dd($emailToSend);
-
         if(Session::get('user')->company_branch!=null){
             switch (Session::get('user')->company_branch) {
                 case 'OMN':
@@ -914,7 +817,7 @@ class Crm extends Component
                     $message->attach($file);
                 }
             }            
-        });*/
+        });
     }
 
     public function emailSampleRequest($crmId)

@@ -376,7 +376,52 @@ return [
     "CO03"=>"mixologist@lmi.om,sm@lmi.om",
     "CO04"=>"beverages@lmi.ae",
     "CO05"=>"mixologist@masdar-lmi.com,bd@masdar-lmi.com",
-	]
+	],
+	'sample_brand'=>[
+		'FNB'=>[
+			'AIYA',
+			'ALMAR',
+			'BARNIER',
+			'BRAZILIAN COFFEE HOUSE',
+			'CAPPUCCINE',
+			'COLAC',
+			'DALLMAYR',
+			'EDGE',
+			'FRESH BLENDS',
+			'JAF TEA',
+			'JUST CHILL',
+			'MEC3',
+			'MIA - FNB',
+			'OATLY',
+			'PELLINI',
+			'RESTOFAIR',
+			'ROASTERY',
+			'ROUTIN 1883',
+			'SALVO',
+			'SWEETBIRD'
+		],
+		'PRO'=>[
+			'BAKER&BAKER',
+			'BASE & FLAVOR',
+			'BONJOUR',
+			'COCO',
+			'DELIZIA',
+			'DGF',
+			'FRUFFI',
+			'ICAM',
+			'IRCA',
+			'LA PRIMA',
+			'LAPED',
+			'LAPRIMA',
+			'LOCAL',
+			'MEC3',
+			'MIA',
+			'OSTIFICIO PREALPINO',
+			'PERNIGOTTI',
+			'SILICOMART'
+		]
+	],
+	
 
 ];
 
