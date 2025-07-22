@@ -42,6 +42,7 @@
                                             <div class="ms-auto">
                                                 @if($sample->status==0)
                                                     @if(Session::get('user')->sample_brand_aprove == 1)
+                                                        @if (str_contains($sample->prodCode, 'FNB') && Session::get('user')->sample_fnb==1)
                                                         <div class="form-group">
                                                             <label for="exampleFormControlTextarea{{$sample->id}}">Update Command</label>
                                                             <textarea class="form-control" id="exampleFormControlTextarea{{$sample->id}}" rows="3" wire:model="sample_comment.{{$sample->id}}"></textarea>
@@ -49,8 +50,16 @@
                                                         </div>
                                                         <a class="btn btn-link text-danger text-gradient px-3 mb-0" href="javascript:;" wire:click=updateSample('{{$sample->id}}','5')><i class="far fa-trash-alt me-2"></i>Reject</a>
                                                         <a class="btn btn-link text-success px-3 mb-0" href="javascript:;" wire:click=updateSample('{{$sample->id}}','{{$sample->status+1}}')><i class="fas fa-pencil-alt text-success me-2" aria-hidden="true"></i>Aprove</a>
+                                                        @elseif (str_contains($sample->prodCode, 'PRO') && Session::get('user')->sample_production==1)
+                                                        <div class="form-group">
+                                                            <label for="exampleFormControlTextarea{{$sample->id}}">Update Command</label>
+                                                            <textarea class="form-control" id="exampleFormControlTextarea{{$sample->id}}" rows="3" wire:model="sample_comment.{{$sample->id}}"></textarea>
+                                                            @error('sample_comment.'.$sample->id) <span class="mb-4 text-danger">Command is required</span> @enderror
+                                                        </div>
+                                                        <a class="btn btn-link text-danger text-gradient px-3 mb-0" href="javascript:;" wire:click=updateSample('{{$sample->id}}','5')><i class="far fa-trash-alt me-2"></i>Reject</a>
+                                                        <a class="btn btn-link text-success px-3 mb-0" href="javascript:;" wire:click=updateSample('{{$sample->id}}','{{$sample->status+1}}')><i class="fas fa-pencil-alt text-success me-2" aria-hidden="true"></i>Aprove</a>
+                                                        @endif
                                                         
-
                                                     @endif
                                                 @elseif($sample->status==1)
                                                     @if(Session::get('user')->sample_showroom_aprove == 1)

@@ -811,8 +811,10 @@ class Crm extends Component
         else if (str_contains(Session::get('user')->company, 'CO03')) {
             if($fnb_brand)
             {
-                $emailToSend[0]['email'] = 'mixologist@lmi.om; sm@lmi.om';
+                $emailToSend[0]['email'] = 'mixologist@lmi.om';
                 $emailToSend[0]['name'] = 'LMI Oman';
+                $emailToSend[1]['email'] = 'sm@lmi.om';
+                $emailToSend[1]['name'] = 'LMI Oman';
             }
             if($pro_brand)
             {
