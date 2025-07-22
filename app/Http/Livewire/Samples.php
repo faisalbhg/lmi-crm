@@ -55,11 +55,6 @@ class Samples extends Component
         {
             $sampleQuery->where(['created_by'=>Session::get('user')->id]);
         }
-
-
-
-
-        
         /*if(Session::get('user')->usertype==7)
         {
             $sampleQuery->where(['status'=>1]);
