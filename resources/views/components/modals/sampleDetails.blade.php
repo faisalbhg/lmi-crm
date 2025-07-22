@@ -63,12 +63,14 @@
                                                     @endif
                                                 @elseif($sample->status==1)
                                                     @if(Session::get('user')->sample_showroom_aprove == 1)
-                                                        @if(config('common.sample_showroof_aprover_email')[$sample->userInfo['company_branch']] == Session::get('user')->email)
-                                                        <h6 class="mb-0">Make Action </h6>
-                                                        <hr class="horizontal dark">
-                                                        <a href="javascript:;" wire:click="updateSample('{{$sample->id}}','{{$sample->status+1}}')" >
-                                                            <button type="button" class="btn btn-{{config('common.sample_status_class')[$sample->status+1]}} btn-sm">{{config('common.sample_status_action')[$sample->status+1]}}</button>
-                                                        </a>
+                                                        @if(isset(config('common.sample_showroof_aprover_email')[$sample->userInfo['company_branch']]))
+                                                            @if(config('common.sample_showroof_aprover_email')[$sample->userInfo['company_branch']] == Session::get('user')->email)
+                                                            <h6 class="mb-0">Make Action </h6>
+                                                            <hr class="horizontal dark">
+                                                            <a href="javascript:;" wire:click="updateSample('{{$sample->id}}','{{$sample->status+1}}')" >
+                                                                <button type="button" class="btn btn-{{config('common.sample_status_class')[$sample->status+1]}} btn-sm">{{config('common.sample_status_action')[$sample->status+1]}}</button>
+                                                            </a>
+                                                            @endif
                                                         @endif
                                                     @endif
                                                 @elseif($sample->status==2 && $sample->created_by == auth()->user('user')->id)
