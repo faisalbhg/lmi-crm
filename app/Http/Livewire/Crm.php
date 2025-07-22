@@ -847,6 +847,7 @@ class Crm extends Component
             }
         }
 
+        $files=null;
         foreach($emailToSend as $sendUser){
             $mailData2 = [
                 'name' => $sendUser['name'],
