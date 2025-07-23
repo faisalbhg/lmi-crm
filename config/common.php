@@ -371,10 +371,10 @@ return [
 		"ROASTERY",
 	],
 	'sample_showroof_aprover_email'=>[
-		'DXB'=>['showroom.asst@lmi.ae'],
-		'AUH'=>['auh.sales2@lmi.ae'],
-		'OMN'=>['admin@lmi.om'],
-		'KSA'=>['cs2@masdar-lmi.com'],
+		'DXB'=>'showroom.asst@lmi.ae',
+		'AUH'=>'auh.sales2@lmi.ae',
+		'OMN'=>'admin@lmi.om',
+		'KSA'=>'cs2@masdar-lmi.com',
 	],
 	"sample_company_email"=>[
 		"CO01"=>"beverages@lmi.ae",

@@ -774,10 +774,10 @@ class Crm extends Component
         $fnb_brand=false;
         $pro_brand=false;
         foreach(Sample::where(['crm_id'=>$crmId])->get() as $itemInfo){
-            if(in_array($itemInfo->itemBrand,config('common.sample_brand.FNB')))
+            if(str_contains($itemInfo->prodCode,'FNB'))
             {
                 $fnb_brand=true;
-            }else if(in_array($itemInfo->itemBrand,config('common.sample_brand.PRO')))
+            }else if(str_contains($itemInfo->prodCode,'PRO'))
             {
                 $pro_brand=true;
             }
