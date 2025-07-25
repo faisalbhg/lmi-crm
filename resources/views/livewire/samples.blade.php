@@ -80,6 +80,7 @@
                             <thead>
                                 <tr>
                                     <th class=" text-center text-uppercase text-dark text-xxs font-weight-bolder opacity-7">No.</th>
+                                    <th class=" text-center text-uppercase text-dark text-xxs font-weight-bolder opacity-7">Ref.</th>
                                     <th class="text-uppercase text-dark text-xxs font-weight-bolder opacity-7">Customer</th>
                                     <!-- <th class="text-uppercase text-dark text-xxs font-weight-bolder opacity-7">Item</th> -->
                                     <th class="text-uppercase text-dark text-xxs font-weight-bolder opacity-7">Sales Person</th>
@@ -91,6 +92,7 @@
                                 @forelse($samplesList as $key => $samples)
                                 <tr wire:click="openSample('{{$samples->crm_id}}')">
                                     <td class="text-xxs text-center">{{$key+1}}</td>
+                                    <td class="text-xxs text-center">{{$samples->crm_id}}</td>
                                     <td>
                                         <div class="d-flex px-2 py-1">
                                             <div class="d-flex flex-column justify-content-center">
