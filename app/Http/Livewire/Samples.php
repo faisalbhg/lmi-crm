@@ -121,7 +121,7 @@ class Samples extends Component
         $this->sampleInfo = Sample::with('userInfo')->with('teritoryInfo')->with('countryInfo')->where('crm_id','=',$sampleOrderDtls->crm_id)->first();
         $rejected = false;
         if($status==1){
-            $this->emailSampleRequestStage2($sampleOrderDtls->crm_id,$sampleOrderDtls->company);
+            $this->emailSampleRequestStage2($sampleOrderDtls->crm_id,$sampleOrderDtls->userInfo['company_branch']);
 
             /*if($sampleOrderDtls->userInfo['company'] =='CO03')
             {
@@ -237,8 +237,8 @@ class Samples extends Component
 
     public function emailSampleRequestStage2($crmId,$company)
     {
-        if(Session::get('user')->company_branch!=null){
-            switch (Session::get('user')->company_branch) {
+        if($company!=null){
+            switch ($company) {
                 case 'OMN':
                     $emailtoSample = 'admin@lmi.om';
                     $nametoSample = 'Oman';
